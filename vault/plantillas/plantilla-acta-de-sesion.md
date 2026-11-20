@@ -1,21 +1,22 @@
 ---
 estado: vigente
 grado: C
-fuente: sesión con Nadir Hadad Navarrete
+fuente: sesión con <Nadir Hadad Navarrete | Arthur Naranjo>
 fecha: AAAA-MM-DD
-dueño: Nadir Hadad Navarrete
+dueño: <quien tuvo la sesión>
 ---
 # Acta — AAAA-MM-DD — <tema>
 
-Participantes: Nadir Hadad Navarrete · Claude Code.
+Participantes: <Nadir Hadad Navarrete | Arthur Naranjo> · Claude Code.
 Fase(s) de la sesión: 
 
-## Declaraciones de Nadir (grado C)
+## Declaraciones (grado C)
 Cada renglón es citable como `vault/meta/actas/acta-AAAA-MM-DD-<tema>.md:línea` o por su `C-NN`.
 Se transcribe lo dicho, no lo interpretado. Si fue vago, se anota la repregunta y la respuesta falsable.
+Cada renglón dice quién lo declaró. Si revoca una declaración anterior, lo dice con su `C-NN`.
 
-- C-01. 
-- C-02. 
+- C-NN (Nombre). 
+- C-NN (Nombre). 
 
 ## Decisiones tomadas en la sesión
 | # | Decisión | Opciones consideradas | Quién decide | ADR / nota resultante |

@@ -38,7 +38,7 @@ Insumo para DD-063 (construir, adaptar o comprar) y para el camino "híbrido" de
 - Cada función del inventario se calificó por cuánto de **su trabajo total** (pantalla y servidor) ya
   resuelve Enatega: **Alto** 45 % · **Medio** 25 % · **Bajo** 10 % · **Nada** 0 %. El rango usa 30/15/5/0
   (pesimista) y 60/35/15/0 (optimista). Ningún "Alto" pasa de la mitad: el servidor y el diseño de
-  {{MARCA}} siempre quedan por hacer.
+  Lavandi siempre quedan por hacer.
 - Peso por tamaño del inventario: S = 1, M = 2, L = 3.
 - Son 73 funciones: F-T01, F-T11 y F-T15 ya están contadas en otras.
 - **Los porcentajes son estimación de Claude** sobre nombres de pantallas y dependencias, sin haber
@@ -130,7 +130,7 @@ Nada de lo de arriba lo resuelve, ni en parte:
 6. **El registro de lavanderías y repartidores** dentro de la app (F-B01, F-C01).
 7. **Las reglas de permisos por rol** en Supabase: la herramienta existe, las reglas se escriben.
 8. **Las definiciones de los 11 indicadores**: qué se mide y con qué consulta.
-9. **El diseño de {{MARCA}}** aplicado a todo: el design system de la Fase 4.
+9. **El diseño de Lavandi** aplicado a todo: el design system de la Fase 4.
 10. **El contenido de la landing** y su medición (GA4, Meta Pixel, GTM, Search Console).
 11. **Los requisitos de las tiendas**: publicación, aviso de privacidad, permisos de ubicación y fotos.
 12. **Pruebas, despliegue y operación** a nombre del cliente (RN-20).
