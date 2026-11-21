@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="es" data-plataforma-activa="ios">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F-A04 · Búsqueda y filtros — Mocks de Lavandi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../comun/tokens.css">
+<link rel="stylesheet" href="../comun/estilos.css">
+</head>
+<body data-pantalla="a04-busqueda">
+<div class="escenario">
+  <div class="columna-telefono">
+    <div class="telefono">
+      <div class="pantalla">
+        <div class="barra-estado"><span aria-hidden="true">9:41</span><span class="cinta-mock" role="note">Mock · datos de ejemplo</span><span class="iconos-estado" aria-hidden="true"><svg class="icono"><use href="#i-senal"/></svg><svg class="icono"><use href="#i-wifi"/></svg><svg class="icono"><use href="#i-bateria"/></svg></span></div>
+
+        <div class="encabezado-app">
+          <a class="btn btn-icono" href="a03-principal.html" aria-label="Regresar"><svg class="icono"><use href="#i-atras"/></svg></a>
+          <h1>Elige tu lavandería</h1>
+          <a class="btn btn-texto" href="a03-principal.html"><svg class="icono chico"><use href="#i-mapa"/></svg>Mapa</a>
+        </div>
+
+        <main class="contenido">
+          <label class="buscador">
+            <svg class="icono"><use href="#i-buscar"/></svg>
+            <span class="solo-lector">Buscar por nombre</span>
+            <input type="search" id="texto" placeholder="Buscar por nombre">
+          </label>
+
+          <p class="micro suave mt-3 mb-0 fuerte">Distancia</p>
+          <div class="chips" role="group" aria-label="Distancia">
+            <button type="button" class="chip" data-filtro="distancia" data-valor="1" aria-pressed="false">Hasta 1 km</button>
+            <button type="button" class="chip" data-filtro="distancia" data-valor="3" aria-pressed="false">Hasta 3 km</button>
+            <button type="button" class="chip" data-filtro="distancia" data-valor="5" aria-pressed="false">Hasta 5 km</button>
+          </div>
+          <p class="micro suave mb-0 fuerte">Calificación</p>
+          <div class="chips" role="group" aria-label="Calificación">
+            <button type="button" class="chip" data-filtro="calificacion" data-valor="4.5" aria-pressed="false"><svg class="icono chico"><use href="#i-estrella"/></svg>4.5 o más</button>
+            <button type="button" class="chip" data-filtro="calificacion" data-valor="4" aria-pressed="false"><svg class="icono chico"><use href="#i-estrella"/></svg>4 o más</button>
+          </div>
+          <p class="micro suave mb-0 fuerte">Disponibilidad</p>
+          <div class="chips" role="group" aria-label="Disponibilidad">
+            <button type="button" class="chip" data-filtro="disponibilidad" data-valor="abierta-ahora" aria-pressed="false">Abiertas ahora</button>
+            <button type="button" class="chip" data-filtro="disponibilidad" data-valor="con-cupo" aria-pressed="false">Con cupo hoy</button>
+          </div>
+
+          <div class="fila mt-2 mb-2">
+            <span class="menor suave" id="conteo" role="status">4 lavanderías</span>
+            <label class="fila-izq menor">Ordenar por
+              <select class="entrada" id="orden" style="width:auto;min-height:40px;padding:0 var(--s-2)">
+                <option value="distancia">Distancia</option>
+                <option value="calificacion">Calificación</option>
+              </select>
+            </label>
+          </div>
+
+          <div id="resultados"></div>
+          <div id="vacio" class="sin-servicio mt-3" hidden>
+            <p class="mb-2">Ninguna lavandería coincide con estos filtros.</p>
+            <button type="button" class="btn" id="quitar">Quitar filtros</button>
+          </div>
+        </main>
+        <div class="indicador-inicio" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="anotaciones" id="anotaciones" aria-labelledby="titulo-anotaciones">
+    <div class="encabezado-panel">
+      <div><h2 id="titulo-anotaciones">Anotaciones</h2><p class="suave micro mb-0">Qué dibuja esta pantalla y qué falta decidir.</p></div>
+      <button type="button" class="btn btn-icono" data-cerrar-anotaciones aria-label="Ocultar anotaciones"><svg class="icono"><use href="#i-cerrar"/></svg></button>
+    </div>
+
+    <h3>Función</h3>
+    <p class="mb-2"><strong>F-A04 · Búsqueda y filtros</strong></p>
+    <blockquote>"Filtros por distancia, calificación y disponibilidad."</blockquote>
+    <p><span class="cita">NSV-2026-001-v8.pdf:16-17:ANEXO A, Sección A.3</span> · Módulo A, numeral 4</p>
+
+    <h3>Componentes del design system</h3>
+    <ul><li><strong>1 · Tarjeta de lavandería</strong>, en sus tres estados. Los filtros funcionan sobre los cuatro ejemplos.</li></ul>
+
+    <h3>Decisiones tomadas que respeta</h3>
+    <div class="nota nota-decision">
+      <div class="rotulo"><span>ADR-0009 · ADR-0004</span><span>vigentes</span></div>
+      <p>La distancia es en línea recta (no por ruta, para no pagar cálculos de rutas) y el radio se resuelve con PostGIS. Es la decisión 2 de <span class="cita">arquitectura/presupuesto-de-mapas.md</span>, que el ADR-0009 adopta.</p>
+    </div>
+
+    <h3>Pendiente</h3>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>BR-15</span><span>ESPECIFICACIÓN PENDIENTE</span></div>
+      <p>El radio, el orden por defecto y qué es "disponibilidad". Los cortes de 1, 3 y 5 km y de 4 y 4.5 estrellas son de ejemplo. "Abiertas ahora" y "Con cupo hoy" son una lectura posible de "disponibilidad", no una definición.</p>
+    </div>
+    <div class="nota nota-cliente">
+      <div class="rotulo"><span>Marca del cliente · 2026-11-05</span><span>sin confirmar</span></div>
+      <p>A04 marcada "Para abrir". El reporte deja por confirmar "buscar y filtrar si la app asigna", porque en A03 el cliente escribió que la lavandería "se asigna en la app".</p>
+    </div>
+  </aside>
+</div>
+<script src="../comun/app.js"></script>
+<script>
+(function () {
+  var filtros = { distancia: null, calificacion: null, disponibilidad: null };
+  var lista = Object.keys(Mock.LAVANDERIAS).map(function (k) { return Mock.LAVANDERIAS[k]; });
+
+  function pintar() {
+    var texto = document.getElementById('texto').value.trim().toLowerCase();
+    var orden = document.getElementById('orden').value;
+    var visibles = lista.filter(function (l) {
+      if (texto && l.nombre.toLowerCase().indexOf(texto) < 0) return false;
+      if (filtros.distancia && l.distancia > Number(filtros.distancia)) return false;
+      if (filtros.calificacion && l.calificacion < Number(filtros.calificacion)) return false;
+      if (filtros.disponibilidad === 'abierta-ahora' && l.estado === 'cerrada') return false;
+      if (filtros.disponibilidad === 'con-cupo' && l.estado !== 'abierta') return false;
+      return true;
+    }).sort(function (a, b) {
+      return orden === 'calificacion' ? b.calificacion - a.calificacion : a.distancia - b.distancia;
+    });
+    document.getElementById('resultados').innerHTML = visibles.map(Mock.tarjetaLavanderia).join('');
+    document.getElementById('vacio').hidden = visibles.length > 0;
+    document.getElementById('conteo').textContent = visibles.length === 1 ? '1 lavandería' : visibles.length + ' lavanderías';
+  }
+
+  document.addEventListener('click', function (ev) {
+    var chip = ev.target.closest('[data-filtro]');
+    if (!chip) return;
+    var f = chip.getAttribute('data-filtro'), v = chip.getAttribute('data-valor');
+    filtros[f] = filtros[f] === v ? null : v;
+    document.querySelectorAll('[data-filtro="' + f + '"]').forEach(function (c) {
+      c.setAttribute('aria-pressed', String(c.getAttribute('data-valor') === filtros[f]));
+    });
+    pintar();
+  });
+  document.getElementById('texto').addEventListener('input', pintar);
+  document.getElementById('orden').addEventListener('change', pintar);
+  document.getElementById('quitar').addEventListener('click', function () {
+    filtros = { distancia: null, calificacion: null, disponibilidad: null };
+    document.getElementById('texto').value = '';
+    document.querySelectorAll('[data-filtro]').forEach(function (c) { c.setAttribute('aria-pressed', 'false'); });
+    pintar();
+  });
+  pintar();
+})();
+</script>
+</body>
+</html>

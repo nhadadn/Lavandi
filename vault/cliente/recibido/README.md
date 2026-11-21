@@ -62,3 +62,6 @@ vale es siempre `D:\Proyectos\nsv-lavanderia\vault\cliente\recibido\`**, la que 
 |---|---|---|
 | 2026-09-18 | Cuatro capturas del manual 1.0 y de la guía de tono, marcadas a mano. Evidencia primaria de C-76 a C-83 | `2026-09-18/indice.md` |
 | 2026-09-30 | Doce fotos del manual 1.1 impreso con marcas a mano, y el logotipo de la palabra del diseñador en `.ai`, `.eps` y exportaciones. Llegaron por WhatsApp el 21 y el 29. Evidencia de C-98 a C-102 | `2026-09-30/indice.md` |
+| 2026-11-05 | Fotos del formulario de prioridades y de la guía de la reunión, llenados a mano por el cliente. Se leyeron en `cliente/comunicaciones/2026-11-05-reporte-del-formulario.md` | **Sin índice** (se notó el 2026-11-18) |
+| 2026-11-14 | Seis fotos de una libreta de precios (Tintorería y Lavandería y planchaduría) y un video promocional de 61 s, por WhatsApp. Evidencia de C-172 y C-173 | `2026-11-14/indice.md` |
+| 2026-11-18 | Dos notas de voz de WhatsApp dirigidas a Nadir, sobre los pedidos de noche y un día para lavar. Evidencia de C-178 y C-179 | `2026-11-18/indice.md` |

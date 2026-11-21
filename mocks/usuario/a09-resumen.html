@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="es" data-plataforma-activa="ios">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F-A09 · Resumen del pedido — Mocks de Lavandi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../comun/tokens.css">
+<link rel="stylesheet" href="../comun/estilos.css">
+</head>
+<body data-pantalla="a09-resumen">
+<div class="escenario">
+  <div class="columna-telefono">
+    <div class="telefono">
+      <div class="pantalla">
+        <div class="barra-estado"><span aria-hidden="true">9:41</span><span class="cinta-mock" role="note">Mock · datos de ejemplo</span><span class="iconos-estado" aria-hidden="true"><svg class="icono"><use href="#i-senal"/></svg><svg class="icono"><use href="#i-wifi"/></svg><svg class="icono"><use href="#i-bateria"/></svg></span></div>
+
+        <div class="encabezado-app">
+          <a class="btn btn-icono" href="a08-direccion.html" aria-label="Regresar"><svg class="icono"><use href="#i-atras"/></svg></a>
+          <h1>Pedido nuevo · 4 de 4</h1>
+          <span class="lado"></span>
+        </div>
+
+        <main class="contenido">
+          <h2 class="titulo-pantalla">Revisa tu pedido</h2>
+
+          <!-- Componente 6 · Resumen del pedido -->
+          <section class="resumen mt-3" aria-label="Resumen del pedido">
+            <div class="encabezado-resumen">
+              <div class="nombre" data-dato="lavanderia.nombre">Lavandería Ejemplo Centro</div>
+              <div class="menor suave" data-dato="lavanderia.meta"></div>
+            </div>
+
+            <div class="apilado-3">
+              <div class="dato-resumen"><svg class="icono"><use href="#i-lavadora"/></svg>
+                <div class="valor"><strong data-dato="servicios.texto">Lavado estándar</strong><a href="a06-servicio.html">Cambiar servicio</a></div></div>
+              <div class="dato-resumen"><svg class="icono"><use href="#i-calendario"/></svg>
+                <div class="valor"><strong><span data-dato="fecha.texto"></span>, <span data-dato="ventana"></span></strong><a href="a07-fecha-hora.html">Cambiar ventana</a></div></div>
+              <div class="dato-resumen"><svg class="icono"><use href="#i-ubicacion"/></svg>
+                <div class="valor"><strong>Recogida: <span data-dato="recogida.alias"></span></strong><span class="suave" data-dato="recogida.texto"></span><br>
+                <span class="suave">Entrega: <span data-dato="entrega.texto"></span></span><br><a href="a08-direccion.html">Cambiar dirección</a></div></div>
+            </div>
+
+            <div class="conceptos" id="conceptos"></div>
+
+            <div class="total"><span>Total estimado</span><span class="monto">$ —</span></div>
+
+            <div class="aviso-info">
+              <svg class="icono"><use href="#i-info"/></svg>
+              <span>El total es estimado. <strong>El precio final se calcula al pesar tu ropa</strong> en la lavandería.</span>
+            </div>
+
+            <div class="caja-pendiente">
+              <span class="titulo-caja">Política de cancelación</span>
+              <span class="pendiente">Falta definirla</span>
+              <p>La define el cliente. El espacio queda reservado; no se inventa una política.</p>
+            </div>
+          </section>
+        </main>
+
+        <div class="acciones-fijas">
+          <!-- El texto del botón depende de cuándo se cobra (DD-012). Se cambia en el panel. -->
+          <a class="btn btn-primario btn-grande btn-bloque" href="a10-pago.html" data-variante="cobro:al-pedir">Confirmar y pagar</a>
+          <a class="btn btn-primario btn-grande btn-bloque" href="a10-pago.html" data-variante="cobro:al-pesar">Confirmar pedido</a>
+          <a class="btn btn-primario btn-grande btn-bloque" href="a10-pago.html" data-variante="cobro:apartar">Confirmar y apartar</a>
+        </div>
+        <div class="indicador-inicio" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="anotaciones" id="anotaciones" aria-labelledby="titulo-anotaciones">
+    <div class="encabezado-panel">
+      <div><h2 id="titulo-anotaciones">Anotaciones</h2><p class="suave micro mb-0">Qué dibuja esta pantalla y qué falta decidir.</p></div>
+      <button type="button" class="btn btn-icono" data-cerrar-anotaciones aria-label="Ocultar anotaciones"><svg class="icono"><use href="#i-cerrar"/></svg></button>
+    </div>
+
+    <h3>Función</h3>
+    <p class="mb-2"><strong>F-A09 · Resumen del pedido</strong></p>
+    <blockquote>"Servicio, fecha, dirección, precio estimado y política de cancelación."</blockquote>
+    <p><span class="cita">NSV-2026-001-v8.pdf:16-17:ANEXO A, Sección A.3</span> · Módulo A, numeral 9</p>
+
+    <h3>Componentes del design system</h3>
+    <ul><li><strong>6 · Resumen del pedido</strong>: dice con todas sus letras que el total es estimado y reserva el espacio de la política de cancelación sin inventarla, como pide <span class="cita">componentes.md</span> §6. Montos con números tabulares.</li></ul>
+
+    <h3>Variantes</h3>
+    <div class="variante-control" data-grupo="cobro">
+      <span class="leyenda">DD-012 · cuándo se cobra (cambia el botón)</span>
+      <div class="grupo-segmentado" role="group" aria-label="Variante DD-012">
+        <button type="button" data-valor="al-pedir">Al pedir</button>
+        <button type="button" data-valor="al-pesar">Al pesar</button>
+        <button type="button" data-valor="apartar">Apartar</button>
+      </div>
+    </div>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>DD-012 · BR-20</span><span>abierta · decide EL CLIENTE</span></div>
+      <p>Las tres opciones y sus botones son las del canvas del Resumen (<span class="cita">design-system/canvas/Resumen.dc.html</span>). Ninguna está decidida. El cliente subrayó "al pedir, con un estimado, y se ajusta al pesar" el 2026-11-05, <strong>sin confirmar</strong>. Si se confirma, el ajuste es cargo adicional o reembolso parcial (ADR-0010, punto 3).</p>
+    </div>
+
+    <h3>Pendiente</h3>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>DD-019 · DD-025</span><span>abiertas · decide EL CLIENTE</span></div>
+      <p><strong>Envío $35:</strong> es la única cifra del vault con fuente. "El reparto lo paga el usuario: $35 MXN mínimo" (C-31, <span class="cita">vault/meta/actas/acta-2026-09-07-fundacion.md:48</span>, grado C). Si es por pedido o por trayecto, fijo o por distancia (DD-019), y si va aparte, incluido en un pedido mínimo o gratis desde un umbral (DD-025), sigue abierto.</p>
+    </div>
+    <div class="nota nota-cliente">
+      <div class="rotulo"><span>Contradicción · 2026-11-05</span><span>sin confirmar</span></div>
+      <p>En la guía de la reunión el cliente encerró la opción C, "envío incluido, pedido mínimo, la lavandería entrega", y anotó "Pedido mínimo: 250 pesos por tabulador". Eso contradice el $35 aparte de C-31. Mientras no se asiente, el renglón de envío se queda como está y marcado.</p>
+    </div>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>DD-010 · C-131 · BR-16</span><span>en curso</span></div>
+      <p>No hay precios por kilo ("Aún no hay precios", C-131), ni regla para estimar antes de pesar. Por eso el lavado y el total van como "$ —". La libreta recibida el 2026-11-14 (<span class="cita">negocio/lista-de-precios-recibida-2026-11-14.md</span>) es un borrador por confirmar que no decide precios.</p>
+    </div>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>DD-016 · BR-19</span><span>abierta · decide EL CLIENTE</span></div>
+      <p>La política de cancelación. El cliente marcó: "hasta media hora antes de que pasen por su ropa"; "después de recogida, se cobra el envío"; si cancela la lavandería, "asumir el costo que se le cobra al cliente". Son marcas en papel, <strong>no grado C</strong>: no se escriben en la pantalla.</p>
+    </div>
+    <div class="nota nota-cliente">
+      <div class="rotulo"><span>Marca del cliente · 2026-11-05</span><span>sin confirmar</span></div>
+      <p>A09 "Puede esperar". El reporte lo deja entre los puntos por confirmar: "qué ve la persona antes de pagar". El contrato sí lo enumera.</p>
+    </div>
+  </aside>
+</div>
+<script src="../comun/app.js"></script>
+<script>
+(function () {
+  var p = Mock.pedido();
+  var html = p.servicios.map(function (s) {
+    return '<div class="concepto"><span class="nombre-concepto">' + Mock.SERVICIOS[s].nombre + ' · kg al pesar</span><span class="monto">$ —</span></div>';
+  }).join('');
+  html += '<div class="concepto"><span class="nombre-concepto">Envío <span class="pendiente">por confirmar</span></span><span class="monto">$35.00</span></div>';
+  document.getElementById('conceptos').innerHTML = html;
+})();
+</script>
+</body>
+</html>

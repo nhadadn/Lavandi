@@ -1,8 +1,8 @@
 ---
 estado: borrador
 grado: mixto
-fuente: NSV-2026-001-v8.pdf ANEXO A.2, A.3, A.5 y ANEXO B.4 (A); restricciones-no-negociables.md (B); ADR-0001 (D)
-fecha: 2026-09-11
+fuente: NSV-2026-001-v8.pdf ANEXO A.2, A.3, A.5 y ANEXO B.4 (A); restricciones-no-negociables.md (B); ADR-0001 (D); DD-040 por acta-2026-11-12-traspaso-del-proyecto.md C-140 (C)
+fecha: 2026-11-12
 dueño: Nadir Hadad Navarrete
 adr: ADR-0001
 ---
@@ -96,6 +96,17 @@ una recomendación de Claude, no una decisión tomada.** Queda como **DD-040**, 
 Si se decidiera que va dentro de la app, `panel-admin` desaparece como contenedor y se vuelve un
 módulo de `app-movil`; el resto del diagrama no cambia. Por eso no bloquea.
 
+> **Decidido el 2026-11-12 (C-140, cierra DD-040): mixto.**
+>
+> - `panel-admin` **sigue como contenedor web propio**, con el Módulo D completo: las 7 funciones y los 11
+>   indicadores.
+> - Además, `app-movil` trae una **vista reducida para el administrador**, con consultas rápidas y avisos. Habla con
+>   `api` igual que los demás módulos y tiene su propia autorización por rol.
+> - Qué entra exactamente en esa vista se define en la spec del Módulo D. Mientras tanto,
+>   `ESPECIFICACIÓN PENDIENTE`.
+>
+> El diagrama no cambia de contenedores.
+
 ## Cómo se cumple el límite de 60 segundos
 
 RN-05 exige que un cambio de estado hecho por la lavandería o el repartidor se refleje en la app del
@@ -121,5 +132,6 @@ distintos. Un ADR de infraestructura que se salga del rango contradice el contra
 |---|---|---|
 | `ESPECIFICACIÓN PENDIENTE` | Máquina de estados del pedido y qué rol dispara cada transición | C3, tras DD-011, DD-014, DD-016 y DD-022 |
 | `ESPECIFICACIÓN PENDIENTE` | Mecanismo de propagación para los 60 s | `ADR-0007`, Fase 6 |
-| `ESPECIFICACIÓN PENDIENTE` | Si `panel-admin` es contenedor propio | **DD-040**, decide Nadir |
+| Resuelto el 2026-11-12 | Si `panel-admin` es contenedor propio: sí, más una vista reducida en `app-movil` | C-140; DD-040 cerrada |
+| `ESPECIFICACIÓN PENDIENTE` | Qué funciones del Módulo D entran en la vista de administración de la app | Spec del Módulo D |
 | `ESPECIFICACIÓN PENDIENTE` | Presupuesto de consultas de mapas por pedido | `presupuesto-de-mapas.md`, esta fase |

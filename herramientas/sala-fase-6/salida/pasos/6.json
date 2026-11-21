@@ -4,5 +4,5 @@
  "titulo": "Candidatos y ADRs",
  "objetivo": "Puntuar candidatos con los pesos fijados y escribir los ADRs",
  "sale": "`ADR-0002` a `ADR-0015`",
- "estado": "pendiente"
+ "estado": "cerrado"
 }

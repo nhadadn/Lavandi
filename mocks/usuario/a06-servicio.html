@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="es" data-plataforma-activa="ios">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F-A06 · Selección de servicio — Mocks de Lavandi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../comun/tokens.css">
+<link rel="stylesheet" href="../comun/estilos.css">
+</head>
+<body data-pantalla="a06-servicio">
+<div class="escenario">
+  <div class="columna-telefono">
+    <div class="telefono">
+      <div class="pantalla">
+        <div class="barra-estado"><span aria-hidden="true">9:41</span><span class="cinta-mock" role="note">Mock · datos de ejemplo</span><span class="iconos-estado" aria-hidden="true"><svg class="icono"><use href="#i-senal"/></svg><svg class="icono"><use href="#i-wifi"/></svg><svg class="icono"><use href="#i-bateria"/></svg></span></div>
+
+        <div class="encabezado-app">
+          <a class="btn btn-icono" href="a05-lavanderia.html" aria-label="Regresar"><svg class="icono"><use href="#i-atras"/></svg></a>
+          <h1>Pedido nuevo · 1 de 4</h1>
+          <span class="lado"></span>
+        </div>
+
+        <main class="contenido">
+          <h2 class="titulo-pantalla">¿Qué servicio necesitas?</h2>
+          <p class="suave"><span data-dato="lavanderia.nombre">Lavandería Ejemplo Centro</span>. Puedes elegir más de uno.</p>
+
+          <fieldset style="border:0;padding:0;margin:var(--s-4) 0 0">
+            <legend class="solo-lector">Tipos de servicio</legend>
+            <div id="opciones"></div>
+          </fieldset>
+
+          <div class="aviso-info mt-4">
+            <svg class="icono"><use href="#i-info"/></svg>
+            <span>El precio se calcula <strong>por kilo</strong> cuando la lavandería pesa tu ropa.</span>
+          </div>
+        </main>
+
+        <div class="acciones-fijas">
+          <a class="btn btn-primario btn-grande btn-bloque" id="continuar" href="a07-fecha-hora.html">Continuar</a>
+        </div>
+        <div class="indicador-inicio" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="anotaciones" id="anotaciones" aria-labelledby="titulo-anotaciones">
+    <div class="encabezado-panel">
+      <div><h2 id="titulo-anotaciones">Anotaciones</h2><p class="suave micro mb-0">Qué dibuja esta pantalla y qué falta decidir.</p></div>
+      <button type="button" class="btn btn-icono" data-cerrar-anotaciones aria-label="Ocultar anotaciones"><svg class="icono"><use href="#i-cerrar"/></svg></button>
+    </div>
+
+    <h3>Función</h3>
+    <p class="mb-2"><strong>F-A06 · Selección de servicio</strong></p>
+    <blockquote>"Tipos: lavado estándar, lavado con planchado y lavado en seco."</blockquote>
+    <p><span class="cita">NSV-2026-001-v8.pdf:16-17:ANEXO A, Sección A.3</span> · Módulo A, numeral 6 · RN-16</p>
+
+    <h3>Componentes del design system</h3>
+    <p>Ninguno de los seis. Las opciones son casillas de 48 px o más con borde de control.</p>
+
+    <h3>Pendiente</h3>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>BR-16</span><span>Cliente + F5</span></div>
+      <p>El catálogo por socio: si cada lavandería ofrece solo algunos tipos (el mock lo supone: los que no ofrece salen deshabilitados) y la unidad del lavado en seco.</p>
+    </div>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>DD-046</span><span>abierta · contractual</span></div>
+      <p>El lavado de calzado no está en el contrato. Si se quiere, va por Orden de Cambio. No se dibuja.</p>
+    </div>
+    <div class="nota nota-cliente">
+      <div class="rotulo"><span>Ideas del cliente fuera del contrato</span><span>acta 2026-11-05, C-129</span></div>
+      <p>"Foto y descripción de la ropa al pedir" y "cobrar por prenda o por el valor de las prendas" no están en el Módulo A ni en RN-16. No se dibujan: sin Orden de Cambio firmada, no se construyen.</p>
+    </div>
+
+    <h3>Decisiones de diseño del mock</h3>
+    <div class="nota nota-mock">
+      <div class="rotulo">Sin fila</div>
+      <p>Se pueden combinar tipos en un pedido, como el resumen de la muestra del design system (un renglón de lavado estándar y otro de planchado). Lo confirma la spec del pedido.</p>
+    </div>
+  </aside>
+</div>
+<script src="../comun/app.js"></script>
+<script>
+(function () {
+  var p = Mock.pedido();
+  var l = Mock.LAVANDERIAS[p.lavanderia];
+  var DESC = {
+    estandar: 'Lavado y secado de ropa de uso diario.',
+    planchado: 'Lavado, secado y planchado.',
+    seco: 'Para prendas que no van a la lavadora.'
+  };
+  var html = '';
+  Object.keys(Mock.SERVICIOS).forEach(function (s) {
+    var ofrece = l.servicios.indexOf(s) >= 0;
+    var marcado = ofrece && p.servicios.indexOf(s) >= 0;
+    var precio = s === 'seco' ? '$ — · unidad por definir' : '$ — por kilo';
+    html += '<label class="opcion">' +
+      '<input type="checkbox" name="servicio" value="' + s + '"' + (marcado ? ' checked' : '') + (ofrece ? '' : ' disabled') + '>' +
+      '<span class="cuerpo-opcion"><span class="nombre-opcion">' + Mock.SERVICIOS[s].nombre + '</span>' +
+      '<span class="menor suave">' + (ofrece ? DESC[s] : 'Esta lavandería no lo ofrece.') + '</span></span>' +
+      '<span class="menor precio-pendiente" style="text-align:right">' + (ofrece ? precio : '') + '</span></label>';
+  });
+  document.getElementById('opciones').innerHTML = html;
+
+  var continuar = document.getElementById('continuar');
+  function revisar() {
+    var elegidos = Array.prototype.map.call(document.querySelectorAll('input[name="servicio"]:checked'), function (i) { return i.value; });
+    if (elegidos.length) {
+      continuar.removeAttribute('aria-disabled');
+      continuar.textContent = 'Continuar';
+    } else {
+      continuar.setAttribute('aria-disabled', 'true');
+      continuar.textContent = 'Elige al menos un servicio';
+    }
+    return elegidos;
+  }
+  document.getElementById('opciones').addEventListener('change', revisar);
+  continuar.addEventListener('click', function (ev) {
+    var elegidos = revisar();
+    if (!elegidos.length) { ev.preventDefault(); return; }
+    Mock.guardarPedido({ servicios: elegidos });
+  });
+  revisar();
+})();
+</script>
+</body>
+</html>

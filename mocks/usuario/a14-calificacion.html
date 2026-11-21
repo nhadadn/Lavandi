@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="es" data-plataforma-activa="ios">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F-A14 · Calificación — Mocks de Lavandi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../comun/tokens.css">
+<link rel="stylesheet" href="../comun/estilos.css">
+</head>
+<body data-pantalla="a14-calificacion">
+<div class="escenario">
+  <div class="columna-telefono">
+    <div class="telefono">
+      <div class="pantalla">
+        <div class="barra-estado"><span aria-hidden="true">9:41</span><span class="cinta-mock" role="note">Mock · datos de ejemplo</span><span class="iconos-estado" aria-hidden="true"><svg class="icono"><use href="#i-senal"/></svg><svg class="icono"><use href="#i-wifi"/></svg><svg class="icono"><use href="#i-bateria"/></svg></span></div>
+
+        <div class="encabezado-app">
+          <a class="btn btn-icono" href="a13-historial.html" aria-label="Cerrar"><svg class="icono"><use href="#i-cerrar"/></svg></a>
+          <h1>Califica tu servicio</h1>
+          <span class="lado"></span>
+        </div>
+
+        <main class="contenido">
+          <p class="suave">Pedido <span class="mono" data-dato="folio">EJ-000123</span> · <span data-dato="lavanderia.nombre"></span></p>
+
+          <!-- Variante literal del contrato: una sola calificación del servicio -->
+          <section class="tarjeta" data-variante="calificacion:literal" aria-labelledby="t-servicio">
+            <h2 class="tarjeta-titulo" id="t-servicio">¿Cómo estuvo el servicio?</h2>
+            <div class="estrellas" role="radiogroup" aria-labelledby="t-servicio" data-estrellas="servicio"></div>
+            <p class="menor suave mt-2 mb-4" data-leyenda="servicio">Toca una estrella.</p>
+            <div class="campo mb-0"><label for="c-servicio">Comentario <span class="suave">(opcional)</span></label>
+              <textarea class="entrada" id="c-servicio" placeholder="Cuéntanos cómo te fue"></textarea></div>
+          </section>
+
+          <!-- Variante DD-052 (recomendación, no decisión): lavandería y repartidor, cada una opcional -->
+          <div data-variante="calificacion:recomendacion">
+            <p class="menor suave">Puedes calificar a uno o a los dos.</p>
+            <section class="tarjeta" aria-labelledby="t-lavanderia">
+              <h2 class="tarjeta-titulo" id="t-lavanderia">La lavandería</h2>
+              <p class="menor suave" data-dato="lavanderia.nombre"></p>
+              <div class="estrellas" role="radiogroup" aria-labelledby="t-lavanderia" data-estrellas="lavanderia"></div>
+              <p class="menor suave mt-2 mb-4" data-leyenda="lavanderia">Toca una estrella.</p>
+              <div class="campo mb-0"><label for="c-lavanderia">Comentario <span class="suave">(opcional)</span></label>
+                <textarea class="entrada" id="c-lavanderia" placeholder="Sobre el lavado y el trato"></textarea></div>
+            </section>
+            <section class="tarjeta" aria-labelledby="t-repartidor">
+              <h2 class="tarjeta-titulo" id="t-repartidor">Quien recogió y entregó</h2>
+              <p class="menor suave">Repartidor de ejemplo</p>
+              <div class="estrellas" role="radiogroup" aria-labelledby="t-repartidor" data-estrellas="repartidor"></div>
+              <p class="menor suave mt-2 mb-4" data-leyenda="repartidor">Toca una estrella.</p>
+              <div class="campo mb-0"><label for="c-repartidor">Comentario <span class="suave">(opcional)</span></label>
+                <textarea class="entrada" id="c-repartidor" placeholder="Sobre la recolección y la entrega"></textarea></div>
+            </section>
+          </div>
+        </main>
+
+        <div class="acciones-fijas">
+          <button type="button" class="btn btn-primario btn-grande btn-bloque" id="enviar" aria-disabled="true">Elige al menos una estrella</button>
+          <a class="btn btn-texto btn-bloque" href="a13-historial.html">Ahora no</a>
+        </div>
+        <div class="indicador-inicio" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="anotaciones" id="anotaciones" aria-labelledby="titulo-anotaciones">
+    <div class="encabezado-panel">
+      <div><h2 id="titulo-anotaciones">Anotaciones</h2><p class="suave micro mb-0">Qué dibuja esta pantalla y qué falta decidir.</p></div>
+      <button type="button" class="btn btn-icono" data-cerrar-anotaciones aria-label="Ocultar anotaciones"><svg class="icono"><use href="#i-cerrar"/></svg></button>
+    </div>
+
+    <h3>Función</h3>
+    <p class="mb-2"><strong>F-A14 · Calificación del servicio</strong></p>
+    <blockquote>"Escala de 1 a 5 estrellas con comentario opcional."</blockquote>
+    <p><span class="cita">NSV-2026-001-v8.pdf:16-17:ANEXO A, Sección A.3</span> · Módulo A, numeral 14</p>
+
+    <h3>Componentes del design system</h3>
+    <p>Ninguno de los seis. Cada estrella mide 48 px. La estrella llena usa <span class="cita">--c-atencion</span>: la capa semántica no tiene un amarillo de relleno y no se inventa uno (design system, decisión 3).</p>
+
+    <h3>Variantes</h3>
+    <div class="variante-control" data-grupo="calificacion">
+      <span class="leyenda">DD-052 · a quién se califica</span>
+      <div class="grupo-segmentado" role="group" aria-label="Variante DD-052">
+        <button type="button" data-valor="literal">Una (contrato)</button>
+        <button type="button" data-valor="recomendacion">Lavandería y repartidor</button>
+      </div>
+    </div>
+    <div class="nota nota-recomendacion">
+      <div class="rotulo"><span>Recomendación, no decisión</span><span>DD-052 · BR-47</span></div>
+      <p>"Dos calificaciones en la misma pantalla, lavandería y repartidor, cada una opcional." Sale de que la lavandería y el repartidor muestran "calificación recibida" (F-B04, F-C04) y el indicador F-I07 hace ranking por lavandería. Decide EL CLIENTE.</p>
+    </div>
+
+    <h3>Pendiente</h3>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>BR-25</span><span>F5 + spec</span></div>
+      <p>Cuándo se puede calificar y hasta cuándo. El mock lo ofrece cuando el pedido llega a Entregado y desde el historial.</p>
+    </div>
+    <div class="nota nota-cliente">
+      <div class="rotulo"><span>Marca del cliente · 2026-11-05</span><span>sin confirmar</span></div>
+      <p>A14 "Para abrir".</p>
+    </div>
+  </aside>
+</div>
+<script src="../comun/app.js"></script>
+<script>
+(function () {
+  var valores = {};
+  var estrella = '<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-estrella"/></svg>';
+
+  document.querySelectorAll('[data-estrellas]').forEach(function (grupo) {
+    var nombre = grupo.getAttribute('data-estrellas');
+    var html = '';
+    for (var i = 1; i <= 5; i++) {
+      html += '<button type="button" class="estrella" role="radio" aria-checked="false" aria-label="' + i + (i === 1 ? ' estrella' : ' estrellas') + '" data-valor="' + i + '" tabindex="' + (i === 1 ? 0 : -1) + '">' + estrella + '</button>';
+    }
+    grupo.innerHTML = html;
+    grupo.addEventListener('click', function (ev) {
+      var b = ev.target.closest('.estrella');
+      if (b) elegir(nombre, Number(b.getAttribute('data-valor')), true);
+    });
+    grupo.addEventListener('keydown', function (ev) {
+      var v = valores[nombre] || 0;
+      if (ev.key === 'ArrowRight' || ev.key === 'ArrowUp') { ev.preventDefault(); elegir(nombre, Math.min(5, v + 1), true); }
+      if (ev.key === 'ArrowLeft' || ev.key === 'ArrowDown') { ev.preventDefault(); elegir(nombre, Math.max(1, v - 1), true); }
+    });
+  });
+
+  function elegir(nombre, v, enfocar) {
+    valores[nombre] = v;
+    var grupo = document.querySelector('[data-estrellas="' + nombre + '"]');
+    grupo.querySelectorAll('.estrella').forEach(function (b) {
+      var n = Number(b.getAttribute('data-valor'));
+      b.classList.toggle('llena', n <= v);
+      b.setAttribute('aria-checked', String(n === v));
+      b.tabIndex = n === v ? 0 : -1;
+      if (enfocar && n === v) b.focus();
+    });
+    document.querySelector('[data-leyenda="' + nombre + '"]').textContent = v + ' de 5';
+    revisar();
+  }
+
+  var enviar = document.getElementById('enviar');
+  function visibles() {
+    return Object.keys(valores).filter(function (k) {
+      return !document.querySelector('[data-estrellas="' + k + '"]').closest('[hidden]');
+    });
+  }
+  function revisar() {
+    var hay = visibles().length > 0;
+    if (hay) { enviar.removeAttribute('aria-disabled'); enviar.textContent = 'Enviar calificación'; }
+    else { enviar.setAttribute('aria-disabled', 'true'); enviar.textContent = 'Elige al menos una estrella'; }
+  }
+  document.addEventListener('variantes-aplicadas', revisar);
+  enviar.addEventListener('click', function () {
+    if (!visibles().length) return;
+    Mock.brindis('¡Gracias por calificar!', 1400);
+    setTimeout(function () { window.location.href = 'a13-historial.html'; }, 1400);
+  });
+})();
+</script>
+</body>
+</html>

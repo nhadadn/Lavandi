@@ -1,6 +1,6 @@
 {
  "veredicto": "**La Fase 6 sigue, y va tarde. Pero el framework no es lo que más falta decidir.** Antes de pesar la matriz hay tres respuestas que mueven más que cualquier candidato: si las horas alcanzan, si conviene construir, adaptar o comprar, y si hay lavanderías reclutadas para probar la app con pedidos reales. Ninguna de las seis hipótesis de negocio se probó y sus fechas ya pasaron. Con el arranque más temprano posible quedan ocho semanas de construcción: de 120 a 240 horas contra las 389 que pide la estimación media. **Y los referentes no respaldan el modelo:** no se encontró ninguna plataforma de tres lados rentable en una ciudad del tamaño de Durango o Torreón, y en México la más parecida, Shawi, cerró el 14 de agosto de 2026 para venderles software a las lavanderías. **Ninguna plantilla pasa las puertas**: comprar no resuelve las horas.",
- "paso_actual": 1,
+ "paso_actual": 2,
  "fuente": "vault/arquitectura/planteamiento-fase-6.md",
  "cuenta": {
   "pasos": 6,

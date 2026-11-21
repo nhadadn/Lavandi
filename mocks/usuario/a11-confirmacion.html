@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="es" data-plataforma-activa="ios">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F-A11 · Confirmación — Mocks de Lavandi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../comun/tokens.css">
+<link rel="stylesheet" href="../comun/estilos.css">
+</head>
+<body data-pantalla="a11-confirmacion">
+<div class="escenario">
+  <div class="columna-telefono">
+    <div class="telefono">
+      <div class="pantalla">
+        <div class="barra-estado"><span aria-hidden="true">9:41</span><span class="cinta-mock" role="note">Mock · datos de ejemplo</span><span class="iconos-estado" aria-hidden="true"><svg class="icono"><use href="#i-senal"/></svg><svg class="icono"><use href="#i-wifi"/></svg><svg class="icono"><use href="#i-bateria"/></svg></span></div>
+
+        <main class="contenido">
+          <div class="centrado mt-5">
+            <span style="display:inline-flex;width:88px;height:88px;border-radius:50%;background:var(--c-exito);color:var(--c-texto-inverso);align-items:center;justify-content:center">
+              <svg class="icono" style="width:48px;height:48px;stroke-width:2.6"><use href="#i-palomita"/></svg>
+            </span>
+            <h1 class="titulo-pantalla mt-4">¡Pedido confirmado!</h1>
+            <p class="suave mb-2">Tu folio es</p>
+            <div class="fila" style="justify-content:center;gap:var(--s-2)">
+              <strong class="mono" style="font-size:var(--t-titulo)" data-dato="folio">EJ-000123</strong>
+              <button type="button" class="btn btn-icono" id="copiar" aria-label="Copiar folio"><svg class="icono"><use href="#i-copiar"/></svg></button>
+            </div>
+          </div>
+
+          <!-- Componente 6 · Resumen del pedido, versión corta -->
+          <section class="resumen mt-4" aria-label="Resumen del pedido">
+            <div class="encabezado-resumen"><div class="nombre" data-dato="lavanderia.nombre">Lavandería Ejemplo Centro</div></div>
+            <div class="apilado-3">
+              <div class="dato-resumen"><svg class="icono"><use href="#i-calendario"/></svg><div class="valor"><strong>Recolección</strong><span data-dato="fecha.texto"></span>, <span data-dato="ventana"></span></div></div>
+              <div class="dato-resumen"><svg class="icono"><use href="#i-ubicacion"/></svg><div class="valor"><strong data-dato="recogida.alias">Casa</strong><span class="suave" data-dato="recogida.texto"></span></div></div>
+              <div class="dato-resumen"><svg class="icono"><use href="#i-lavadora"/></svg><div class="valor"><strong data-dato="servicios.texto">Lavado estándar</strong></div></div>
+            </div>
+            <div class="total"><span>Total estimado</span><span class="monto">$ —</span></div>
+          </section>
+
+          <ul class="lista mt-4">
+            <li><div class="elemento"><svg class="icono icono-elemento"><use href="#i-correo"/></svg><div class="cuerpo-elemento menor">Te enviamos la confirmación a <strong data-dato="usuario.correo">usuario@ejemplo.com</strong>.</div></div></li>
+            <li><div class="elemento"><svg class="icono icono-elemento"><use href="#i-campana"/></svg><div class="cuerpo-elemento menor">Te avisaremos en tu teléfono cuando cambie tu pedido.</div></div></li>
+          </ul>
+        </main>
+
+        <div class="acciones-fijas">
+          <a class="btn btn-primario btn-grande btn-bloque" href="a12-seguimiento.html" data-guardar='{"estado":0}'>Seguir mi pedido</a>
+          <a class="btn btn-texto btn-bloque" href="a03-principal.html">Volver al inicio</a>
+        </div>
+        <div class="indicador-inicio" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="anotaciones" id="anotaciones" aria-labelledby="titulo-anotaciones">
+    <div class="encabezado-panel">
+      <div><h2 id="titulo-anotaciones">Anotaciones</h2><p class="suave micro mb-0">Qué dibuja esta pantalla y qué falta decidir.</p></div>
+      <button type="button" class="btn btn-icono" data-cerrar-anotaciones aria-label="Ocultar anotaciones"><svg class="icono"><use href="#i-cerrar"/></svg></button>
+    </div>
+
+    <h3>Función</h3>
+    <p class="mb-2"><strong>F-A11 · Confirmación de pedido</strong></p>
+    <blockquote>"Número de folio, resumen y notificación push más correo."</blockquote>
+    <p><span class="cita">NSV-2026-001-v8.pdf:16-17:ANEXO A, Sección A.3</span> · Módulo A, numeral 11 · F-T13</p>
+    <p class="menor suave">Al abrir la pantalla llega el aviso simulado de confirmación. Tócalo para ir al seguimiento.</p>
+
+    <h3>Componentes del design system</h3>
+    <ul><li><strong>6 · Resumen del pedido</strong>, versión corta: sin conceptos, solo el total estimado.</li></ul>
+
+    <h3>Decisiones tomadas que respeta</h3>
+    <div class="nota nota-decision">
+      <div class="rotulo"><span>ADR-0010</span><span>vigente</span></div>
+      <p>Esta pantalla aparece cuando el servidor recibe el webhook de Conekta, no cuando la app vuelve del navegador.</p>
+    </div>
+    <div class="nota nota-decision">
+      <div class="rotulo"><span>ADR-0008 · ADR-0014</span><span>vigentes</span></div>
+      <p>El aviso sale por Firebase Cloud Messaging (RN-30) y el correo por el correo automático de Laravel.</p>
+    </div>
+
+    <h3>Pendiente</h3>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>BR-21</span><span>F5 + F6</span></div>
+      <p>El formato del folio. "EJ-000123" es de ejemplo; la brecha pide un folio único por plaza (decisión requerida, no tomada).</p>
+    </div>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>DD-071</span><span>abierta · responde Arthur</span></div>
+      <p>Proveedor del correo: Resend o Amazon SES. La recomendación de Claude es Resend; no cambia la pantalla.</p>
+    </div>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>DD-011</span><span>abierta</span></div>
+      <p>La confirmación es uno de los cuatro avisos del numeral 17. El quinto momento que pide el criterio de aceptación no está definido. Ver A17.</p>
+    </div>
+  </aside>
+</div>
+<script src="../comun/app.js"></script>
+<script>
+(function () {
+  Mock.guardarPedido({ estado: 0 });
+  document.getElementById('copiar').addEventListener('click', function () {
+    Mock.brindis('Folio copiado.');
+  });
+  setTimeout(function () {
+    var a = Mock.ESTADOS[0].aviso;
+    Mock.avisoPush({ titulo: a.titulo, texto: a.texto, enlace: 'a12-seguimiento.html' });
+  }, 1200);
+})();
+</script>
+</body>
+</html>

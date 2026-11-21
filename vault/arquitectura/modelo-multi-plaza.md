@@ -113,4 +113,4 @@ inicial**. Lo primero es arquitectura; lo segundo, configuración.
 | `ESPECIFICACIÓN PENDIENTE` | Cómo se trazan las zonas: polígonos, radios, códigos postales o colonias (BR-02) | Fase 5, ligado al presupuesto de mapas |
 | `ESPECIFICACIÓN PENDIENTE` | Si el territorio inicial es una plaza o dos | Nadir, decisión comercial |
 | `SIN VERIFICAR` | Husos horarios vigentes en México (grado E) | Verificar antes de fijar reglas de agenda |
-| `ESPECIFICACIÓN PENDIENTE` | Cómo se expresa la plaza en el modelo concreto de datos | `ADR-0004`, Fase 6 |
+| Propuesto el 2026-11-19 | Cómo se expresa la plaza en el modelo concreto de datos: `id_plazas` en toda tabla de operación, con llave compuesta en las hijas | [[modelo-de-datos]], [[ADR-0016-modelo-de-datos]] (borrador) |

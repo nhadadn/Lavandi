@@ -1,8 +1,8 @@
 ---
 estado: vigente
 grado: mixto
-fuente: prompt-maestro-01-fundacion-v4.md, Fase 4 (C); ANEXO A.1 y A.3 del contrato v8 (A); WCAG 2.1 AA (E); tokens.json (B)
-fecha: 2026-09-12
+fuente: prompt-maestro-01-fundacion-v4.md, Fase 4 (C); ANEXO A.1 y A.3 del contrato v8 (A); WCAG 2.1 AA (E); tokens.json (B); modo de la v1 por acta-2026-11-12-traspaso-del-proyecto.md C-141 (C)
+fecha: 2026-11-12
 dueño: Nadir Hadad Navarrete
 ---
 # Design system de Lavandi
@@ -34,7 +34,7 @@ demasiado restrictivo y contradecía `tokens.json`. Lo que falla es el Limón co
 | Pieza | Estado | Por qué |
 |---|---|---|
 | Estructura de tokens, escalas y nombres | **cerrada** | No depende de la marca |
-| Modo claro y oscuro | **los dos, en v1** | Ver abajo. Pendiente de confirmación: DD-039 |
+| Modo claro y oscuro | **solo claro en la v1** | Decidido el 2026-11-12 (C-141, cierra DD-039). Ver abajo |
 | Umbrales de accesibilidad | **cerrados y no renegociables** | El método lo exige así (`prompt-maestro:242`) |
 | Los seis componentes base | **especificados y dibujados** | `componentes.md` y el canvas de `canvas/` |
 | Paleta de 4 colores y tipografías de marca | **cerradas el 2026-09-12** | Paleta "El tiempo de vuelta" (C-55) y Nunito + Source Sans 3. Ver `marca/decision-visual.md` |
@@ -51,6 +51,15 @@ a mano. El trabajo extra hoy es de horas; el retrofit es de días.
 
 Si Nadir decide solo claro (DD-039), se borra el bloque `color.semantico.oscuro` y nada más:
 ningún componente cambia. Esa asimetría es exactamente la razón de decidirlo en este orden.
+
+> **Decisión del 2026-11-12 (C-141): la v1 lleva solo modo claro.** La tomó Arthur Naranjo, que lleva la parte
+> técnica desde el traspaso (C-132), para ahorrar horas: cada pantalla se diseña y se prueba una vez.
+>
+> El bloque `color.semantico.oscuro` **no se borra**. Se queda en `tokens.json` sin usarse en la v1. Así, agregar el
+> oscuro después cuesta lo mismo que hoy, porque los componentes ya consumen la capa semántica.
+>
+> La app de la v1 no ofrece el selector de modo ni sigue `prefers-color-scheme`. La muestra HTML conserva los tres
+> modos como referencia.
 
 **Cómo se resuelve el modo:** claro, oscuro, o el del sistema operativo. La muestra implementa los
 tres y respeta `prefers-color-scheme`.

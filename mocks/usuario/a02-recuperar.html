@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="es" data-plataforma-activa="ios">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F-A02 · Recuperar contraseña — Mocks de Lavandi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../comun/tokens.css">
+<link rel="stylesheet" href="../comun/estilos.css">
+</head>
+<body data-pantalla="a02-recuperar">
+<div class="escenario">
+  <div class="columna-telefono">
+    <div class="telefono">
+      <div class="pantalla">
+        <div class="barra-estado"><span aria-hidden="true">9:41</span><span class="cinta-mock" role="note">Mock · datos de ejemplo</span><span class="iconos-estado" aria-hidden="true"><svg class="icono"><use href="#i-senal"/></svg><svg class="icono"><use href="#i-wifi"/></svg><svg class="icono"><use href="#i-bateria"/></svg></span></div>
+
+        <div class="encabezado-app">
+          <a class="btn btn-icono" href="a02-inicio-sesion.html" aria-label="Regresar"><svg class="icono"><use href="#i-atras"/></svg></a>
+          <h1>Recuperar contraseña</h1>
+          <span class="lado"></span>
+        </div>
+
+        <main class="contenido">
+          <section id="paso-pedir">
+            <h2 class="titulo-pantalla">¿Olvidaste tu contraseña?</h2>
+            <p class="suave">Escribe tu correo. Te enviamos un enlace para crear una contraseña nueva.</p>
+            <form id="formulario" class="mt-4" novalidate>
+              <div class="campo">
+                <label for="correo">Correo electrónico</label>
+                <input class="entrada" id="correo" type="email" autocomplete="email" value="usuario@ejemplo.com">
+              </div>
+              <button type="submit" class="btn btn-primario btn-grande btn-bloque">Enviar enlace</button>
+            </form>
+          </section>
+
+          <section id="paso-enviado" class="centrado" hidden>
+            <div class="mt-5 mb-4" style="color:var(--c-accion)"><svg class="icono" style="width:64px;height:64px;stroke-width:1.6"><use href="#i-correo"/></svg></div>
+            <h2 class="titulo-pantalla">Revisa tu correo</h2>
+            <p class="suave">Si hay una cuenta con <strong id="correo-enviado">usuario@ejemplo.com</strong>, te llegará un enlace para crear una contraseña nueva.</p>
+            <div class="aviso-info mt-4" style="text-align:left">
+              <svg class="icono"><use href="#i-reloj"/></svg>
+              <span>El enlace <strong>vence</strong>. Si ya no sirve, pide otro desde aquí.</span>
+            </div>
+            <a class="btn btn-primario btn-grande btn-bloque mt-5" href="a02-inicio-sesion.html">Volver a iniciar sesión</a>
+            <button type="button" class="btn btn-texto btn-bloque mt-2" id="reenviar">No me llegó, enviar otra vez</button>
+          </section>
+        </main>
+        <div class="indicador-inicio" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="anotaciones" id="anotaciones" aria-labelledby="titulo-anotaciones">
+    <div class="encabezado-panel">
+      <div><h2 id="titulo-anotaciones">Anotaciones</h2><p class="suave micro mb-0">Qué dibuja esta pantalla y qué falta decidir.</p></div>
+      <button type="button" class="btn btn-icono" data-cerrar-anotaciones aria-label="Ocultar anotaciones"><svg class="icono"><use href="#i-cerrar"/></svg></button>
+    </div>
+
+    <h3>Función</h3>
+    <p class="mb-2"><strong>F-A02 · Registro e inicio de sesión</strong> (3 de 3 pantallas)</p>
+    <blockquote>"Correo y contraseña, con opción de Google Sign-In."</blockquote>
+    <p><span class="cita">NSV-2026-001-v8.pdf:16-17:ANEXO A, Sección A.3</span> · Módulo A, numeral 2</p>
+    <p class="menor">El inventario aclara: "La recuperación de contraseña sí está: B.5 presupuesta el correo 'al recuperar una contraseña'". Es también <strong>F-T13</strong>: "Los correos que envía el sistema al confirmar un pedido o al recuperar una contraseña" (<span class="cita">NSV-2026-001-v8.pdf:30:ANEXO B, Sección B.5</span>).</p>
+
+    <h3>Componentes del design system</h3>
+    <p>Ninguno de los seis.</p>
+
+    <h3>Decisiones tomadas que respeta</h3>
+    <div class="nota nota-decision">
+      <div class="rotulo"><span>ADR-0005 · ADR-0014</span><span>vigentes</span></div>
+      <p>Recuperación por correo con un enlace que vence. Por RN-08 la contraseña anterior no se puede "recuperar": se crea una nueva. Por eso el texto dice "crear una contraseña nueva".</p>
+    </div>
+
+    <h3>Pendiente</h3>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>DD-071</span><span>abierta · responde Arthur</span></div>
+      <p>Resend o Amazon SES para el correo automático. No cambia la pantalla.</p>
+    </div>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>Spec de registro y acceso</span><span>sin fila</span></div>
+      <p>Cuánto dura el enlace. El ADR dice que vence, no cuándo; la pantalla no da un número.</p>
+    </div>
+  </aside>
+</div>
+<script src="../comun/app.js"></script>
+<script>
+(function () {
+  document.getElementById('formulario').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    document.getElementById('correo-enviado').textContent = document.getElementById('correo').value || 'tu correo';
+    document.getElementById('paso-pedir').hidden = true;
+    document.getElementById('paso-enviado').hidden = false;
+  });
+  document.getElementById('reenviar').addEventListener('click', function () {
+    Mock.brindis('Te enviamos otro enlace (simulado).');
+  });
+})();
+</script>
+</body>
+</html>

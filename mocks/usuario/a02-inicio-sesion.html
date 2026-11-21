@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="es" data-plataforma-activa="ios">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F-A02 · Inicio de sesión — Mocks de Lavandi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../comun/tokens.css">
+<link rel="stylesheet" href="../comun/estilos.css">
+</head>
+<body data-pantalla="a02-inicio-sesion">
+<div class="escenario">
+  <div class="columna-telefono">
+    <div class="telefono">
+      <div class="pantalla">
+        <div class="barra-estado"><span aria-hidden="true">9:41</span><span class="cinta-mock" role="note">Mock · datos de ejemplo</span><span class="iconos-estado" aria-hidden="true"><svg class="icono"><use href="#i-senal"/></svg><svg class="icono"><use href="#i-wifi"/></svg><svg class="icono"><use href="#i-bateria"/></svg></span></div>
+
+        <div class="encabezado-app">
+          <a class="btn btn-icono" href="a01-bienvenida.html" aria-label="Regresar"><svg class="icono"><use href="#i-atras"/></svg></a>
+          <h1>Iniciar sesión</h1>
+          <span class="lado"></span>
+        </div>
+
+        <main class="contenido">
+          <div class="centrado mt-4 mb-4"><span class="monograma grande" aria-hidden="true">L</span></div>
+          <h2 class="titulo-pantalla centrado">Hola de nuevo</h2>
+          <p class="suave centrado">Entra a Lavandi.</p>
+
+          <form id="formulario" class="mt-4" novalidate>
+            <div class="campo">
+              <label for="correo">Correo electrónico</label>
+              <input class="entrada" id="correo" type="email" autocomplete="email" value="usuario@ejemplo.com">
+            </div>
+            <div class="campo">
+              <label for="contrasena">Contraseña</label>
+              <div class="entrada-con-boton">
+                <input class="entrada" id="contrasena" type="password" autocomplete="current-password" value="contrasena-de-ejemplo">
+                <button type="button" class="btn btn-icono" id="ver-contrasena" aria-label="Mostrar contraseña" aria-pressed="false"><svg class="icono"><use href="#i-ojo"/></svg></button>
+              </div>
+            </div>
+            <div class="fila mb-4" style="justify-content:flex-end">
+              <a class="btn btn-texto" href="a02-recuperar.html">¿Olvidaste tu contraseña?</a>
+            </div>
+            <button type="submit" class="btn btn-primario btn-grande btn-bloque">Iniciar sesión</button>
+          </form>
+
+          <div class="fila mt-4 mb-4" aria-hidden="true"><hr class="separador" style="flex:1;margin:0"><span class="suave menor">o</span><hr class="separador" style="flex:1;margin:0"></div>
+
+          <div class="apilado">
+            <button type="button" class="btn btn-bloque btn-social" data-tercero="Google"><span class="marca-tercero" aria-hidden="true">G</span>Continuar con Google</button>
+            <button type="button" class="btn btn-bloque btn-social" data-tercero="Apple" data-plataforma="ios"><span class="marca-tercero" aria-hidden="true">A</span>Continuar con Apple</button>
+          </div>
+
+          <p class="centrado mt-5 menor">¿No tienes cuenta? <a href="a02-registro.html">Regístrate</a></p>
+        </main>
+        <div class="indicador-inicio" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="anotaciones" id="anotaciones" aria-labelledby="titulo-anotaciones">
+    <div class="encabezado-panel">
+      <div><h2 id="titulo-anotaciones">Anotaciones</h2><p class="suave micro mb-0">Qué dibuja esta pantalla y qué falta decidir.</p></div>
+      <button type="button" class="btn btn-icono" data-cerrar-anotaciones aria-label="Ocultar anotaciones"><svg class="icono"><use href="#i-cerrar"/></svg></button>
+    </div>
+
+    <h3>Función</h3>
+    <p class="mb-2"><strong>F-A02 · Registro e inicio de sesión</strong> (2 de 3 pantallas)</p>
+    <blockquote>"Correo y contraseña, con opción de Google Sign-In."</blockquote>
+    <p><span class="cita">NSV-2026-001-v8.pdf:16-17:ANEXO A, Sección A.3</span> · Módulo A, numeral 2</p>
+    <p class="menor">Relacionada: <strong>F-T07 · Control de acceso</strong>, "mantiene su sesión abierta de forma segura, sin necesidad de que escriba su contraseña cada vez" (<span class="cita">NSV-2026-001-v8.pdf:20</span>, según el inventario).</p>
+
+    <h3>Componentes del design system</h3>
+    <p>Ninguno de los seis.</p>
+
+    <h3>Decisiones tomadas que respeta</h3>
+    <div class="nota nota-decision">
+      <div class="rotulo"><span>ADR-0005</span><span>vigente</span></div>
+      <p>Correo y contraseña, Google y, solo en iPhone, Apple. La sesión de la app usa tokens de Sanctum: después del primer inicio, la persona no vuelve a escribir su contraseña (F-T07). Recuperación por correo con un enlace que vence (siguiente pantalla).</p>
+    </div>
+
+    <h3>Pendiente</h3>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>DD-053 · BR-48</span><span>abierta</span></div>
+      <p>Si el socio lavandería y el repartidor entran por esta misma pantalla y la app los lleva a su módulo según su rol. Con la recomendación ("una cuenta, un rol en la v1"), sería la misma pantalla.</p>
+    </div>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>BR-09</span><span>regla de tiendas · grado E</span></div>
+      <p>Borrar la cuenta desde la app. Está en A15 (perfil), como manda el ADR-0005.</p>
+    </div>
+  </aside>
+</div>
+<script src="../comun/app.js"></script>
+<script>
+(function () {
+  document.getElementById('ver-contrasena').addEventListener('click', function () {
+    var campo = document.getElementById('contrasena');
+    var visible = campo.type === 'text';
+    campo.type = visible ? 'password' : 'text';
+    this.setAttribute('aria-pressed', String(!visible));
+    this.setAttribute('aria-label', visible ? 'Mostrar contraseña' : 'Ocultar contraseña');
+  });
+  document.querySelectorAll('[data-tercero]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      Mock.brindis('Se abriría la ventana de ' + b.getAttribute('data-tercero') + ' (simulado).', 1400);
+      setTimeout(function () { window.location.href = 'a03-principal.html'; }, 1400);
+    });
+  });
+  document.getElementById('formulario').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    window.location.href = 'a03-principal.html';
+  });
+})();
+</script>
+</body>
+</html>

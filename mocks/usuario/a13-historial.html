@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="es" data-plataforma-activa="ios">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F-A13 · Historial de pedidos — Mocks de Lavandi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../comun/tokens.css">
+<link rel="stylesheet" href="../comun/estilos.css">
+</head>
+<body data-pantalla="a13-historial">
+<div class="escenario">
+  <div class="columna-telefono">
+    <div class="telefono">
+      <div class="pantalla">
+        <div class="barra-estado"><span aria-hidden="true">9:41</span><span class="cinta-mock" role="note">Mock · datos de ejemplo</span><span class="iconos-estado" aria-hidden="true"><svg class="icono"><use href="#i-senal"/></svg><svg class="icono"><use href="#i-wifi"/></svg><svg class="icono"><use href="#i-bateria"/></svg></span></div>
+
+        <div class="encabezado-app" style="padding-left:var(--s-4)">
+          <h1 style="font-size:var(--t-titulo)">Mis pedidos</h1>
+        </div>
+
+        <main class="contenido">
+          <div class="chips" role="group" aria-label="Filtrar por fecha">
+            <button type="button" class="chip" data-periodo="todos" aria-pressed="true">Todos</button>
+            <button type="button" class="chip" data-periodo="30" aria-pressed="false">Últimos 30 días</button>
+            <button type="button" class="chip" data-periodo="anio" aria-pressed="false">Este año</button>
+            <button type="button" class="chip" data-periodo="rango" aria-pressed="false"><svg class="icono chico"><use href="#i-calendario"/></svg>Elegir fechas</button>
+          </div>
+          <div class="tarjeta mb-4" id="rango" hidden>
+            <div class="fila" style="gap:var(--s-2)">
+              <div class="campo mb-0" style="flex:1"><label for="desde">Desde</label><input class="entrada" type="date" id="desde"></div>
+              <div class="campo mb-0" style="flex:1"><label for="hasta">Hasta</label><input class="entrada" type="date" id="hasta"></div>
+            </div>
+            <button type="button" class="btn btn-bloque mt-3" id="aplicar">Aplicar</button>
+          </div>
+
+          <p class="menor suave mb-2" id="conteo" role="status"></p>
+          <div id="lista" class="apilado-3"></div>
+          <div id="vacio" class="sin-servicio" hidden>No hay pedidos en esas fechas.</div>
+        </main>
+
+        <nav class="barra-pestanas" aria-label="Secciones de la app">
+          <a href="a03-principal.html"><svg class="icono"><use href="#i-casa"/></svg>Inicio</a>
+          <a href="a13-historial.html" aria-current="page"><svg class="icono"><use href="#i-pedidos"/></svg>Pedidos</a>
+          <a href="a16-soporte.html"><svg class="icono"><use href="#i-soporte"/></svg>Ayuda</a>
+          <a href="a15-perfil.html"><svg class="icono"><use href="#i-perfil"/></svg>Perfil</a>
+        </nav>
+        <div class="indicador-inicio" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="anotaciones" id="anotaciones" aria-labelledby="titulo-anotaciones">
+    <div class="encabezado-panel">
+      <div><h2 id="titulo-anotaciones">Anotaciones</h2><p class="suave micro mb-0">Qué dibuja esta pantalla y qué falta decidir.</p></div>
+      <button type="button" class="btn btn-icono" data-cerrar-anotaciones aria-label="Ocultar anotaciones"><svg class="icono"><use href="#i-cerrar"/></svg></button>
+    </div>
+
+    <h3>Función</h3>
+    <p class="mb-2"><strong>F-A13 · Historial de pedidos</strong></p>
+    <blockquote>"Lista con filtro por fecha y opción de repetir pedido."</blockquote>
+    <p><span class="cita">NSV-2026-001-v8.pdf:16-17:ANEXO A, Sección A.3</span> · Módulo A, numeral 13</p>
+
+    <h3>Componentes del design system</h3>
+    <ul><li><strong>3 · Seguimiento</strong>: su insignia en forma de píldora para el estado de cada pedido (color más texto).</li></ul>
+
+    <h3>Pendiente</h3>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>BR-25</span><span>F5 + spec</span></div>
+      <p>Qué se repite exactamente. El mock repite la misma lavandería y los mismos servicios y pide una ventana nueva (A07). Es el ejemplo que la propia BR-25 pone entre paréntesis, no una decisión.</p>
+    </div>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>BR-22</span><span>abierta</span></div>
+      <p>Cómo se ve un pedido cancelado o rechazado en el historial. No hay estado para eso entre los cinco del contrato, así que el mock no lo dibuja.</p>
+    </div>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>DD-010 · C-131</span><span>en curso</span></div>
+      <p>Los montos van como "$ —": no hay precios.</p>
+    </div>
+    <div class="nota nota-cliente">
+      <div class="rotulo"><span>Marca del cliente · 2026-11-05</span><span>sin confirmar</span></div>
+      <p>A13 "Puede esperar".</p>
+    </div>
+  </aside>
+</div>
+<script src="../comun/app.js"></script>
+<script>
+(function () {
+  var F = Mock.fecha;
+  var p = Mock.pedido();
+  var hoy = F.hoy();
+  // Pedidos de ejemplo. El primero es el que está en curso en este recorrido.
+  var PEDIDOS = [
+    { folio: Mock.FOLIO, lavanderia: p.lavanderia, servicios: p.servicios, fecha: p.fecha, estado: Number(p.estado) || 0, calificacion: null, actual: true },
+    { folio: 'EJ-000118', lavanderia: 'centro', servicios: ['estandar'], fecha: F.aIso(F.sumarDias(hoy, -12)), estado: 4, calificacion: 5 },
+    { folio: 'EJ-000104', lavanderia: 'jardines', servicios: ['estandar', 'seco'], fecha: F.aIso(F.sumarDias(hoy, -40)), estado: 4, calificacion: null },
+    { folio: 'EJ-000097', lavanderia: 'norte', servicios: ['planchado'], fecha: F.aIso(F.sumarDias(hoy, -95)), estado: 4, calificacion: 4 }
+  ];
+  var filtro = { desde: null, hasta: null };
+
+  function tarjeta(o) {
+    var e = Mock.ESTADOS[o.estado], l = Mock.LAVANDERIAS[o.lavanderia];
+    var serv = o.servicios.map(function (s) { return Mock.SERVICIOS[s].nombre; }).join(' y ');
+    var calif = o.estado === 4
+      ? (o.calificacion ? '<span class="menor suave">Calificaste ' + o.calificacion + ' de 5</span>'
+                        : '<a class="btn btn-texto" href="a14-calificacion.html">Calificar</a>')
+      : '<span class="menor suave">En curso</span>';
+    var repetir = '<a class="btn" href="a07-fecha-hora.html" data-guardar=\'' +
+      JSON.stringify({ lavanderia: o.lavanderia, servicios: o.servicios }) + '\'><svg class="icono chico"><use href="#i-repetir"/></svg>Repetir</a>';
+    return '<article class="tarjeta">' +
+      '<div class="fila"><strong class="mono menor">' + o.folio + '</strong>' +
+      '<span class="insignia ' + e.clase + '"><span class="punto"></span>' + e.nombre + '</span></div>' +
+      '<p class="fuerte mt-2 mb-0">' + l.nombre + '</p>' +
+      '<p class="menor suave mb-2">' + F.texto(o.fecha) + ' · ' + serv + '</p>' +
+      '<div class="fila"><span class="menor">Total: <span class="tabular fuerte">$ —</span></span>' + calif + '</div>' +
+      '<div class="fila mt-3" style="gap:var(--s-2)">' +
+      '<a class="btn" style="flex:1" href="a12-seguimiento.html' + (o.actual ? '' : '#entregado') + '">' + (o.actual ? 'Ver seguimiento' : 'Ver detalle') + '</a>' +
+      (o.estado === 4 ? repetir : '') + '</div></article>';
+  }
+
+  function pintar() {
+    var visibles = PEDIDOS.filter(function (o) {
+      if (filtro.desde && o.fecha < filtro.desde) return false;
+      if (filtro.hasta && o.fecha > filtro.hasta) return false;
+      return true;
+    });
+    document.getElementById('lista').innerHTML = visibles.map(tarjeta).join('');
+    document.getElementById('vacio').hidden = visibles.length > 0;
+    document.getElementById('conteo').textContent = visibles.length === 1 ? '1 pedido' : visibles.length + ' pedidos';
+  }
+
+  document.querySelectorAll('[data-periodo]').forEach(function (c) {
+    c.addEventListener('click', function () {
+      var per = c.getAttribute('data-periodo');
+      document.querySelectorAll('[data-periodo]').forEach(function (o) { o.setAttribute('aria-pressed', String(o === c)); });
+      document.getElementById('rango').hidden = per !== 'rango';
+      if (per === 'todos') filtro = { desde: null, hasta: null };
+      if (per === '30') filtro = { desde: F.aIso(F.sumarDias(hoy, -30)), hasta: null };
+      if (per === 'anio') filtro = { desde: hoy.getFullYear() + '-01-01', hasta: null };
+      if (per !== 'rango') pintar();
+    });
+  });
+  document.getElementById('aplicar').addEventListener('click', function () {
+    filtro = { desde: document.getElementById('desde').value || null, hasta: document.getElementById('hasta').value || null };
+    pintar();
+  });
+  pintar();
+})();
+</script>
+</body>
+</html>

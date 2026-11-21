@@ -1,0 +1,167 @@
+/*
+ * tokens.css — Mocks de Lavandi
+ *
+ * GENERADO A MANO desde vault/design-system/tokens.json (versión 0.1.0, 2026-09-12).
+ * Copia el enfoque de vault/design-system/muestra/index.html: cada token se vuelve una variable CSS.
+ *
+ * Por qué a mano: los mocks no se compilan y se abren con doble clic. El generador real es el script
+ * del ADR-0013, que descarta copiar a mano para el producto. Este archivo es una excepción de los mocks:
+ * si tokens.json cambia, este archivo se actualiza a la par. Los valores se cotejaron por script contra
+ * tokens.json el 2026-11-18.
+ *
+ * Reglas que vienen del design system (vault/design-system/design-system.md):
+ *  - Solo modo claro en la v1 (C-141, DD-039 cerrada). El bloque color.semantico.oscuro no se copia.
+ *  - Capa semántica obligatoria: los componentes consumen --c-*; nunca --marca-* directo.
+ *  - Agua #2E86AB no se usa para texto (3.74:1 sobre Hueso). Para texto va --c-accion (#297899).
+ *  - Limón #E8C547 nunca es color de texto; como fondo, solo con texto Tinta encima.
+ *  - Medido en los mocks: --c-accion sobre --c-superficie-hundida da 4.09:1. No se usa para texto.
+ */
+
+:root {
+  color-scheme: light;
+
+  /* ---------- color.marca (no lo consumen los componentes) ---------- */
+  --marca-primario: #2E86AB;        /* Agua: franjas, fondos grandes, ilustración */
+  --marca-primario-oscuro: #297899; /* Agua Profundo: texto, enlaces, botones */
+  --marca-acento: #E8C547;          /* Limón: solo fondo, con texto oscuro encima */
+  --marca-claro: #A8D5E2;           /* Cielo: superficies secundarias, avisos suaves */
+
+  /* ---------- color.neutro ---------- */
+  --n-0: #FFFFFF;
+  --n-50: #F7F8F9;
+  --n-100: #EDEFF2;
+  --n-200: #DCE0E5;
+  --n-300: #C0C6CE;
+  --n-400: #98A1AC;
+  --n-500: #6B7681;
+  --n-600: #515A64;
+  --n-700: #3B424A;
+  --n-800: #262C33;
+  --n-900: #171C21;
+  --n-1000: #0E1216;
+
+  /* ---------- color.semantico.claro: la única capa que consumen los componentes ---------- */
+  --c-fondo: #F7F4EF;
+  --c-superficie: #FFFFFF;
+  --c-superficie-elevada: #FFFFFF;
+  --c-superficie-hundida: #EDE9E2;
+  --c-texto: #171C21;
+  --c-texto-suave: #515A64;
+  --c-texto-inverso: #FFFFFF;
+  --c-texto-deshabilitado: #6B7681;
+  --c-borde: #DCE0E5;          /* separador decorativo, sin umbral */
+  --c-borde-fuerte: #6B7681;   /* borde de control, 3:1 */
+  --c-accion: #297899;
+  --c-accion-hover: #1F5A73;
+  --c-accion-texto: #FFFFFF;
+  --c-foco: #297899;
+
+  /* ---------- color.estado (claro) ---------- */
+  --c-exito: #1E6F45;
+  --c-atencion: #8A5A00;
+  --c-error: #A32222;
+  --c-informacion: #1F5C8C;
+
+  /* ---------- color.pedido (claro): los cinco estados del contrato ---------- */
+  --c-p-confirmado: #1F5C8C;
+  --c-p-recolectado: #5A4B8A;
+  --c-p-en-proceso: #8A5A00;
+  --c-p-listo: #1E6F45;
+  --c-p-entregado: #515A64;
+
+  /* ---------- color.marca_extendida ---------- */
+  --marca-agua-claro: #308CB3;      /* modo oscuro; no se usa en la v1 */
+  --marca-limon-profundo: #B39116;  /* acento como borde o icono, 3.01:1 sobre blanco */
+  --marca-hueso: #F7F4EF;
+
+  /* ---------- tipografia ---------- */
+  --f-titulares: Nunito, system-ui, sans-serif;
+  --f-cuerpo: 'Source Sans 3', system-ui, sans-serif;
+  --f-mono: ui-monospace, 'Cascadia Code', Consolas, monospace;
+
+  --t-micro: 12px;
+  --t-menor: 14px;
+  --t-cuerpo: 16px;
+  --t-cuerpo-grande: 18px;
+  --t-titulo-menor: 20px;
+  --t-titulo: 24px;
+  --t-titulo-mayor: 30px;
+  --t-despliegue: 36px;
+
+  --p-regular: 400;
+  --p-medio: 500;
+  --p-semifuerte: 600;
+  --p-fuerte: 700;
+
+  --i-apretado: 1.2;
+  --i-normal: 1.5;
+  --i-suelto: 1.7;
+
+  --l-normal: 0;
+  --l-titular: -0.01em;
+  --l-versalita: 0.04em;
+
+  /* ---------- espaciado (base 4) ---------- */
+  --s-0: 0px;
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+  --s-8: 64px;
+
+  /* ---------- radio ---------- */
+  --r-nulo: 0px;
+  --r-chico: 4px;
+  --r-medio: 8px;
+  --r-grande: 12px;
+  --r-mayor: 16px;
+  --r-pildora: 999px;
+
+  /* ---------- elevacion ---------- */
+  --ele-0: none;
+  --ele-1: 0 1px 2px rgba(14,18,22,.08);
+  --ele-2: 0 2px 8px rgba(14,18,22,.10);
+  --ele-3: 0 8px 24px rgba(14,18,22,.14);
+
+  /* ---------- duracion y curva ---------- */
+  --d-instantanea: 0ms;
+  --d-rapida: 120ms;
+  --d-base: 200ms;
+  --d-lenta: 320ms;
+  --e-estandar: cubic-bezier(.2,0,0,1);
+  --e-entrada: cubic-bezier(0,0,0,1);
+  --e-salida: cubic-bezier(.3,0,1,1);
+
+  /* ---------- accesibilidad ---------- */
+  --a-tactil: 48px;          /* area_tactil_minima_dp */
+  --a-tactil-ios: 44px;      /* area_tactil_minima_pt_ios */
+  --a-separacion: 8px;       /* separacion_minima_entre_objetivos_dp */
+  --a-grosor-foco: 3px;      /* componentes.md, reglas transversales */
+
+  /* ---------- Capa del mock ----------
+   * No es parte del design system ni la consume ningún componente del producto.
+   * Sirve para pintar lo que en el producto será nativo o de terceros: el dibujo del mapa
+   * (en la app será el mapa de Apple o de Google, ADR-0009), las ilustraciones de relleno
+   * y el marco del teléfono. Todos los valores salen de tokens.json. */
+  --mock-mapa-suelo: var(--c-superficie-hundida);
+  --mock-mapa-manzana: var(--c-fondo);
+  --mock-mapa-calle: var(--n-0);
+  --mock-mapa-avenida: var(--n-200);
+  --mock-mapa-agua: var(--marca-claro);
+  --mock-ilustracion-1: var(--marca-primario);
+  --mock-ilustracion-2: var(--marca-claro);
+  --mock-ilustracion-3: var(--marca-acento);
+  --mock-marco: var(--n-900);
+  --mock-escritorio: var(--n-100);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --d-rapida: 0ms;
+    --d-base: 0ms;
+    --d-lenta: 0ms;
+  }
+}

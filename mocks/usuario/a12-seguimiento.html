@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="es" data-plataforma-activa="ios">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F-A12 · Seguimiento — Mocks de Lavandi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../comun/tokens.css">
+<link rel="stylesheet" href="../comun/estilos.css">
+</head>
+<body data-pantalla="a12-seguimiento">
+<div class="escenario">
+  <div class="columna-telefono">
+    <div class="telefono">
+      <div class="pantalla">
+        <div class="barra-estado"><span aria-hidden="true">9:41</span><span class="cinta-mock" role="note">Mock · datos de ejemplo</span><span class="iconos-estado" aria-hidden="true"><svg class="icono"><use href="#i-senal"/></svg><svg class="icono"><use href="#i-wifi"/></svg><svg class="icono"><use href="#i-bateria"/></svg></span></div>
+
+        <div class="encabezado-app">
+          <a class="btn btn-icono" href="a13-historial.html" aria-label="Ir a mis pedidos"><svg class="icono"><use href="#i-atras"/></svg></a>
+          <h1>Tu pedido</h1>
+          <a class="btn btn-icono" href="a16-soporte.html" aria-label="Ayuda con este pedido"><svg class="icono"><use href="#i-soporte"/></svg></a>
+        </div>
+
+        <main class="contenido">
+          <!-- Componente 3 · Seguimiento del estado del pedido -->
+          <section class="seguimiento" aria-label="Estado del pedido">
+            <div class="fila">
+              <strong class="menor">Pedido <span class="mono" data-dato="folio">EJ-000123</span></strong>
+              <span class="insignia" id="insignia"><span class="punto"></span><span>Confirmado</span></span>
+            </div>
+            <div class="pasos" id="pasos"></div>
+            <p class="menor suave mb-0" id="mensaje" aria-live="polite"></p>
+            <div class="refresco" id="refresco" aria-hidden="true"><svg class="icono"><use href="#i-refrescar"/></svg><span id="texto-refresco">Actualizado hace 0 s</span></div>
+          </section>
+
+          <a class="btn btn-primario btn-grande btn-bloque mt-4" href="a14-calificacion.html" id="calificar" hidden><svg class="icono"><use href="#i-estrella"/></svg>Califica tu servicio</a>
+
+          <h2 class="titulo-seccion">Detalle</h2>
+          <ol class="linea-tiempo" id="linea"></ol>
+
+          <div class="tarjeta">
+            <div class="apilado-3">
+              <div class="dato-resumen"><svg class="icono"><use href="#i-lavadora"/></svg><div class="valor"><strong data-dato="lavanderia.nombre"></strong><span data-dato="servicios.texto"></span></div></div>
+              <div class="dato-resumen"><svg class="icono"><use href="#i-calendario"/></svg><div class="valor"><strong>Recolección</strong><span data-dato="fecha.texto"></span>, <span data-dato="ventana"></span></div></div>
+              <div class="dato-resumen"><svg class="icono"><use href="#i-ubicacion"/></svg><div class="valor"><strong data-dato="recogida.alias"></strong><span class="suave" data-dato="recogida.texto"></span></div></div>
+              <div class="dato-resumen"><svg class="icono"><use href="#i-bolsa"/></svg><div class="valor"><strong>Peso: por confirmar al pesar</strong>Total estimado: <span class="tabular">$ —</span></div></div>
+            </div>
+          </div>
+
+          <div class="caja-pendiente mt-4">
+            <span class="titulo-caja">Cancelar pedido</span>
+            <span class="pendiente">Falta definirlo</span>
+            <p>No hay política ni flujo de cancelación todavía. El espacio queda reservado.</p>
+          </div>
+        </main>
+        <div class="indicador-inicio" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="anotaciones" id="anotaciones" aria-labelledby="titulo-anotaciones">
+    <div class="encabezado-panel">
+      <div><h2 id="titulo-anotaciones">Anotaciones</h2><p class="suave micro mb-0">Qué dibuja esta pantalla y qué falta decidir.</p></div>
+      <button type="button" class="btn btn-icono" data-cerrar-anotaciones aria-label="Ocultar anotaciones"><svg class="icono"><use href="#i-cerrar"/></svg></button>
+    </div>
+
+    <h3>Función</h3>
+    <p class="mb-2"><strong>F-A12 · Seguimiento de estado</strong></p>
+    <blockquote>"Flujo: Confirmado → Recolectado → En proceso → Listo → Entregado."</blockquote>
+    <p><span class="cita">NSV-2026-001-v8.pdf:16-17:ANEXO A, Sección A.3</span> · Módulo A, numeral 12 · RN-18 · RN-05</p>
+
+    <h3>Simulación</h3>
+    <p class="menor">Lo que haría la lavandería o el repartidor desde su módulo. En los estados con aviso llega el aviso simulado.</p>
+    <div class="simulador">
+      <button type="button" class="btn btn-primario" id="avanzar">Avanzar al siguiente estado</button>
+      <button type="button" class="btn" id="reiniciar">Volver a Confirmado</button>
+    </div>
+
+    <h3>Componentes del design system</h3>
+    <ul><li><strong>3 · Seguimiento del estado del pedido</strong>: los cinco estados literales del contrato, sin renombrar, sin agrupar y sin un sexto. Cada estado lleva su color de <span class="cita">color.pedido</span> y siempre su nombre en texto.</li></ul>
+
+    <h3>Decisiones tomadas que respeta</h3>
+    <div class="nota nota-decision">
+      <div class="rotulo"><span>ADR-0007</span><span>vigente</span></div>
+      <p>Con la app abierta, la pantalla consulta el estado cada 30 s; al cambiar el estado, el servidor manda además un aviso que provoca una consulta inmediata. Peor caso con red normal: menos de 60 s (RN-05). El contador de arriba lo simula.</p>
+    </div>
+    <div class="nota nota-decision">
+      <div class="rotulo"><span>ADR-0009 · sin mapa</span><span>vigente</span></div>
+      <p>El seguimiento <strong>no monta mapa</strong>: el contrato pide estados, no posición, y el rastreo continuo está excluido (RN-12). Es la decisión 5 de <span class="cita">arquitectura/presupuesto-de-mapas.md</span>.</p>
+    </div>
+
+    <h3>Pendiente</h3>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>BR-22</span><span>F5 + spec + Cliente</span></div>
+      <p>Cómo se mapean "En proceso de entrega" (lavandería) y "En tránsito" (repartidor) a estos cinco. Y qué ve el usuario si el pedido se <strong>cancela o se rechaza</strong>: no es ninguno de los cinco, aunque los indicadores cuentan "cancelados" (F-I02).</p>
+    </div>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>DD-016 · BR-19</span><span>abierta · decide EL CLIENTE</span></div>
+      <p>No hay flujo de cancelación (inventario §2). El mock reserva el espacio y no inventa el botón.</p>
+    </div>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>DD-022 · BR-44</span><span>abierta</span></div>
+      <p>Si la lavandería entrega con su propia gente. El cliente marcó "la lavandería entrega con su gente" (2026-11-05, sin confirmar).</p>
+    </div>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>DD-011</span><span>abierta</span></div>
+      <p>"En proceso" no tiene aviso en el numeral 17. El quinto momento no está definido.</p>
+    </div>
+    <div class="nota nota-cliente">
+      <div class="rotulo"><span>Marca del cliente · 2026-11-05</span><span>sin confirmar</span></div>
+      <p>A12 "Puede esperar". Pero el seguimiento en 60 s es criterio de aceptación (<span class="cita">NSV-2026-001-v8.pdf:21:ANEXO A, Sección A.4.3</span>).</p>
+    </div>
+  </aside>
+</div>
+<script src="../comun/app.js"></script>
+<script>
+(function () {
+  var E = Mock.ESTADOS;
+  var estado = Math.max(0, Math.min(4, Number(Mock.pedido().estado) || 0));
+  // Desde el historial, un pedido pasado se abre como Entregado sin tocar el pedido en curso.
+  if (window.location.hash === '#entregado') estado = 4;
+  var HORAS = ['9:05', '11:20', '12:10', '17:45', '18:40'];
+  var segundos = 0;
+
+  function pintar() {
+    var actual = E[estado];
+    var insignia = document.getElementById('insignia');
+    insignia.className = 'insignia ' + actual.clase;
+    insignia.lastElementChild.textContent = actual.nombre;
+    document.getElementById('mensaje').textContent = actual.mensaje;
+
+    document.getElementById('pasos').innerHTML = E.map(function (e, i) {
+      var c = i < estado ? 'hecho' : (i === estado ? 'actual' : '');
+      return '<div class="paso ' + c + '" data-estado="' + e.clave + '"><div class="barra"></div>' +
+        '<div class="nombre-paso"><svg class="icono"><use href="#i-palomita"/></svg>' + e.nombre + '</div></div>';
+    }).join('');
+
+    document.getElementById('linea').innerHTML = E.map(function (e, i) {
+      var c = i < estado ? 'hecho' : (i === estado ? 'actual ' + e.clase : 'pendiente-paso');
+      var hora = i < estado ? HORAS[i] + ' (ejemplo)' : (i === estado ? 'Ahora' : 'Pendiente');
+      return '<li class="' + c + '"><span class="marca-paso">' + (i < estado ? '<svg class="icono"><use href="#i-palomita"/></svg>' : '') + '</span>' +
+        '<div class="nombre-linea">' + e.nombre + '</div><div class="hora-linea">' + hora + '</div></li>';
+    }).join('');
+
+    document.getElementById('calificar').hidden = estado !== 4;
+    document.getElementById('avanzar').disabled = estado === 4;
+  }
+
+  function contador() {
+    segundos++;
+    var t = document.getElementById('texto-refresco');
+    if (segundos >= 30) {
+      t.textContent = 'Consultando el estado…';
+      segundos = -1;
+    } else if (segundos >= 0) {
+      t.textContent = 'Actualizado hace ' + segundos + ' s · se consulta cada 30 s';
+    }
+  }
+
+  document.getElementById('avanzar').addEventListener('click', function () {
+    if (estado >= 4) return;
+    estado++;
+    Mock.guardarPedido({ estado: estado });
+    segundos = 0;
+    pintar();
+    var aviso = E[estado].aviso;
+    if (aviso) Mock.avisoPush({ titulo: aviso.titulo, texto: aviso.texto, enlace: estado === 4 ? 'a14-calificacion.html' : 'a12-seguimiento.html' });
+    else Mock.brindis('"En proceso" no tiene aviso en el contrato (DD-011).');
+  });
+  document.getElementById('reiniciar').addEventListener('click', function () {
+    estado = 0; segundos = 0;
+    Mock.guardarPedido({ estado: 0 });
+    pintar();
+  });
+
+  pintar();
+  document.getElementById('texto-refresco').textContent = 'Actualizado hace 0 s · se consulta cada 30 s';
+  setInterval(contador, 1000);
+})();
+</script>
+</body>
+</html>

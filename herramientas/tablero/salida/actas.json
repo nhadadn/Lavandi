@@ -142,5 +142,85 @@
   "declaraciones": 1,
   "primera": "C-104",
   "ultima": "C-104"
+ },
+ {
+  "fecha": "2026-10-17",
+  "tema": "Listado de lavanderías",
+  "archivo": "vault/meta/actas/acta-2026-10-17-listado-de-lavanderias.md",
+  "declaraciones": 2,
+  "primera": "C-112",
+  "ultima": "C-113"
+ },
+ {
+  "fecha": "2026-10-25",
+  "tema": "Kit para sumar lavanderías",
+  "archivo": "vault/meta/actas/acta-2026-10-25-kit-de-socios.md",
+  "declaraciones": 6,
+  "primera": "C-114",
+  "ultima": "C-119"
+ },
+ {
+  "fecha": "2026-10-26",
+  "tema": "Comentarios a la guía de la reunión",
+  "archivo": "vault/meta/actas/acta-2026-10-26-comentarios-a-la-guia.md",
+  "declaraciones": 8,
+  "primera": "C-120",
+  "ultima": "C-127"
+ },
+ {
+  "fecha": "2026-11-05",
+  "tema": "Resultados de la recalibración",
+  "archivo": "vault/meta/actas/acta-2026-11-05-resultados-de-la-recalibracion.md",
+  "declaraciones": 4,
+  "primera": "C-128",
+  "ultima": "C-131"
+ },
+ {
+  "fecha": "2026-11-12",
+  "tema": "Traspaso del proyecto",
+  "archivo": "vault/meta/actas/acta-2026-11-12-traspaso-del-proyecto.md",
+  "declaraciones": 17,
+  "primera": "C-132",
+  "ultima": "C-148"
+ },
+ {
+  "fecha": "2026-11-13",
+  "tema": "Cierre de la Fase 6",
+  "archivo": "vault/meta/actas/acta-2026-11-13-cierre-de-la-fase-6.md",
+  "declaraciones": 6,
+  "primera": "C-149",
+  "ultima": "C-154"
+ },
+ {
+  "fecha": "2026-11-17",
+  "tema": "Fase 7: formas de trabajo",
+  "archivo": "vault/meta/actas/acta-2026-11-17-fase-7-formas-de-trabajo.md",
+  "declaraciones": 6,
+  "primera": "C-155",
+  "ultima": "C-160"
+ },
+ {
+  "fecha": "2026-11-18",
+  "tema": "Entorno local y mocks",
+  "archivo": "vault/meta/actas/acta-2026-11-18-entorno-y-mocks.md",
+  "declaraciones": 14,
+  "primera": "C-164",
+  "ultima": "C-177"
+ },
+ {
+  "fecha": "2026-11-18",
+  "tema": "Fase 8: instrumental de Claude",
+  "archivo": "vault/meta/actas/acta-2026-11-18-fase-8-instrumental.md",
+  "declaraciones": 3,
+  "primera": "C-161",
+  "ultima": "C-163"
+ },
+ {
+  "fecha": "2026-11-18",
+  "tema": "Pedidos de noche",
+  "archivo": "vault/meta/actas/acta-2026-11-18-pedidos-de-noche.md",
+  "declaraciones": 3,
+  "primera": "C-178",
+  "ultima": "C-180"
  }
 ]

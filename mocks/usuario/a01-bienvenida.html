@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="es" data-plataforma-activa="ios">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F-A01 · Bienvenida — Mocks de Lavandi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../comun/tokens.css">
+<link rel="stylesheet" href="../comun/estilos.css">
+</head>
+<body data-pantalla="a01-bienvenida">
+<div class="escenario">
+  <div class="columna-telefono">
+    <div class="telefono">
+      <div class="pantalla">
+        <div class="barra-estado"><span aria-hidden="true">9:41</span><span class="cinta-mock" role="note">Mock · datos de ejemplo</span><span class="iconos-estado" aria-hidden="true"><svg class="icono"><use href="#i-senal"/></svg><svg class="icono"><use href="#i-wifi"/></svg><svg class="icono"><use href="#i-bateria"/></svg></span></div>
+
+        <main class="contenido" style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:var(--s-4)">
+          <!-- Monograma neutro "L": marcador visual. El logotipo de la marca no se usa en los mocks. -->
+          <span class="monograma grande" aria-hidden="true">L</span>
+          <h1 style="font-size:var(--t-titulo-mayor)">Lavandi</h1>
+          <p class="suave" style="max-width:280px">Aquí va el lema del servicio.</p>
+          <span class="pendiente">Texto de EL CLIENTE</span>
+
+          <svg class="ilustracion" viewBox="0 0 320 150" aria-hidden="true" style="max-width:300px;margin-top:var(--s-4)">
+            <ellipse class="il-2" cx="160" cy="132" rx="150" ry="16"/>
+            <rect class="il-fondo" x="104" y="20" width="112" height="112" rx="14"/>
+            <rect class="il-trazo" x="104" y="20" width="112" height="112" rx="14"/>
+            <circle class="il-2" cx="160" cy="82" r="34"/>
+            <circle class="il-trazo" cx="160" cy="82" r="34"/>
+            <path class="il-1" d="M132 88 q14 -12 28 0 t28 0 v4 a28 28 0 0 1 -56 0z"/>
+            <circle class="il-3" cx="124" cy="36" r="5"/>
+            <line class="il-trazo-fino" x1="140" y1="36" x2="196" y2="36"/>
+          </svg>
+        </main>
+
+        <div class="acciones-fijas" style="background:transparent;border-top:0">
+          <a class="btn btn-primario btn-grande btn-bloque" href="a01-informativas.html">Comenzar</a>
+          <a class="btn btn-texto btn-bloque" href="a02-inicio-sesion.html">Ya tengo cuenta</a>
+        </div>
+        <div class="indicador-inicio" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="anotaciones" id="anotaciones" aria-labelledby="titulo-anotaciones">
+    <div class="encabezado-panel">
+      <div><h2 id="titulo-anotaciones">Anotaciones</h2><p class="suave micro mb-0">Qué dibuja esta pantalla y qué falta decidir.</p></div>
+      <button type="button" class="btn btn-icono" data-cerrar-anotaciones aria-label="Ocultar anotaciones"><svg class="icono"><use href="#i-cerrar"/></svg></button>
+    </div>
+
+    <h3>Función</h3>
+    <p class="mb-2"><strong>F-A01 · Splash &amp; Onboarding</strong> (1 de 2 pantallas)</p>
+    <blockquote>"Pantalla de bienvenida y 3 pantallas informativas sobre el servicio."</blockquote>
+    <p><span class="cita">NSV-2026-001-v8.pdf:16-17:ANEXO A, Sección A.3</span> · Módulo A, numeral 1 · tal como lo trae <span class="cita">vault/contrato/inventario-funcional.md</span></p>
+
+    <h3>Componentes del design system</h3>
+    <p>Ninguno de los seis. El inventario la cuenta entre las 25 funciones de la app sin componente (§8). Usa solo tokens: fondo Hueso, botón con <span class="cita">--c-accion</span> y Nunito en el título.</p>
+
+    <h3>Pendiente</h3>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>Insumo de EL CLIENTE</span><span>Cláusula III.B · sin fila DD</span></div>
+      <p>Los textos y las imágenes de la bienvenida los entrega EL CLIENTE (inventario, F-A01, "Lo que no dice"). El lema y la ilustración de esta pantalla son relleno.</p>
+    </div>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>Marca</span><span>regla del mock · C-174</span></div>
+      <p>El nombre visible en los mocks locales es <strong>"Lavandi"</strong> (C-174, que en esa parte reemplaza a C-167; <span class="cita">vault/meta/actas/acta-2026-11-18-entorno-y-mocks.md</span>). El diseño de Claude Design conserva "Desarrollo Temsa L".</p>
+      <p>El logotipo de la marca no se usa: en su lugar va un monograma neutro "L". Ningún archivo de <span class="cita">vault/marca/</span> entra en los mocks.</p>
+      <p>Ojo: la nota de decisión de marca sigue en borrador (DD-023 en verificación; falta la búsqueda ante el IMPI, DD-030). En el código del producto el nombre va como variable de configuración (<span class="cita">CLAUDE.md</span> §5); en los mocks se escribe literal.</p>
+    </div>
+    <div class="nota nota-cliente">
+      <div class="rotulo"><span>Marca del cliente · 2026-11-05</span><span>sin confirmar, no es grado C</span></div>
+      <p>A01 marcada "Para abrir" en el formulario de prioridades (<span class="cita">cliente/comunicaciones/2026-11-05-reporte-del-formulario.md</span>).</p>
+    </div>
+
+    <h3>Decisiones de diseño del mock</h3>
+    <div class="nota nota-mock">
+      <div class="rotulo">Sin fila</div>
+      <p>La bienvenida lleva el acceso para quien ya tiene cuenta, para no obligar a pasar por las tres informativas. Se confirma en la spec de registro y acceso.</p>
+    </div>
+  </aside>
+</div>
+<script src="../comun/app.js"></script>
+</body>
+</html>

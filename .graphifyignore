@@ -1,0 +1,40 @@
+# Qué deja fuera graphify al armar el grafo del proyecto (C-184).
+# El grafo es del conocimiento del proyecto: el vault en Markdown, el contrato v8, CLAUDE.md, agentes, skills y CI.
+
+# Su propia salida
+graphify-out/
+
+# Imágenes, video y audio: las fotos, el video y las notas de voz ya están descritos en los indice.md del vault
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.gif
+*.svg
+*.mp4
+*.ogg
+*.mp3
+*.rar
+*.zip
+
+# Mocks, diseño y salidas de otras herramientas: orientan, no son conocimiento del proyecto
+mocks/
+output/
+diseno/
+notas-locales/
+
+# Herramientas que generan entregables; se queda solo la integración continua
+herramientas/*
+!herramientas/ci/
+
+# PDFs que se generan desde notas del vault, y la contrapropuesta v7, que perdió vigencia
+vault/**/*.pdf
+legal/NSV-2026-001-v7-contrapropuesta-2026-08-05.pdf
+
+# Plantillas vacías, la versión superseded del prompt maestro y los canvas del diseño
+vault/plantillas/
+vault/meta/instrucciones/prompt-maestro-01-fundacion-v4.md
+**/canvas.json
+
+# Exportaciones HTML del diseño de marca: son lienzos, no notas
+vault/**/*.html

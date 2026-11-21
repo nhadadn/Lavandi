@@ -29,7 +29,7 @@
   "inicio": "2026-09-21",
   "fin": "2026-10-11",
   "estado": "atrasada",
-  "evidencia": "Hay design system y seis componentes base (Fase 4), pero no hay pantallas diseñadas en el vault. La ventana cierra el 11 de octubre",
+  "evidencia": "Hay design system y seis componentes base (Fase 4), pero no hay pantallas diseñadas en el vault. La ventana cerró el 11 de octubre",
   "implica": "Design system (Fase 4) listo antes de la semana 3"
  },
  {
@@ -39,8 +39,8 @@
   "semana_fin": 9,
   "inicio": "2026-09-28",
   "fin": "2026-11-08",
-  "estado": "no ha empezado",
-  "evidencia": "Debía arrancar el 28 de septiembre. El método prohíbe escribir código hasta cerrar las Fases 6 a 8, y la 6 está detenida",
+  "estado": "atrasada",
+  "evidencia": "Su ventana (28 de septiembre al 8 de noviembre) cerró sin que empezara. El método prohíbe escribir código hasta cerrar las Fases 6 a 8. La recalibración propone construir por etapas, con calendario nuevo firmado (meta/recalibracion-2026-10-30.md §3)",
   "implica": "Arquitectura (5), stack (6) y formas de trabajo (7) cerradas antes de la semana 4"
  },
  {
@@ -50,8 +50,8 @@
   "semana_fin": 13,
   "inicio": "2026-11-02",
   "fin": "2026-12-06",
-  "estado": "por venir",
-  "evidencia": "—",
+  "estado": "atrasada",
+  "evidencia": "Su ventana empezó el 2 de noviembre y no ha arrancado, porque depende de la primera",
   "implica": ""
  },
  {
@@ -61,8 +61,8 @@
   "semana_fin": 12,
   "inicio": "2026-11-09",
   "fin": "2026-11-29",
-  "estado": "por venir",
-  "evidencia": "Las plantillas se adelantaron (C-73) y no han empezado. Para la landing, Nadir quiere comprar una plantilla (C-95)",
+  "estado": "no ha empezado",
+  "evidencia": "Su ventana corre del 9 al 29 de noviembre. Las plantillas se adelantaron (C-73) y no han empezado. Para la landing, Nadir quiere comprar una plantilla, que se evalúa en el ADR-0011 (C-95)",
   "implica": "Requiere dominio activo (B.3) y contenidos del cliente"
  },
  {

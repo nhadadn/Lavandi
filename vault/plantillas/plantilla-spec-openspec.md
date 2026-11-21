@@ -1,5 +1,5 @@
 ---
-estado: borrador
+estado: superseded
 grado: D
 fuente: 
 fecha: AAAA-MM-DD
@@ -8,6 +8,10 @@ spec: <capacidad>
 cambio: <nombre-del-cambio-openspec>
 ---
 # Spec — <capacidad>
+
+> **Superseded el 2026-11-19.** Desde C-183 las specs viven en `openspec/` y se escriben con la herramienta:
+> `openspec new change`, `openspec instructions` y las reglas de `openspec/config.yaml`. Ver
+> `formas-de-trabajo/ciclo-openspec-tdd.md`. Esta plantilla se conserva como registro.
 
 Alcance: qué obligación (A) y qué ADR (D) la sostienen. Un requisito sin cita no entra.
 Formato openspec: `proposal.md` → `specs/<capacidad>/spec.md` → `design.md` (si hace falta) → `tasks.md`.

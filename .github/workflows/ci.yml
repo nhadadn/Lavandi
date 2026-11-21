@@ -1,0 +1,141 @@
+# Integración continua del código (movil/ y servidor/).
+# Qué la hace fallar y por qué: vault/formas-de-trabajo/integracion-continua.md
+# Cada trabajo se salta si su carpeta todavía no existe, así que pasa en verde desde el primer commit.
+# Las versiones de PHP, Node y PostGIS se confirman en el sprint 1, al crear los proyectos (E).
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  detectar:
+    runs-on: ubuntu-latest
+    outputs:
+      servidor: ${{ steps.carpetas.outputs.servidor }}
+      movil: ${{ steps.carpetas.outputs.movil }}
+      tokens: ${{ steps.carpetas.outputs.tokens }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: carpetas
+        run: |
+          echo "servidor=$([ -f servidor/composer.json ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+          echo "movil=$([ -f movil/package.json ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+          echo "tokens=$([ -f herramientas/tokens/package.json ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
+  # Reglas del proyecto: corren siempre, haya o no código.
+  reglas:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      # Falla si la marca o el dominio aparecen escritos a mano en movil/ o servidor/ (CLAUDE.md §5).
+      - name: Sin marca ni dominio en el código
+        run: python herramientas/ci/verificar_marca.py
+      # Falla si se sube un .env, una llave privada o un archivo de firma (ADR-0012).
+      - name: Sin secretos en el repositorio
+        run: python herramientas/ci/verificar_secretos.py
+
+  servidor:
+    needs: detectar
+    if: needs.detectar.outputs.servidor == 'true'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: servidor
+    services:
+      postgres:
+        image: postgis/postgis:17-3.5
+        env:
+          POSTGRES_DB: prueba
+          POSTGRES_USER: prueba
+          POSTGRES_PASSWORD: prueba
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U prueba"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_DATABASE: prueba
+      DB_USERNAME: prueba
+      DB_PASSWORD: prueba
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: pdo_pgsql, pgsql, intl, mbstring, bcmath, zip
+          coverage: none
+      # Falla si composer.json o composer.lock no son válidos o no coinciden.
+      - name: composer validate
+        run: composer validate --strict
+      - name: Dependencias
+        run: composer install --no-interaction --prefer-dist --no-progress
+      - name: Entorno de prueba
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+      # Falla si el estilo del código no sigue Pint.
+      - name: Estilo
+        run: vendor/bin/pint --test
+      # Falla si el análisis estático encuentra errores. Corre cuando exista phpstan.neon.
+      - name: Análisis estático
+        if: hashFiles('servidor/phpstan.neon') != ''
+        run: vendor/bin/phpstan analyse --no-progress
+      # Falla si las migraciones no corren desde cero sobre PostgreSQL con PostGIS (ADR-0004).
+      - name: Migraciones desde cero
+        run: php artisan migrate:fresh --force
+      # Falla si un test falla.
+      - name: Tests
+        run: php artisan test
+
+  movil:
+    needs: detectar
+    if: needs.detectar.outputs.movil == 'true'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: movil
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: movil/package-lock.json
+      - name: Dependencias
+        run: npm ci
+      # Falla si TypeScript encuentra un error de tipos.
+      - name: Tipos
+        run: npx tsc --noEmit
+      # Falla si ESLint encuentra un error.
+      - name: Lint
+        run: npx eslint .
+      # Falla si un test falla.
+      - name: Tests
+        run: npx jest --ci
+      # Falla si las dependencias no son compatibles con la versión de Expo.
+      - name: Expo Doctor
+        run: npx expo-doctor
+
+  tokens:
+    needs: detectar
+    if: needs.detectar.outputs.tokens == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      # Falla si theme.ts o las variables CSS no son las que genera tokens.json (ADR-0013).
+      - name: Tokens al día
+        run: |
+          cd herramientas/tokens && npm ci && npm run generar && cd ../..
+          git diff --exit-code

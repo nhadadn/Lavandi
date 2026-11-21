@@ -1,0 +1,18 @@
+# Errores que ya existían cuando se creó el validador (2026-11-20). Una línea por error, copiada tal
+# como la imprime validar.py. Esta lista solo se achica: lo que se corrige se borra de aquí, y nada
+# nuevo entra sin acta que lo justifique.
+#
+# Los diez errores iniciales se corrigieron el 2026-11-20 (C-205, C-206).
+#
+# C-54 a C-62: las actas acta-2026-09-12-marca-visual y acta-2026-09-12-paleta-y-logotipo transcriben las
+# mismas declaraciones. Vale la de marca-visual, la más reciente (C-140, renumerada C-205 en el PR #2). La
+# otra no se tacha: las actas unidas a main no se reescriben (C-219). Esta excepción es permanente.
+C-54 definido 2 veces: vault/meta/actas/acta-2026-09-12-marca-visual.md:15 · vault/meta/actas/acta-2026-09-12-paleta-y-logotipo.md:15
+C-55 definido 2 veces: vault/meta/actas/acta-2026-09-12-marca-visual.md:16 · vault/meta/actas/acta-2026-09-12-paleta-y-logotipo.md:16
+C-56 definido 2 veces: vault/meta/actas/acta-2026-09-12-marca-visual.md:17 · vault/meta/actas/acta-2026-09-12-paleta-y-logotipo.md:17
+C-57 definido 2 veces: vault/meta/actas/acta-2026-09-12-marca-visual.md:18 · vault/meta/actas/acta-2026-09-12-paleta-y-logotipo.md:18
+C-58 definido 2 veces: vault/meta/actas/acta-2026-09-12-marca-visual.md:19 · vault/meta/actas/acta-2026-09-12-paleta-y-logotipo.md:19
+C-59 definido 2 veces: vault/meta/actas/acta-2026-09-12-marca-visual.md:20 · vault/meta/actas/acta-2026-09-12-paleta-y-logotipo.md:20
+C-60 definido 2 veces: vault/meta/actas/acta-2026-09-12-marca-visual.md:21 · vault/meta/actas/acta-2026-09-12-paleta-y-logotipo.md:21
+C-61 definido 2 veces: vault/meta/actas/acta-2026-09-12-marca-visual.md:22 · vault/meta/actas/acta-2026-09-12-paleta-y-logotipo.md:22
+C-62 definido 2 veces: vault/meta/actas/acta-2026-09-12-marca-visual.md:23 · vault/meta/actas/acta-2026-09-12-paleta-y-logotipo.md:23

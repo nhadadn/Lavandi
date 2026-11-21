@@ -37,3 +37,36 @@ desktop.ini
 # Claude Code local
 .claude/settings.local.json
 .claude/worktrees/
+
+# graphify: el grafo se regenera; solo se versiona su reporte (C-184)
+graphify-out/*
+!graphify-out/GRAPH_REPORT.md
+
+# Código del producto (movil/ y servidor/, en este mismo repositorio desde C-169)
+servidor/vendor/
+servidor/public/build/
+servidor/public/hot
+servidor/bootstrap/cache/*.php
+.phpunit.result.cache
+*.log
+movil/android/
+movil/ios/
+movil/web-build/
+
+# Más secretos y firmas: viven en el hosting y en los secretos de EAS (ADR-0012)
+*.p8
+*.p12
+*.jks
+*.keystore
+google-services.json
+GoogleService-Info.plist
+
+# Obsidian: se versiona solo la configuración compartida (app, plantillas, plugins del núcleo).
+# Lo de cada persona se queda fuera.
+vault/.obsidian/appearance.json
+vault/.obsidian/hotkeys.json
+vault/.obsidian/graph.json
+vault/.obsidian/community-plugins.json
+vault/.obsidian/plugins/
+vault/.obsidian/themes/
+vault/.obsidian/snippets/

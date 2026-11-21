@@ -1,5 +1,5 @@
 ---
-estado: enviada
+estado: vigente
 grado: mixto
 fuente: acta 2026-09-20, C-75 a C-86 (C); NSV-2026-001-v8.pdf:14:A.1, :16:A.3 numerales 5 y 6, :7-8:Cláusula IV (A); marca/entregables/README.md (B)
 fecha: 2026-09-20

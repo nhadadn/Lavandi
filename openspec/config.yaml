@@ -1,0 +1,50 @@
+schema: spec-driven
+
+# Contexto que OpenSpec le pasa a Claude al escribir cada pieza de un cambio.
+# La fuente es CLAUDE.md; si algo choca, manda CLAUDE.md.
+context: |
+  Proyecto nsv-lavanderia (nombre clave): plataforma de lavandería a domicilio del contrato NSV-2026-001 v8
+  (legal/NSV-2026-001-v8.pdf). App única para iPhone y Android con cuatro módulos (A usuario, B lavandería,
+  C repartidor, D administración), landing de 12 secciones y panel de indicadores. Territorio: el Estado de
+  Durango y Torreón y Matamoros, Coahuila.
+
+  NORMATIVA (CLAUDE.md §2-bis, C-181): no se construye nada que el contrato no establezca. Todo requisito cita
+  el contrato (grado A: `NSV-2026-001-v8.pdf:pág:ANEXO A, Sección A.x`) o un ADR (grado D:
+  `vault/arquitectura/adr/ADR-000X.md`). Sin cita no hay requisito: se reporta como "fuera del contrato,
+  posible Orden de Cambio" (`NSV-2026-001-v8.pdf:8:Cláusula IV`). Las exclusiones expresas están en la
+  sección C de vault/contrato/obligaciones-ejecutivas.md. Lo que el contrato nombra (Conekta, mapas de Google
+  y Apple, avisos por el servicio gratuito de Google, Google Sign-In, GA4) no se sustituye sin Orden de Cambio firmada.
+
+  Stack (ADRs vigentes): movil/ es React Native con Expo SDK 58 (ADR-0002); servidor/ es Laravel 13 con
+  Filament 5 y Sanctum para la API, el panel y la landing (ADR-0003, ADR-0011); PostgreSQL con PostGIS
+  (ADR-0004); consulta cada 30 s más avisos FCM (ADR-0007, ADR-0008); Conekta por redirección (ADR-0010).
+
+  Entradas para especificar: vault/contrato/inventario-funcional.md (F-xx), obligaciones-ejecutivas.md
+  (O-xx), restricciones-no-negociables.md, brecha-ejecutivo-tecnico.md (BR-xx),
+  vault/meta/deuda-de-decision.md (DD-xxx), vault/design-system/ y los mocks de mocks/ (orientan, no amplían
+  el alcance).
+
+  Idioma: todo en español. Se quedan en inglés solo las palabras clave que exige el validador de OpenSpec.
+  La marca es Lavandi y el dominio lavandi.mx (CLAUDE.md §1: C-49, C-54, C-65, C-66 y C-213). En notas y specs
+  se escriben así; en el código salen siempre de la configuración (CLAUDE.md §5 y §9.3).
+
+rules:
+  proposal:
+    - "Las secciones se titulan como pide el validador (## Why, ## What Changes, ## Capabilities, ## Impact) y se escriben en español."
+    - "## Why cita la obligación del contrato (A) o el ADR (D) que sostiene el cambio. Sin esa cita, el cambio no se propone."
+    - "Dentro de ## What Changes hay una lista 'Qué NO cambia' y otra 'Fuera del contrato' con lo que alguien pidió y no tiene cita, como posible Orden de Cambio."
+    - "El nombre del cambio y de cada capacidad va en kebab-case y en español (registro-de-usuario, no user-signup)."
+  specs:
+    - "Cada requisito usa '### Requirement: <nombre en español>' y su texto dice DEBE (MUST); el validador exige la palabra MUST o SHALL."
+    - "Debajo de cada requisito va una línea 'Cita:' con A → `NSV-2026-001-v8.pdf:pág:sección` o D → `ADR-000X`. Un requisito sin cita no entra."
+    - "Cada escenario usa '#### Scenario: <capacidad>-E01 — <nombre>' y viñetas **DADO** / **CUANDO** / **ENTONCES** (y **Y**). El identificador es el que llevará el nombre del test."
+    - "Si un escenario depende de una fila abierta de la deuda de decisión, se escribe igual y lleva la línea 'SIN RESPUESTA — bloquea: <escenario> (DD-xxx)'. Nunca se inventa la regla de negocio: precios, comisiones, plazos y textos legales se preguntan."
+    - "Si el escenario acredita un criterio del ANEXO A.4, se nombra el criterio (por ejemplo A43-4) para la tabla de trazabilidad."
+  design:
+    - "Siempre existe, porque la herramienta lo pide antes de tasks.md. Si no hay una decisión técnica no trivial, lo dice en pocas líneas y remite a los ADRs que la sostienen, sin repetirlos."
+    - "Una decisión técnica nueva necesita su ADR en vault/arquitectura/adr/ antes de implementarse. Ninguna decisión técnica se presenta como si viniera del contrato."
+  tasks:
+    - "Cada tarea nombra el test que la cierra con el identificador del escenario (pedidos-E03) y su tamaño S, M o L."
+    - "Cada tarea dice dónde vive: movil/ o servidor/. Una tarea no toca las dos carpetas."
+    - "El orden es rojo, verde, refactor: primero el test que falla, luego el código mínimo, luego la limpieza."
+    - "Una tarea sin test no se marca como hecha."

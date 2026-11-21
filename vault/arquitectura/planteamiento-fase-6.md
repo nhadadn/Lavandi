@@ -33,12 +33,20 @@ El orden importa: cada paso usa lo que sale del anterior. Estados: `pendiente` �
 
 | Paso | Título | Objetivo | Qué sale | Estado |
 |---|---|---|---|---|
-| 1 | Lo que no está a discusión | Separar lo que el contrato ya decidió de lo que sí se decide, para no gastar la conversación en lo primero | Nadir confirma la frontera, o la objeta, en el acta | en curso |
-| 2 | ¿Es el modelo correcto? | Responder con evidencia si una plataforma de tres lados es el camino, y separar lo que le toca a Nadir de lo que le toca al cliente | Respuestas de Nadir; preguntas para la sesión de consultoría con EL CLIENTE (O-23) | pendiente |
-| 3 | ¿Cabe? | Horas reales contra el alcance, y qué palanca se mueve si no cabe | Horas confirmadas, palanca elegida, aviso de retraso redactado | pendiente |
-| 4 | Construir, adaptar o comprar | Evaluar las familias de opciones **solo contra las puertas**, antes de los pesos | `ADR-0015` propuesto | pendiente |
-| 5 | Los pesos | Fijar los pesos de la matriz | `matriz-de-criterios-stack.md` en `vigente` | pendiente |
-| 6 | Candidatos y ADRs | Puntuar candidatos con los pesos fijados y escribir los ADRs | `ADR-0002` a `ADR-0015` | pendiente |
+| 1 | Lo que no está a discusión | Separar lo que el contrato ya decidió de lo que sí se decide, para no gastar la conversación en lo primero | Nadir confirma la frontera, o la objeta, en el acta | cerrado |
+| 2 | ¿Es el modelo correcto? | Responder con evidencia si una plataforma de tres lados es el camino, y separar lo que le toca a Nadir de lo que le toca al cliente | Respuestas de Nadir; preguntas para la sesión de consultoría con EL CLIENTE (O-23) | en curso |
+| 3 | ¿Cabe? | Horas reales contra el alcance, y qué palanca se mueve si no cabe | Horas confirmadas, palanca elegida, aviso de retraso redactado | en curso |
+| 4 | Construir, adaptar o comprar | Evaluar las familias de opciones **solo contra las puertas**, antes de los pesos | `ADR-0015` propuesto | cerrado |
+| 5 | Los pesos | Fijar los pesos de la matriz | `matriz-de-criterios-stack.md` en `vigente` | cerrado |
+| 6 | Candidatos y ADRs | Puntuar candidatos con los pesos fijados y escribir los ADRs | `ADR-0002` a `ADR-0015` | cerrado |
+
+**Estado al 2026-11-13.** Desde el traspaso, la Fase 6 la lleva Arthur Naranjo (`acta-2026-11-12-traspaso-del-proyecto.md`, C-132 y C-143), y la sala de Nadir solo tenía P-07 y P-11 (C-148).
+
+- **Paso 1, cerrado:** la frontera y las puertas se aplicaron tal cual en los ADRs, y nadie las objetó.
+- **Paso 2, en curso:** es del negocio y le toca a Nadir con EL CLIENTE. La recalibración respondió una parte.
+- **Paso 3, en curso:** las horas están confirmadas (C-134: unas 14 por semana con agentes). La palanca, construir por etapas con Orden de Cambio, la negocia Nadir. El aviso de retraso está redactado.
+- **Pasos 4 y 5, cerrados:** `ADR-0015` (C-139) y pesos (C-142).
+- **Paso 6, cerrado con pendientes:** 13 de los 14 ADRs están `vigente`. `ADR-0014` sigue en borrador (DD-071), y el hosting está en DD-070.
 
 **Por qué el paso 4 va antes de los pesos, y por qué eso no rompe el método.** El método prohíbe mirar candidatos
 antes de fijar los pesos, para no elegir primero y justificar después (`prompt-maestro-01-fundacion-v5.md`, Fase

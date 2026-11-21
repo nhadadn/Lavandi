@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="es" data-plataforma-activa="ios">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F-A05 · Perfil de la lavandería — Mocks de Lavandi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../comun/tokens.css">
+<link rel="stylesheet" href="../comun/estilos.css">
+</head>
+<body data-pantalla="a05-lavanderia">
+<div class="escenario">
+  <div class="columna-telefono">
+    <div class="telefono">
+      <div class="pantalla">
+        <div class="barra-estado"><span aria-hidden="true">9:41</span><span class="cinta-mock" role="note">Mock · datos de ejemplo</span><span class="iconos-estado" aria-hidden="true"><svg class="icono"><use href="#i-senal"/></svg><svg class="icono"><use href="#i-wifi"/></svg><svg class="icono"><use href="#i-bateria"/></svg></span></div>
+
+        <main class="contenido sin-margen">
+          <div style="position:relative">
+            <a class="btn btn-icono sobre-foto" href="a04-busqueda.html" aria-label="Regresar"><svg class="icono"><use href="#i-atras"/></svg></a>
+            <div class="galeria" id="galeria" aria-label="Fotos de la lavandería">
+              <div class="foto"><svg class="fondo-foto" viewBox="0 0 390 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect class="il-2" width="390" height="220"/><rect class="il-fondo" x="40" y="60" width="90" height="120" rx="10"/><circle class="il-hueso" cx="85" cy="125" r="30"/><rect class="il-fondo" x="150" y="60" width="90" height="120" rx="10"/><circle class="il-hueso" cx="195" cy="125" r="30"/><rect class="il-fondo" x="260" y="60" width="90" height="120" rx="10"/><circle class="il-hueso" cx="305" cy="125" r="30"/></svg><span>Foto de ejemplo 1</span></div>
+              <div class="foto"><svg class="fondo-foto" viewBox="0 0 390 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect class="il-hueso" width="390" height="220"/><rect class="il-1" x="0" y="150" width="390" height="70"/><rect class="il-fondo" x="70" y="40" width="250" height="90" rx="8"/><rect class="il-3" x="90" y="60" width="80" height="12" rx="6"/></svg><span>Foto de ejemplo 2</span></div>
+              <div class="foto"><svg class="fondo-foto" viewBox="0 0 390 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect class="il-2" width="390" height="220"/><path class="il-fondo" d="M120 70 l-20 30 v90 h190 v-90 l-20 -30z"/><rect class="il-3" x="150" y="120" width="90" height="10" rx="5"/></svg><span>Foto de ejemplo 3</span></div>
+            </div>
+            <span class="contador-fotos" id="contador">1 / 3</span>
+          </div>
+
+          <div style="padding:var(--s-4)">
+            <div class="fila" style="align-items:flex-start">
+              <h1 class="titulo-pantalla mt-0" id="nombre">Lavandería Ejemplo Centro</h1>
+              <span class="insignia" id="estado"><span class="punto"></span><span>Abierta</span></span>
+            </div>
+            <p class="menor suave mb-2"><span class="estrellas-mini" id="estrellas" aria-hidden="true"></span> <strong class="tabular" id="calificacion" style="color:var(--c-texto)">4.8</strong> · <span id="resenas">23 reseñas</span> · <span id="distancia">a 1.2 km</span></p>
+            <p>Descripción de ejemplo: lavandería de barrio con servicio por kilo. Recibe la ropa, la lava, la seca y la entrega doblada.</p>
+
+            <div class="tarjeta" id="horario" tabindex="-1">
+              <div class="fila-izq"><svg class="icono" style="color:var(--c-texto-suave)"><use href="#i-reloj"/></svg>
+                <div><strong>Horario de ejemplo</strong><br><span class="menor suave">Lunes a sábado, de 9:00 a 19:00</span></div></div>
+              <p class="menor mt-3 mb-0" id="cupo-hoy" hidden><span class="insignia e-atencion"><span class="punto"></span>Sin cupo hoy</span> Puedes programar para otro día.</p>
+            </div>
+
+            <div class="fila mt-5 mb-2">
+              <h2 class="titulo-seccion" style="margin:0">Servicios y precios</h2>
+              <span class="pendiente">Precios pendientes</span>
+            </div>
+            <ul class="lista" id="servicios"></ul>
+            <p class="micro suave mt-2">El precio final se calcula al pesar tu ropa en la lavandería.</p>
+
+            <div class="fila mt-5 mb-2">
+              <h2 class="titulo-seccion" style="margin:0">Reseñas</h2>
+              <button type="button" class="btn btn-texto" id="ver-todas">Ver todas</button>
+            </div>
+            <div class="apilado-3">
+              <article class="tarjeta">
+                <div class="fila"><strong class="menor">Usuario de ejemplo 1</strong><span class="micro suave">hace 2 semanas</span></div>
+                <span class="estrellas-mini" aria-label="5 de 5"><svg viewBox="0 0 24 24"><use href="#i-estrella"/></svg><svg viewBox="0 0 24 24"><use href="#i-estrella"/></svg><svg viewBox="0 0 24 24"><use href="#i-estrella"/></svg><svg viewBox="0 0 24 24"><use href="#i-estrella"/></svg><svg viewBox="0 0 24 24"><use href="#i-estrella"/></svg></span>
+                <p class="menor mt-2 mb-0">Comentario de ejemplo. Aquí se lee la reseña que dejó la persona.</p>
+              </article>
+              <article class="tarjeta">
+                <div class="fila"><strong class="menor">Usuario de ejemplo 2</strong><span class="micro suave">hace 1 mes</span></div>
+                <span class="estrellas-mini" aria-label="4 de 5"><svg viewBox="0 0 24 24"><use href="#i-estrella"/></svg><svg viewBox="0 0 24 24"><use href="#i-estrella"/></svg><svg viewBox="0 0 24 24"><use href="#i-estrella"/></svg><svg viewBox="0 0 24 24"><use href="#i-estrella"/></svg><svg class="vacia" viewBox="0 0 24 24"><use href="#i-estrella"/></svg></span>
+                <p class="menor mt-2 mb-0">Comentario de ejemplo, más corto.</p>
+              </article>
+            </div>
+          </div>
+        </main>
+
+        <div class="acciones-fijas">
+          <a class="btn btn-primario btn-grande btn-bloque" id="pedir" href="a06-servicio.html">Pedir aquí</a>
+        </div>
+        <div class="indicador-inicio" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="anotaciones" id="anotaciones" aria-labelledby="titulo-anotaciones">
+    <div class="encabezado-panel">
+      <div><h2 id="titulo-anotaciones">Anotaciones</h2><p class="suave micro mb-0">Qué dibuja esta pantalla y qué falta decidir.</p></div>
+      <button type="button" class="btn btn-icono" data-cerrar-anotaciones aria-label="Ocultar anotaciones"><svg class="icono"><use href="#i-cerrar"/></svg></button>
+    </div>
+
+    <h3>Función</h3>
+    <p class="mb-2"><strong>F-A05 · Perfil de la lavandería</strong></p>
+    <blockquote>"Fotos, descripción, servicios, precios por kilo, calificación y reseñas."</blockquote>
+    <p><span class="cita">NSV-2026-001-v8.pdf:16-17:ANEXO A, Sección A.3</span> · Módulo A, numeral 5</p>
+    <p class="menor suave">La pantalla toma la lavandería que se eligió en A03 o A04. Prueba con "Lavandería Ejemplo Norte" (sin cupo) o "Lavandería Ejemplo Sur" (cerrada).</p>
+
+    <h3>Componentes del design system</h3>
+    <ul><li><strong>1 · Tarjeta de lavandería</strong>, desplegada: la insignia de estado y el precio "por kilo" son los mismos de la tarjeta.</li></ul>
+
+    <h3>Decisiones tomadas que respeta</h3>
+    <div class="nota nota-decision">
+      <div class="rotulo"><span>ADR-0006</span><span>vigente</span></div>
+      <p>Las fotos viven en un almacenamiento privado y la app las ve con URLs firmadas que vencen. Aquí son dibujos de relleno.</p>
+    </div>
+
+    <h3>Pendiente</h3>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>DD-010 · C-131</span><span>en curso · "Aún no hay precios"</span></div>
+      <p>Ningún precio existe todavía: todos van como "$ —". El método de fijación es DD-010 (<span class="cita">negocio/metodo-de-precio.md</span>).</p>
+    </div>
+    <div class="nota nota-cliente">
+      <div class="rotulo"><span>Libreta de precios · 2026-11-14</span><span>borrador · por confirmar</span></div>
+      <p>Llegó una libreta con precios de tintorería y de lavandería por kilo y por prenda (C-172, <span class="cita">vault/negocio/lista-de-precios-recibida-2026-11-14.md</span>). No se usa aquí: es una lectura sin cotejar, de una lavandería sin identificar (DD-066), y la nota dice que no decide precio, unidad ni catálogo. Ojo: trae precios por prenda, y el contrato fija precios por kilo (RN-16).</p>
+    </div>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>BR-16</span><span>Cliente + F5</span></div>
+      <p>La unidad del lavado en seco: el contrato dice "precios por kilo", y el seco suele cobrarse por prenda. Por eso su renglón dice "unidad por definir".</p>
+    </div>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>BR-46</span><span>F2 + F5</span></div>
+      <p>Quién fija el precio: el socio, la plataforma o una banda.</p>
+    </div>
+    <div class="nota nota-cliente">
+      <div class="rotulo"><span>Marca del cliente · 2026-11-05</span><span>sin confirmar</span></div>
+      <p>En A05 escribió "El precio lo fijamos nosotros". Cabe en el contrato (F-D05 configura comisiones), pero BR-46 sigue abierta hasta que se asiente.</p>
+    </div>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>BR-47 · DD-052</span><span>abierta</span></div>
+      <p>Las reseñas que se muestran aquí son de la lavandería. Si el usuario también califica al repartidor (recomendación de DD-052), esas no van en este perfil.</p>
+    </div>
+  </aside>
+</div>
+<script src="../comun/app.js"></script>
+<script>
+(function () {
+  var p = Mock.pedido();
+  var l = Mock.LAVANDERIAS[p.lavanderia];
+  var e = Mock.ESTADO_LAVANDERIA[l.estado];
+
+  document.getElementById('nombre').textContent = l.nombre;
+  var estado = document.getElementById('estado');
+  estado.className = 'insignia ' + e.clase;
+  estado.lastElementChild.textContent = e.texto;
+  document.getElementById('calificacion').textContent = l.calificacion.toFixed(1);
+  document.getElementById('resenas').textContent = l.resenas + ' reseñas';
+  document.getElementById('distancia').textContent = 'a ' + l.distancia.toFixed(1) + ' km';
+
+  var llenas = Math.round(l.calificacion);
+  var est = '';
+  for (var i = 1; i <= 5; i++) est += '<svg viewBox="0 0 24 24"' + (i > llenas ? ' class="vacia"' : '') + '><use href="#i-estrella"/></svg>';
+  document.getElementById('estrellas').innerHTML = est;
+
+  var DESC = { estandar: 'Lavado y secado.', planchado: 'Lavado, secado y planchado.', seco: 'Para prendas que no van a la lavadora.' };
+  document.getElementById('servicios').innerHTML = l.servicios.map(function (s) {
+    var precio = s === 'seco'
+      ? '<span class="precio-pendiente">$ —</span><br><span class="micro suave">unidad por definir</span>'
+      : '<span class="precio-pendiente">$ —</span><br><span class="micro suave">por kilo</span>';
+    return '<li><div class="elemento"><div class="cuerpo-elemento"><strong>' + Mock.SERVICIOS[s].nombre + '</strong><br>' +
+      '<span class="menor suave">' + DESC[s] + '</span></div><div style="text-align:right">' + precio + '</div></div></li>';
+  }).join('');
+
+  var pedir = document.getElementById('pedir');
+  if (l.estado === 'cerrada') {
+    pedir.outerHTML = '<button type="button" class="btn btn-grande btn-bloque" disabled>Cerrada · abre mañana a las 9:00</button>';
+  } else if (l.estado === 'sin-cupo') {
+    document.getElementById('cupo-hoy').hidden = false;
+    pedir.textContent = 'Pedir para otro día';
+  }
+
+  var galeria = document.getElementById('galeria');
+  galeria.addEventListener('scroll', function () {
+    var n = Math.round(galeria.scrollLeft / galeria.clientWidth) + 1;
+    document.getElementById('contador').textContent = n + ' / 3';
+  });
+  document.getElementById('ver-todas').addEventListener('click', function () {
+    Mock.brindis('Aquí se abriría la lista completa de reseñas.');
+  });
+  if (window.location.hash === '#horario') {
+    var h = document.getElementById('horario');
+    h.scrollIntoView({ block: 'center' });
+    h.focus({ preventScroll: true });
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="es" data-plataforma-activa="ios">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F-A16 · Soporte — Mocks de Lavandi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../comun/tokens.css">
+<link rel="stylesheet" href="../comun/estilos.css">
+</head>
+<body data-pantalla="a16-soporte">
+<div class="escenario">
+  <div class="columna-telefono">
+    <div class="telefono">
+      <div class="pantalla">
+        <div class="barra-estado"><span aria-hidden="true">9:41</span><span class="cinta-mock" role="note">Mock · datos de ejemplo</span><span class="iconos-estado" aria-hidden="true"><svg class="icono"><use href="#i-senal"/></svg><svg class="icono"><use href="#i-wifi"/></svg><svg class="icono"><use href="#i-bateria"/></svg></span></div>
+
+        <div class="encabezado-app" style="padding-left:var(--s-4)">
+          <h1 style="font-size:var(--t-titulo)">Ayuda</h1>
+        </div>
+
+        <main class="contenido">
+          <div class="tarjeta">
+            <div class="fila-izq" style="align-items:flex-start">
+              <svg class="icono grande" style="color:var(--c-exito)"><use href="#i-mensaje"/></svg>
+              <div>
+                <p class="fuerte mb-0">Escríbenos por WhatsApp</p>
+                <p class="menor suave mb-2">Te atendemos por WhatsApp Business.</p>
+                <span class="pendiente">Número pendiente</span>
+              </div>
+            </div>
+            <button type="button" class="btn btn-primario btn-bloque mt-4" id="whatsapp"><svg class="icono"><use href="#i-externo"/></svg>Abrir WhatsApp</button>
+          </div>
+
+          <h2 class="titulo-seccion">Reportar un problema</h2>
+          <form id="reporte" novalidate>
+            <div class="campo">
+              <label for="tipo">¿Sobre qué es?</label>
+              <select class="entrada" id="tipo">
+                <option>Un pedido</option>
+                <option>Un pago</option>
+                <option>La app</option>
+                <option>Otro tema</option>
+              </select>
+            </div>
+            <div class="campo">
+              <label for="pedido">Pedido relacionado</label>
+              <select class="entrada" id="pedido">
+                <option>EJ-000123</option>
+                <option>EJ-000118</option>
+                <option>EJ-000104</option>
+                <option>Ninguno</option>
+              </select>
+            </div>
+            <div class="campo">
+              <label for="detalle">Cuéntanos qué pasó</label>
+              <textarea class="entrada" id="detalle" placeholder="Describe el problema"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primario btn-grande btn-bloque"><svg class="icono"><use href="#i-enviar"/></svg>Enviar reporte</button>
+          </form>
+
+          <div id="enviado" class="tarjeta centrado" hidden>
+            <span style="display:inline-flex;width:64px;height:64px;border-radius:50%;background:var(--c-exito);color:var(--c-texto-inverso);align-items:center;justify-content:center">
+              <svg class="icono" style="width:36px;height:36px;stroke-width:2.6"><use href="#i-palomita"/></svg></span>
+            <p class="fuerte mt-3 mb-2">Recibimos tu reporte</p>
+            <p class="menor suave">Cómo y cuándo te respondemos está por definirse.</p>
+            <button type="button" class="btn btn-bloque" id="otro">Enviar otro reporte</button>
+          </div>
+        </main>
+
+        <nav class="barra-pestanas" aria-label="Secciones de la app">
+          <a href="a03-principal.html"><svg class="icono"><use href="#i-casa"/></svg>Inicio</a>
+          <a href="a13-historial.html"><svg class="icono"><use href="#i-pedidos"/></svg>Pedidos</a>
+          <a href="a16-soporte.html" aria-current="page"><svg class="icono"><use href="#i-soporte"/></svg>Ayuda</a>
+          <a href="a15-perfil.html"><svg class="icono"><use href="#i-perfil"/></svg>Perfil</a>
+        </nav>
+        <div class="indicador-inicio" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="anotaciones" id="anotaciones" aria-labelledby="titulo-anotaciones">
+    <div class="encabezado-panel">
+      <div><h2 id="titulo-anotaciones">Anotaciones</h2><p class="suave micro mb-0">Qué dibuja esta pantalla y qué falta decidir.</p></div>
+      <button type="button" class="btn btn-icono" data-cerrar-anotaciones aria-label="Ocultar anotaciones"><svg class="icono"><use href="#i-cerrar"/></svg></button>
+    </div>
+
+    <h3>Función</h3>
+    <p class="mb-2"><strong>F-A16 · Soporte</strong></p>
+    <blockquote>"Chat de WhatsApp Business y formulario de reporte."</blockquote>
+    <p><span class="cita">NSV-2026-001-v8.pdf:16-17:ANEXO A, Sección A.3</span> · Módulo A, numeral 16</p>
+
+    <h3>Componentes del design system</h3>
+    <p>Ninguno de los seis. El ícono de WhatsApp es genérico: no se usa el logotipo de un tercero.</p>
+
+    <h3>Pendiente</h3>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>BR-25</span><span>F5 + spec</span></div>
+      <p>A quién le llega el formulario de reporte (la administración o un correo de EL CLIENTE) y cómo se le responde a la persona. Por eso la confirmación no promete un tiempo.</p>
+    </div>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>Insumo de EL CLIENTE</span><span>inventario F-A16</span></div>
+      <p>"El número de WhatsApp es de EL CLIENTE". En la guía del 2026-11-05 escribió "Aún no lo tenemos".</p>
+    </div>
+    <div class="nota nota-cliente">
+      <div class="rotulo"><span>Marca del cliente · 2026-11-05</span><span>sin confirmar</span></div>
+      <p>A16 "Puede esperar". Sobre prendas dañadas habló de "dictamen de responsiva" y "seguro": es operación de EL CLIENTE (DD-047); la app solo recibe el reporte.</p>
+    </div>
+  </aside>
+</div>
+<script src="../comun/app.js"></script>
+<script>
+(function () {
+  document.getElementById('whatsapp').addEventListener('click', function () {
+    Mock.brindis('Se abriría WhatsApp con el número de soporte de EL CLIENTE (pendiente).');
+  });
+  document.getElementById('reporte').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    if (!document.getElementById('detalle').value.trim()) {
+      Mock.brindis('Cuéntanos qué pasó antes de enviar.');
+      document.getElementById('detalle').focus();
+      return;
+    }
+    this.hidden = true;
+    document.getElementById('enviado').hidden = false;
+  });
+  document.getElementById('otro').addEventListener('click', function () {
+    var f = document.getElementById('reporte');
+    f.reset(); f.hidden = false;
+    document.getElementById('enviado').hidden = true;
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="es" data-plataforma-activa="ios">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F-A01 · Tres pantallas informativas — Mocks de Lavandi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../comun/tokens.css">
+<link rel="stylesheet" href="../comun/estilos.css">
+</head>
+<body data-pantalla="a01-informativas">
+<div class="escenario">
+  <div class="columna-telefono">
+    <div class="telefono">
+      <div class="pantalla">
+        <div class="barra-estado"><span aria-hidden="true">9:41</span><span class="cinta-mock" role="note">Mock · datos de ejemplo</span><span class="iconos-estado" aria-hidden="true"><svg class="icono"><use href="#i-senal"/></svg><svg class="icono"><use href="#i-wifi"/></svg><svg class="icono"><use href="#i-bateria"/></svg></span></div>
+
+        <div class="encabezado-app">
+          <span class="lado"></span>
+          <h1 class="solo-lector">Cómo funciona</h1>
+          <span style="flex:1"></span>
+          <a class="btn btn-texto" href="a02-registro.html">Saltar</a>
+        </div>
+
+        <main class="contenido" style="display:flex;flex-direction:column;justify-content:center">
+          <!-- Las tres pantallas informativas. Se pasa con "Siguiente" o con los puntos. -->
+          <section class="diapositiva" data-diapositiva="1" aria-roledescription="diapositiva" aria-label="1 de 3">
+            <svg class="ilustracion" viewBox="0 0 320 240" aria-hidden="true">
+              <circle class="il-2" cx="160" cy="124" r="104"/>
+              <rect class="il-fondo" x="110" y="26" width="100" height="190" rx="18"/>
+              <rect class="il-trazo" x="110" y="26" width="100" height="190" rx="18"/>
+              <rect class="il-hueso" x="122" y="48" width="76" height="110" rx="6"/>
+              <path class="il-trazo-fino" d="M122 90 h76 M150 48 v110 M122 126 h76"/>
+              <path class="il-1" d="M160 70 c-12 0 -20 8 -20 19 c0 14 20 32 20 32 s20 -18 20 -32 c0 -11 -8 -19 -20 -19z"/>
+              <circle class="il-fondo" cx="160" cy="89" r="7"/>
+              <rect class="il-1" x="126" y="172" width="68" height="26" rx="8"/>
+            </svg>
+            <h2 class="titulo-pantalla centrado mt-4">Pide desde tu teléfono</h2>
+            <p class="suave centrado">Elige una lavandería cercana, el servicio y la hora en que pasamos por tu ropa.</p>
+          </section>
+
+          <section class="diapositiva" data-diapositiva="2" aria-roledescription="diapositiva" aria-label="2 de 3" hidden>
+            <svg class="ilustracion" viewBox="0 0 320 240" aria-hidden="true">
+              <circle class="il-2" cx="160" cy="124" r="104"/>
+              <rect class="il-1" x="62" y="96" width="120" height="74" rx="8"/>
+              <path class="il-fondo" d="M182 112 h40 l26 28 v30 h-66z"/>
+              <path class="il-trazo" d="M182 112 h40 l26 28 v30 h-66z"/>
+              <rect class="il-trazo" x="62" y="96" width="120" height="74" rx="8"/>
+              <circle class="il-tinta" cx="96" cy="176" r="14"/><circle class="il-fondo" cx="96" cy="176" r="5"/>
+              <circle class="il-tinta" cx="214" cy="176" r="14"/><circle class="il-fondo" cx="214" cy="176" r="5"/>
+              <path class="il-3" d="M100 60 l-10 14 v40 h52 v-40 l-10 -14z"/>
+              <path class="il-trazo-fino" d="M100 60 l-10 14 v40 h52 v-40 l-10 -14z M90 74 h52 M106 84 a10 10 0 0 0 20 0"/>
+            </svg>
+            <h2 class="titulo-pantalla centrado mt-4">Recogemos, lavamos y entregamos</h2>
+            <p class="suave centrado">Pasamos a tu domicilio en la ventana de una hora que elegiste y te regresamos tu ropa lista.</p>
+          </section>
+
+          <section class="diapositiva" data-diapositiva="3" aria-roledescription="diapositiva" aria-label="3 de 3" hidden>
+            <svg class="ilustracion" viewBox="0 0 320 240" aria-hidden="true">
+              <circle class="il-2" cx="160" cy="124" r="104"/>
+              <rect class="il-fondo" x="54" y="84" width="212" height="88" rx="14"/>
+              <rect class="il-trazo" x="54" y="84" width="212" height="88" rx="14"/>
+              <rect class="il-1" x="74" y="140" width="32" height="8" rx="4"/>
+              <rect class="il-1" x="112" y="140" width="32" height="8" rx="4"/>
+              <rect class="il-1" x="150" y="140" width="32" height="8" rx="4"/>
+              <rect class="il-2" x="188" y="140" width="32" height="8" rx="4"/>
+              <rect class="il-2" x="226" y="140" width="22" height="8" rx="4"/>
+              <rect class="il-hueso" x="74" y="104" width="120" height="14" rx="7"/>
+              <circle class="il-3" cx="232" cy="78" r="26"/>
+              <polyline class="il-trazo" points="220 78 229 87 245 70"/>
+            </svg>
+            <h2 class="titulo-pantalla centrado mt-4">Sigue tu pedido</h2>
+            <p class="suave centrado">Te avisamos en cada paso: confirmado, recolectado, en proceso, listo y entregado.</p>
+          </section>
+
+          <p class="centrado mt-3"><span class="pendiente">Texto provisional</span></p>
+        </main>
+
+        <div class="acciones-fijas" style="background:transparent;border-top:0">
+          <div class="puntos-carrusel" aria-hidden="true"><span class="activo"></span><span></span><span></span></div>
+          <button type="button" class="btn btn-primario btn-grande btn-bloque" id="siguiente">Siguiente</button>
+          <a class="btn btn-texto btn-bloque" href="a02-inicio-sesion.html" id="ya-tengo" hidden>Ya tengo cuenta</a>
+        </div>
+        <div class="indicador-inicio" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="anotaciones" id="anotaciones" aria-labelledby="titulo-anotaciones">
+    <div class="encabezado-panel">
+      <div><h2 id="titulo-anotaciones">Anotaciones</h2><p class="suave micro mb-0">Qué dibuja esta pantalla y qué falta decidir.</p></div>
+      <button type="button" class="btn btn-icono" data-cerrar-anotaciones aria-label="Ocultar anotaciones"><svg class="icono"><use href="#i-cerrar"/></svg></button>
+    </div>
+
+    <h3>Función</h3>
+    <p class="mb-2"><strong>F-A01 · Splash &amp; Onboarding</strong> (2 de 2 pantallas: las tres informativas)</p>
+    <blockquote>"Pantalla de bienvenida y 3 pantallas informativas sobre el servicio."</blockquote>
+    <p><span class="cita">NSV-2026-001-v8.pdf:16-17:ANEXO A, Sección A.3</span> · Módulo A, numeral 1</p>
+
+    <h3>Componentes del design system</h3>
+    <p>Ninguno de los seis. Las ilustraciones son relleno pintado con la capa del mock (<span class="cita">--mock-ilustracion-*</span>), que sale de los colores de <span class="cita">tokens.json</span>.</p>
+
+    <h3>Pendiente</h3>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>Insumo de EL CLIENTE</span><span>Cláusula III.B · sin fila DD</span></div>
+      <p>Los textos y las imágenes son de EL CLIENTE. Los tres títulos de esta pantalla siguen la idea del paso a paso de la landing ("Pide → Recogemos → Lavamos → Entregamos", F-L02) solo como guía; no son el texto final.</p>
+    </div>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>F-T12</span><span>grado E · SIN VERIFICAR</span></div>
+      <p>Las tiendas piden explicar por qué se piden ubicación, cámara y avisos (inventario §4). Este mock lo explica en el momento de usarlo (A03 para la ubicación, A15 para la cámara y A17 para los avisos), no aquí.</p>
+    </div>
+
+    <h3>Decisiones de diseño del mock</h3>
+    <div class="nota nota-mock">
+      <div class="rotulo">Sin fila</div>
+      <p>"Saltar" lleva al registro. La tercera informativa cierra con "Crear cuenta" y con el acceso para quien ya tiene cuenta.</p>
+    </div>
+  </aside>
+</div>
+<script src="../comun/app.js"></script>
+<script>
+(function () {
+  var actual = 1, total = 3;
+  var boton = document.getElementById('siguiente');
+  var yaTengo = document.getElementById('ya-tengo');
+  function mostrar(n) {
+    actual = n;
+    document.querySelectorAll('.diapositiva').forEach(function (d) {
+      d.hidden = Number(d.getAttribute('data-diapositiva')) !== n;
+    });
+    document.querySelectorAll('.puntos-carrusel span').forEach(function (p, i) {
+      p.classList.toggle('activo', i === n - 1);
+    });
+    boton.textContent = n === total ? 'Crear cuenta' : 'Siguiente';
+    yaTengo.hidden = n !== total;
+  }
+  boton.addEventListener('click', function () {
+    if (actual < total) mostrar(actual + 1);
+    else window.location.href = 'a02-registro.html';
+  });
+  var n = Number((window.location.hash || '').replace('#', ''));
+  mostrar(n >= 1 && n <= total ? n : 1);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+# Integración continua del vault.
+# Qué la hace fallar y por qué: vault/formas-de-trabajo/integracion-continua.md
+name: vault
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # Falla si una nota no tiene frontmatter completo o su estado está fuera del vocabulario.
+      - name: Frontmatter de las notas
+        run: python herramientas/ci/verificar_vault.py
+
+      # Falla si estado-del-proyecto.md, la deuda o el calendario tienen un estado fuera de su
+      # vocabulario, un id repetido o una fila sin estado. Los JSON que escribe no se suben desde aquí.
+      - name: Vocabularios del tablero
+        run: python herramientas/tablero/construir_tablero.py

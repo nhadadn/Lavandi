@@ -1,0 +1,13 @@
+{
+  "newFileLocation": "current",
+  "newLinkFormat": "shortest",
+  "useMarkdownLinks": false,
+  "alwaysUpdateLinks": true,
+  "attachmentFolderPath": "./",
+  "showUnsupportedFiles": false,
+  "userIgnoreFilters": [
+    "cliente/recibido/",
+    "design-system/canvas/",
+    "marca/visual/canvas/"
+  ]
+}

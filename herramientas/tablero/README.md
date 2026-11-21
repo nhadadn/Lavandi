@@ -3,7 +3,7 @@
 El tablero es una página de claude.ai, de tipo Dashboard, que muestra el estado del proyecto en un
 vistazo: <https://claude.ai/artifact/T2tZpPePdPhccB4GmFRjbK>
 
-**Es un espejo del vault, como Notion.** No guarda nada propio ni se edita a mano. Todo lo que muestra
+**Es un espejo del vault.** No guarda nada propio ni se edita a mano. Todo lo que muestra
 sale de notas del vault, y cada cifra dice de cuál: en el tablero, el panel de fuentes lo enseña al
 pulsar cualquier número.
 

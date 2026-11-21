@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="es" data-plataforma-activa="ios">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F-A03 · Pantalla principal — Mocks de Lavandi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../comun/tokens.css">
+<link rel="stylesheet" href="../comun/estilos.css">
+<style>
+  /* Solo esta pantalla: capas encima del mapa. */
+  .zona-mapa { position: relative; flex: 1; min-height: 0; }
+  .zona-mapa .mapa { position: absolute; inset: 0; }
+  .sobre-mapa { position: absolute; top: 0; left: 0; right: 0; z-index: 5; padding: var(--s-1) var(--s-4) 0; display: flex; flex-direction: column; gap: var(--s-2); }
+  .chip-direccion { display: inline-flex; align-items: center; gap: var(--s-1); min-height: var(--a-tactil-ios); padding: 0 var(--s-3);
+    background: var(--c-superficie); border: 1px solid var(--c-borde); border-radius: var(--r-pildora); box-shadow: var(--ele-2);
+    color: var(--c-texto); text-decoration: none; font-size: var(--t-menor); }
+  .chip-direccion strong { font-weight: var(--p-semifuerte); }
+  .boton-flotante { background: var(--c-superficie); box-shadow: var(--ele-2); border: 1px solid var(--c-borde); }
+  .permiso { box-shadow: var(--ele-2); }
+  .mi-ubicacion { position: absolute; right: var(--s-4); z-index: 6; }
+</style>
+</head>
+<body data-pantalla="a03-principal">
+<div class="escenario">
+  <div class="columna-telefono">
+    <div class="telefono">
+      <div class="pantalla">
+        <div class="barra-estado"><span aria-hidden="true">9:41</span><span class="cinta-mock" role="note">Mock · datos de ejemplo</span><span class="iconos-estado" aria-hidden="true"><svg class="icono"><use href="#i-senal"/></svg><svg class="icono"><use href="#i-wifi"/></svg><svg class="icono"><use href="#i-bateria"/></svg></span></div>
+
+        <div class="zona-mapa" id="zona-mapa">
+          <h1 class="solo-lector">Inicio: lavanderías cercanas</h1>
+          <!-- Mapa: dibujo de ejemplo. En la app es nativo (ADR-0009). -->
+          <div class="mapa" id="mapa">
+            <span class="etiqueta-mapa" id="etiqueta-mapa">Dibujo de ejemplo · en la app: <span data-plataforma="ios">mapa de Apple</span><span data-plataforma="android">mapa de Google</span></span>
+          </div>
+
+          <div class="sobre-mapa">
+            <div class="fila">
+              <a class="chip-direccion" href="a08-direccion.html"><svg class="icono chico"><use href="#i-ubicacion"/></svg>Recoger en: <strong data-dato="recogida.alias">Casa</strong><svg class="icono chico"><use href="#i-abajo"/></svg></a>
+              <a class="btn btn-icono boton-flotante" href="a17-notificaciones.html" aria-label="Avisos"><svg class="icono"><use href="#i-campana"/></svg></a>
+            </div>
+            <a class="buscador boton-flotante" href="a04-busqueda.html" style="border-color:var(--c-borde-fuerte)">
+              <svg class="icono"><use href="#i-buscar"/></svg><span style="flex:1">Buscar lavandería</span><svg class="icono"><use href="#i-filtros"/></svg>
+            </a>
+            <div class="tarjeta permiso" id="permiso-ubicacion" role="region" aria-label="Permiso de ubicación">
+              <div class="fila-izq" style="align-items:flex-start">
+                <svg class="icono" style="color:var(--c-accion)"><use href="#i-mi-ubicacion"/></svg>
+                <p class="menor mb-2">Usamos tu ubicación <strong>solo con la app abierta</strong>, para mostrarte las lavanderías cercanas.</p>
+              </div>
+              <div class="fila" style="justify-content:flex-end;gap:var(--s-2)">
+                <button type="button" class="btn btn-texto" id="permiso-no">Ahora no</button>
+                <button type="button" class="btn btn-primario" id="permiso-si">Permitir</button>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-icono boton-flotante mi-ubicacion" id="mi-ubicacion" aria-label="Centrar en mi ubicación"><svg class="icono"><use href="#i-navegar"/></svg></button>
+
+          <section class="hoja" id="hoja" aria-label="Lavanderías cercanas">
+            <div class="asa" aria-hidden="true"></div>
+            <div style="padding:0 var(--s-4)">
+              <a class="btn btn-primario btn-grande btn-bloque" href="a04-busqueda.html"><svg class="icono"><use href="#i-mas"/></svg>Pedido nuevo</a>
+              <div class="fila mt-2">
+                <h2 class="titulo-seccion" style="margin:0">Cerca de ti</h2>
+                <a class="btn btn-texto" href="a04-busqueda.html"><svg class="icono chico"><use href="#i-lista"/></svg>Ver lista</a>
+              </div>
+            </div>
+            <div class="carrusel" id="carrusel"></div>
+          </section>
+        </div>
+
+        <nav class="barra-pestanas" aria-label="Secciones de la app">
+          <a href="a03-principal.html" aria-current="page"><svg class="icono"><use href="#i-casa"/></svg>Inicio</a>
+          <a href="a13-historial.html"><svg class="icono"><use href="#i-pedidos"/></svg>Pedidos</a>
+          <a href="a16-soporte.html"><svg class="icono"><use href="#i-soporte"/></svg>Ayuda</a>
+          <a href="a15-perfil.html"><svg class="icono"><use href="#i-perfil"/></svg>Perfil</a>
+        </nav>
+        <div class="indicador-inicio" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="anotaciones" id="anotaciones" aria-labelledby="titulo-anotaciones">
+    <div class="encabezado-panel">
+      <div><h2 id="titulo-anotaciones">Anotaciones</h2><p class="suave micro mb-0">Qué dibuja esta pantalla y qué falta decidir.</p></div>
+      <button type="button" class="btn btn-icono" data-cerrar-anotaciones aria-label="Ocultar anotaciones"><svg class="icono"><use href="#i-cerrar"/></svg></button>
+    </div>
+
+    <h3>Función</h3>
+    <p class="mb-2"><strong>F-A03 · Pantalla principal</strong></p>
+    <blockquote>"Mapa con lavanderías cercanas activas. Acceso rápido a pedido nuevo."</blockquote>
+    <p><span class="cita">NSV-2026-001-v8.pdf:16-17:ANEXO A, Sección A.3</span> · Módulo A, numeral 3</p>
+
+    <h3>Componentes del design system</h3>
+    <ul>
+      <li><strong>1 · Tarjeta de lavandería</strong>, en sus tres estados: abierta (Elegir), sin cupo hoy (Ver horarios) y cerrada (acción deshabilitada y próxima apertura). El estado va con color <em>y</em> con texto.</li>
+    </ul>
+    <p class="menor suave">Toca un pin del mapa: resalta su tarjeta.</p>
+
+    <h3>Decisiones tomadas que respeta</h3>
+    <div class="nota nota-decision">
+      <div class="rotulo"><span>ADR-0009</span><span>vigente</span></div>
+      <p>Mapa nativo con <span class="cita">react-native-maps</span> sin <span class="cita">provider</span>: mapa de Apple en iPhone y de Google en Android (RN-29). Una sola sesión de mapa por búsqueda. Aquí es un dibujo SVG sin llaves ni servicios.</p>
+    </div>
+    <div class="nota nota-decision">
+      <div class="rotulo"><span>Ubicación solo en primer plano</span><span>inventario §3</span></div>
+      <p>Sin rastreo continuo (RN-12), la app no pide ubicación en segundo plano. El aviso de permiso lo dice con todas sus letras.</p>
+    </div>
+
+    <h3>Pendiente</h3>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>BR-15</span><span>ESPECIFICACIÓN PENDIENTE</span></div>
+      <p>Qué es "cercana" (radio) y qué es "activa" (aprobada, en horario, con ventanas libres). Las distancias, calificaciones y estados de las tarjetas son de ejemplo.</p>
+    </div>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>DD-010</span><span>en curso</span></div>
+      <p>El precio "desde $ — por kilo" espera el método de fijación de precio. Además, "Aún no hay precios" (C-131, acta del 2026-11-05).</p>
+    </div>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>F-T12</span><span>grado E · SIN VERIFICAR</span></div>
+      <p>Las tiendas piden explicar por qué se pide la ubicación (inventario §4). El mock lo explica antes del permiso del sistema.</p>
+    </div>
+    <div class="nota nota-cliente">
+      <div class="rotulo"><span>Marca del cliente · 2026-11-05</span><span>sin confirmar</span></div>
+      <p>En A03 escribió "No, se asigna en la app". El contrato pone que la persona elige la lavandería en el mapa y en su ficha (F-A03 a F-A05), y la asignación automática está excluida (<span class="cita">NSV-2026-001-v8.pdf:18:Módulo C</span>). El mock dibuja el contrato.</p>
+    </div>
+
+    <h3>Decisiones de diseño del mock</h3>
+    <div class="nota nota-mock">
+      <div class="rotulo">Sin fila</div>
+      <p>El acceso rápido "Pedido nuevo" abre la lista de lavanderías, porque el precio y las ventanas dependen de la lavandería. Se confirma en la spec del Módulo A.</p>
+    </div>
+  </aside>
+</div>
+<script src="../comun/app.js"></script>
+<script>
+(function () {
+  var mapa = document.getElementById('mapa');
+  mapa.insertAdjacentHTML('afterbegin', Mock.dibujoMapa());
+
+  // Pines: la posición sale de los datos de ejemplo, comprimida para que no queden bajo la hoja.
+  var pedido = Mock.pedido();
+  Object.keys(Mock.LAVANDERIAS).forEach(function (id) {
+    var l = Mock.LAVANDERIAS[id];
+    var pin = document.createElement('button');
+    pin.type = 'button';
+    pin.className = 'pin' + (l.estado === 'sin-cupo' ? ' sin-cupo' : l.estado === 'cerrada' ? ' cerrada' : '');
+    pin.style.left = l.x + '%';
+    pin.style.top = (24 + l.y * 0.32) + '%';
+    pin.setAttribute('aria-label', l.nombre + ', ' + Mock.ESTADO_LAVANDERIA[l.estado].texto);
+    pin.setAttribute('aria-pressed', 'false');
+    pin.setAttribute('data-pin', id);
+    pin.innerHTML = Mock.pinSvg();
+    mapa.appendChild(pin);
+  });
+  var yo = document.createElement('span');
+  yo.className = 'yo'; yo.style.left = '44%'; yo.style.top = '40%'; yo.title = 'Tu ubicación (ejemplo)';
+  mapa.appendChild(yo);
+
+  // Carrusel con el componente 1, ordenado por distancia.
+  var carrusel = document.getElementById('carrusel');
+  carrusel.innerHTML = Object.keys(Mock.LAVANDERIAS)
+    .map(function (k) { return Mock.LAVANDERIAS[k]; })
+    .sort(function (a, b) { return a.distancia - b.distancia; })
+    .map(Mock.tarjetaLavanderia).join('');
+
+  function resaltar(id) {
+    document.querySelectorAll('[data-pin]').forEach(function (p) { p.setAttribute('aria-pressed', String(p.getAttribute('data-pin') === id)); });
+    carrusel.querySelectorAll('.tarjeta-lavanderia').forEach(function (t) {
+      var si = t.getAttribute('data-lavanderia') === id;
+      t.classList.toggle('resaltada', si);
+      if (si) carrusel.scrollTo({ left: t.offsetLeft - 16, behavior: 'smooth' });
+    });
+  }
+  mapa.addEventListener('click', function (ev) {
+    var p = ev.target.closest('[data-pin]');
+    if (p) resaltar(p.getAttribute('data-pin'));
+  });
+
+  // La etiqueta del mapa y el botón de ubicación van justo encima de la hoja.
+  function acomodar() {
+    var alto = document.getElementById('hoja').offsetHeight;
+    document.getElementById('etiqueta-mapa').style.bottom = (alto + 12) + 'px';
+    document.getElementById('mi-ubicacion').style.bottom = (alto + 8) + 'px';
+  }
+  acomodar();
+  window.addEventListener('load', acomodar);
+
+  // Aviso de permiso de ubicación (simulado).
+  var permiso = document.getElementById('permiso-ubicacion');
+  if (Mock.leer('permisoUbicacion', false)) permiso.hidden = true;
+  document.getElementById('permiso-si').addEventListener('click', function () {
+    Mock.escribir('permisoUbicacion', true);
+    permiso.hidden = true;
+    Mock.brindis('Aquí aparecería el permiso del sistema: "Mientras se usa la app".');
+  });
+  document.getElementById('permiso-no').addEventListener('click', function () {
+    permiso.hidden = true;
+    Mock.brindis('Qué muestra el mapa sin permiso de ubicación: lo define la spec.');
+  });
+  document.getElementById('mi-ubicacion').addEventListener('click', function () {
+    Mock.brindis('El mapa se centraría en tu ubicación.');
+  });
+
+  resaltar(pedido.lavanderia);
+})();
+</script>
+</body>
+</html>

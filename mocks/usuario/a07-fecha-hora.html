@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="es" data-plataforma-activa="ios">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F-A07 · Fecha y hora de recolección — Mocks de Lavandi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../comun/tokens.css">
+<link rel="stylesheet" href="../comun/estilos.css">
+</head>
+<body data-pantalla="a07-fecha-hora">
+<div class="escenario">
+  <div class="columna-telefono">
+    <div class="telefono">
+      <div class="pantalla">
+        <div class="barra-estado"><span aria-hidden="true">9:41</span><span class="cinta-mock" role="note">Mock · datos de ejemplo</span><span class="iconos-estado" aria-hidden="true"><svg class="icono"><use href="#i-senal"/></svg><svg class="icono"><use href="#i-wifi"/></svg><svg class="icono"><use href="#i-bateria"/></svg></span></div>
+
+        <div class="encabezado-app">
+          <a class="btn btn-icono" href="a06-servicio.html" aria-label="Regresar"><svg class="icono"><use href="#i-atras"/></svg></a>
+          <h1>Pedido nuevo · 2 de 4</h1>
+          <span class="lado"></span>
+        </div>
+
+        <main class="contenido">
+          <h2 class="titulo-pantalla">¿Cuándo pasamos por tu ropa?</h2>
+          <p class="suave">Elige una ventana de <strong style="color:var(--c-texto)">una hora</strong> para la recolección.</p>
+
+          <!-- Componente 2 · Selector de fecha y hora en ventanas de una hora -->
+          <section class="selector-hora mt-4" aria-label="Fecha y hora de recolección">
+            <div class="selector-dia">
+              <button type="button" class="btn" id="dia-anterior" aria-label="Día anterior"><svg class="icono"><use href="#i-atras"/></svg></button>
+              <div class="dia" id="dia" aria-live="polite">Jueves 19 de noviembre</div>
+              <button type="button" class="btn" id="dia-siguiente" aria-label="Día siguiente"><svg class="icono"><use href="#i-adelante"/></svg></button>
+            </div>
+            <div class="ventanas" id="ventanas" role="group" aria-label="Ventanas de una hora"></div>
+            <div class="sin-servicio" id="sin-servicio" hidden>
+              <p class="mb-2">Este día la lavandería no da servicio.</p>
+              <button type="button" class="btn" id="ir-siguiente">Ver el siguiente día</button>
+            </div>
+            <div class="leyenda-ventanas" aria-hidden="true">
+              <span><i style="background:var(--c-superficie);border:1px solid var(--c-borde-fuerte)"></i>Disponible</span>
+              <span><i style="background:var(--c-accion)"></i>Elegida</span>
+              <span><i style="background:var(--c-superficie-hundida);border:1px solid var(--c-borde)"></i>Sin cupo</span>
+            </div>
+          </section>
+
+          <div class="caja-pendiente mt-4">
+            <span class="titulo-caja">Entrega</span>
+            <span class="pendiente">Falta definirla</span>
+            <p>Cuándo te regresamos la ropa y si eliges otra ventana para la entrega.</p>
+          </div>
+        </main>
+
+        <div class="acciones-fijas">
+          <p class="menor mb-0 centrado" id="elegida" aria-live="polite"></p>
+          <a class="btn btn-primario btn-grande btn-bloque" id="continuar" href="a08-direccion.html">Continuar</a>
+        </div>
+        <div class="indicador-inicio" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="anotaciones" id="anotaciones" aria-labelledby="titulo-anotaciones">
+    <div class="encabezado-panel">
+      <div><h2 id="titulo-anotaciones">Anotaciones</h2><p class="suave micro mb-0">Qué dibuja esta pantalla y qué falta decidir.</p></div>
+      <button type="button" class="btn btn-icono" data-cerrar-anotaciones aria-label="Ocultar anotaciones"><svg class="icono"><use href="#i-cerrar"/></svg></button>
+    </div>
+
+    <h3>Función</h3>
+    <p class="mb-2"><strong>F-A07 · Programación de recolección</strong></p>
+    <blockquote>"Selector de fecha y hora, con ventanas de 1 hora."</blockquote>
+    <p><span class="cita">NSV-2026-001-v8.pdf:16-17:ANEXO A, Sección A.3</span> · Módulo A, numeral 7 · RN-15</p>
+
+    <h3>Componentes del design system</h3>
+    <ul>
+      <li><strong>2 · Selector de fecha y hora, ventanas de una hora</strong>, con sus cuatro estados: disponible, seleccionada (con palomita, no solo color), sin cupo (tachada pero <em>visible</em>) y día sin servicio (mensaje en lugar de la rejilla). Cada ventana mide al menos 48 px de alto.</li>
+    </ul>
+    <p class="menor suave">Navega los días: el domingo enseña el estado "día sin servicio".</p>
+
+    <h3>Pendiente</h3>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>BR-17</span><span>Cliente + F5</span></div>
+      <p>Horarios de operación, anticipación mínima, cupo por ventana y ventana de entrega. En el mock son de ejemplo: de 9:00 a 18:00, cupos llenos al azar, domingo sin servicio y 14 días hacia adelante. Para hoy se tachan las horas que ya pasaron.</p>
+    </div>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>BR-17 · F-B06</span><span>relación con el socio</span></div>
+      <p>Cómo se cruzan estas ventanas con las "ventanas de disponibilidad" que edita la lavandería en su módulo.</p>
+    </div>
+    <div class="nota nota-cliente">
+      <div class="rotulo"><span>Marca del cliente · 2026-11-05</span><span>sin confirmar</span></div>
+      <p>"Tiempo de regreso: lo decide cada lavandería" y "Lo decide la app de acuerdo a la lavandería". Si se confirma, la caja "Entrega" mostraría el tiempo de cada lavandería.</p>
+    </div>
+  </aside>
+</div>
+<script src="../comun/app.js"></script>
+<script>
+(function () {
+  var F = Mock.fecha;
+  var p = Mock.pedido();
+  var lav = Mock.LAVANDERIAS[p.lavanderia];
+  var dia = p.fecha;
+  var ventana = p.ventana;
+  var HORAS = [9, 10, 11, 12, 13, 14, 15, 16, 17];
+  var MAX_DIAS = 14;
+
+  function etiqueta(h) { return h + ':00 – ' + (h + 1) + ':00'; }
+  function sinCupo(iso, h) {
+    var f = F.deIso(iso);
+    if (iso === F.aIso(F.hoy())) {
+      if (lav.estado === 'sin-cupo') return true;
+      if (h <= new Date().getHours()) return true;
+    }
+    return (h + f.getDate()) % 4 === 0;
+  }
+
+  function pintar() {
+    var hoyIso = F.aIso(F.hoy());
+    document.getElementById('dia').textContent = F.texto(dia, true);
+    document.getElementById('dia-anterior').disabled = dia <= hoyIso;
+    document.getElementById('dia-siguiente').disabled = dia >= F.aIso(F.sumarDias(F.hoy(), MAX_DIAS));
+
+    var cerrado = F.sinServicio(dia);
+    document.getElementById('ventanas').hidden = cerrado;
+    document.getElementById('sin-servicio').hidden = !cerrado;
+    if (cerrado) { ventana = null; }
+
+    document.getElementById('ventanas').innerHTML = HORAS.map(function (h) {
+      var t = etiqueta(h), lleno = sinCupo(dia, h);
+      if (lleno && ventana === t) ventana = null;
+      return '<button type="button" class="ventana" data-ventana="' + t + '"' +
+        (lleno ? ' disabled aria-label="' + t + ', sin cupo"' : '') +
+        ' aria-pressed="' + String(!lleno && ventana === t) + '">' +
+        '<svg class="icono"><use href="#i-palomita"/></svg>' + t + '</button>';
+    }).join('');
+
+    var continuar = document.getElementById('continuar');
+    var elegida = document.getElementById('elegida');
+    if (ventana && !cerrado) {
+      continuar.removeAttribute('aria-disabled');
+      continuar.textContent = 'Continuar';
+      elegida.textContent = F.texto(dia, true) + ' · ' + ventana;
+    } else {
+      continuar.setAttribute('aria-disabled', 'true');
+      continuar.textContent = 'Elige una ventana';
+      elegida.textContent = '';
+    }
+  }
+
+  document.getElementById('ventanas').addEventListener('click', function (ev) {
+    var b = ev.target.closest('[data-ventana]');
+    if (!b || b.disabled) return;
+    ventana = b.getAttribute('data-ventana');
+    pintar();
+  });
+  function mover(n) { dia = F.aIso(F.sumarDias(F.deIso(dia), n)); pintar(); }
+  document.getElementById('dia-anterior').addEventListener('click', function () { mover(-1); });
+  document.getElementById('dia-siguiente').addEventListener('click', function () { mover(1); });
+  document.getElementById('ir-siguiente').addEventListener('click', function () { mover(1); });
+  document.getElementById('continuar').addEventListener('click', function (ev) {
+    if (!ventana) { ev.preventDefault(); return; }
+    Mock.guardarPedido({ fecha: dia, ventana: ventana });
+  });
+  pintar();
+})();
+</script>
+</body>
+</html>

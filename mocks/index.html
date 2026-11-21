@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="es" data-plataforma-activa="ios">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Catálogo de pantallas — Mocks de Lavandi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="comun/tokens.css">
+<link rel="stylesheet" href="comun/estilos.css">
+<style>
+  body { background: var(--c-fondo); }
+  .leyenda-notas { display: grid; gap: var(--s-2); grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); margin-bottom: var(--s-5); }
+  .leyenda-notas .nota { margin: 0; font-size: var(--t-menor); }
+</style>
+</head>
+<body>
+<main class="catalogo">
+  <header class="catalogo-cabeza">
+    <span class="monograma grande" aria-hidden="true">L</span>
+    <div style="flex:1;min-width:260px">
+      <h1>Lavandi · mocks navegables</h1>
+      <p class="suave mb-0">Todas las pantallas del producto, por módulo. Las hechas se abren y se navegan; las demás esperan su turno.</p>
+    </div>
+    <span class="cinta-mock" role="note">Mock · datos de ejemplo</span>
+  </header>
+
+  <div class="resumen-avance" id="avance" aria-live="polite"></div>
+
+  <section class="reglas" aria-labelledby="titulo-reglas">
+    <h2 id="titulo-reglas" style="font-size:var(--t-cuerpo-grande)">Cómo se leen estos mocks</h2>
+    <ul>
+      <li><strong>Son un prototipo, no la app.</strong> HTML, CSS y JavaScript sin dependencias: se abren con doble clic. Nada se conecta a un servidor, a Conekta, a mapas ni a avisos reales.</li>
+      <li><strong>El nombre visible es Lavandi</strong>, sin logotipo: en su lugar va un monograma neutro "L". Ningún archivo de <span class="cita">vault/marca/</span> entra aquí.</li>
+      <li><strong>No inventan el negocio.</strong> Lavanderías, personas, folios, distancias y calificaciones son ficticios. Los precios van como "$ —". La única cifra con fuente es el envío de $35 (C-31), y se marca porque su estructura sigue abierta.</li>
+      <li><strong>Lo pendiente se ve.</strong> Cada pantalla tiene un panel de anotaciones con la función, su cita del contrato, los componentes del design system, las decisiones tomadas (ADR) y lo que falta decidir (DD o BR).</li>
+      <li><strong>Las recomendaciones son opciones, no decisiones.</strong> Cuando el vault tiene una recomendación escrita, el panel deja cambiar entre lo que dice el contrato y la recomendación.</li>
+      <li>Arriba de cada pantalla: anterior y siguiente del recorrido, plataforma (iPhone o Android) y el botón para ocultar las anotaciones.</li>
+    </ul>
+  </section>
+
+  <div class="leyenda-notas" aria-label="Tipos de nota en el panel">
+    <div class="nota nota-decision"><div class="rotulo">Decidido</div>ADR vigente que la pantalla respeta.</div>
+    <div class="nota nota-pendiente"><div class="rotulo">Pendiente</div>Fila abierta en la deuda (DD) o en la brecha (BR).</div>
+    <div class="nota nota-recomendacion"><div class="rotulo">Recomendación</div>Escrita en el vault, sin decidir. Se puede ver como variante.</div>
+    <div class="nota nota-cliente"><div class="rotulo">Marca del cliente</div>Marcas en papel del 2026-11-05. No son grado C.</div>
+    <div class="nota nota-mock"><div class="rotulo">Decisión del mock</div>Algo que el mock tuvo que elegir para poder dibujar. Lo confirma la spec.</div>
+  </div>
+
+  <nav class="indice-modulos" aria-label="Módulos">
+    <a href="#modulo-a">Usuario (A)</a>
+    <a href="#modulo-b">Socio lavandería (B)</a>
+    <a href="#modulo-c">Socio repartidor (C)</a>
+    <a href="#modulo-d">Administración (D)</a>
+    <a href="#landing">Landing</a>
+    <a href="#indicadores">Indicadores</a>
+  </nav>
+
+  <div id="modulos"></div>
+  <noscript><p class="aviso-error">El catálogo se dibuja con JavaScript. Actívalo para verlo.</p></noscript>
+
+  <section class="reglas" style="border-left-color:var(--c-borde-fuerte)" aria-labelledby="titulo-transversales">
+    <h2 id="titulo-transversales" style="font-size:var(--t-cuerpo-grande)">Transversales (F-T01 a F-T18)</h2>
+    <p class="mb-0">No son pantallas. Las que tocan el módulo A se anotan en cada pantalla: cobro con Conekta (F-T01, F-T11) en A10, avisos (F-T02) en A11, A12 y A17, mapas (F-T03) en A03 y A08, control de acceso (F-T07) en A02, correos automáticos (F-T13) en A02 y A11, y aviso de privacidad y términos (F-T18) en A02 y A15.</p>
+  </section>
+
+  <p class="menor suave">Fuente de la lista: <span class="cita">vault/contrato/inventario-funcional.md</span> (76 funciones: 58 de pantalla más 18 transversales). Los mocks se piden en C-167, <span class="cita">vault/meta/actas/acta-2026-11-18-entorno-y-mocks.md</span>.
+    <button type="button" class="btn btn-texto" id="reiniciar">Reiniciar los datos del mock</button></p>
+</main>
+
+<script src="comun/app.js"></script>
+<script>
+(function () {
+  var A = 'NSV-2026-001-v8.pdf:16-17:ANEXO A, Sección A.3';
+  var MODULOS = [
+    { id: 'modulo-a', titulo: 'Usuario (A)', cita: A, nota: 'App única para iPhone y Android. El recorrido completo, de la bienvenida a los avisos.', funciones: [
+      { id: 'F-A01', nombre: 'Splash & Onboarding', literal: 'Pantalla de bienvenida y 3 pantallas informativas sobre el servicio.', pendientes: 'Textos e imágenes de EL CLIENTE', pantallas: [['a01-bienvenida', 'Bienvenida'], ['a01-informativas', 'Tres informativas']] },
+      { id: 'F-A02', nombre: 'Registro e inicio de sesión', literal: 'Correo y contraseña, con opción de Google Sign-In.', pendientes: 'BR-14 · DD-053', pantallas: [['a02-registro', 'Registro'], ['a02-inicio-sesion', 'Inicio de sesión'], ['a02-recuperar', 'Recuperar contraseña']] },
+      { id: 'F-A03', nombre: 'Pantalla principal', literal: 'Mapa con lavanderías cercanas activas. Acceso rápido a pedido nuevo.', pendientes: 'BR-15 · DD-010', pantallas: [['a03-principal', 'Principal con mapa']] },
+      { id: 'F-A04', nombre: 'Búsqueda y filtros', literal: 'Filtros por distancia, calificación y disponibilidad.', pendientes: 'BR-15', pantallas: [['a04-busqueda', 'Búsqueda']] },
+      { id: 'F-A05', nombre: 'Perfil de la lavandería', literal: 'Fotos, descripción, servicios, precios por kilo, calificación y reseñas.', pendientes: 'BR-16 · BR-46 · DD-010', pantallas: [['a05-lavanderia', 'Perfil']] },
+      { id: 'F-A06', nombre: 'Selección de servicio', literal: 'Tipos: lavado estándar, lavado con planchado y lavado en seco.', pendientes: 'BR-16 · DD-046', pantallas: [['a06-servicio', 'Servicio']] },
+      { id: 'F-A07', nombre: 'Programación de recolección', literal: 'Selector de fecha y hora, con ventanas de 1 hora.', pendientes: 'BR-17', pantallas: [['a07-fecha-hora', 'Fecha y hora']] },
+      { id: 'F-A08', nombre: 'Dirección de recogida y entrega', literal: 'Ingreso manual o desde mapa. Guardado de direcciones favoritas.', pendientes: 'BR-18 · BR-12 · BR-02', pantallas: [['a08-direccion', 'Dirección']] },
+      { id: 'F-A09', nombre: 'Resumen del pedido', literal: 'Servicio, fecha, dirección, precio estimado y política de cancelación.', pendientes: 'DD-012 · DD-016 · DD-019 · DD-025', pantallas: [['a09-resumen', 'Resumen']] },
+      { id: 'F-A10', nombre: 'Pasarela de pago', literal: 'Conekta: tarjeta de crédito o débito y OXXO Pay.', pendientes: 'DD-012 · DD-055 · DD-056', pantallas: [['a10-pago', 'Pago con Conekta']] },
+      { id: 'F-A11', nombre: 'Confirmación de pedido', literal: 'Número de folio, resumen y notificación push más correo.', pendientes: 'BR-21 · DD-071', pantallas: [['a11-confirmacion', 'Confirmación']] },
+      { id: 'F-A12', nombre: 'Seguimiento de estado', literal: 'Flujo: Confirmado → Recolectado → En proceso → Listo → Entregado.', pendientes: 'BR-22 · DD-011 · DD-016', pantallas: [['a12-seguimiento', 'Seguimiento']] },
+      { id: 'F-A13', nombre: 'Historial de pedidos', literal: 'Lista con filtro por fecha y opción de repetir pedido.', pendientes: 'BR-25', pantallas: [['a13-historial', 'Historial']] },
+      { id: 'F-A14', nombre: 'Calificación del servicio', literal: 'Escala de 1 a 5 estrellas con comentario opcional.', pendientes: 'BR-25 · DD-052', pantallas: [['a14-calificacion', 'Calificación']] },
+      { id: 'F-A15', nombre: 'Perfil de usuario', literal: 'Nombre, foto, direcciones guardadas, métodos de pago y notificaciones.', pendientes: 'DD-055 · BR-09', pantallas: [['a15-perfil', 'Perfil']] },
+      { id: 'F-A16', nombre: 'Soporte', literal: 'Chat de WhatsApp Business y formulario de reporte.', pendientes: 'BR-25', pantallas: [['a16-soporte', 'Ayuda']] },
+      { id: 'F-A17', nombre: 'Notificaciones push', literal: 'Confirmación, recolección, listo para entrega y entregado.', pendientes: 'DD-011 · BR-24', pantallas: [['a17-notificaciones', 'Avisos']] }
+    ] },
+    { id: 'modulo-b', titulo: 'Socio lavandería (B)', cita: 'NSV-2026-001-v8.pdf:17:ANEXO A, Sección A.3', nota: 'Dentro de la misma app. Cómo llega la lavandería a su módulo es DD-053.', funciones: [
+      { id: 'F-B01', nombre: 'Registro de lavandería', literal: 'Nombre, dirección, foto, servicios, precios y horario.', pendientes: 'BR-26 · DD-053' },
+      { id: 'F-B02', nombre: 'Gestión de pedidos activos', literal: 'Lista en tiempo real. Aceptar o rechazar con motivo.', pendientes: 'BR-26 · DD-054' },
+      { id: 'F-B03', nombre: 'Actualización de estado', literal: 'Botones: Recolectado → En proceso → Listo → En proceso de entrega.', pendientes: 'DD-022 · BR-44' },
+      { id: 'F-B04', nombre: 'Historial de pedidos', literal: 'Pedidos completados con fecha, monto y calificación recibida.', pendientes: 'BR-31' },
+      { id: 'F-B05', nombre: 'Estadísticas básicas', literal: 'Pedidos del día y de la semana, ingreso total y calificación promedio.', pendientes: 'BR-31 · DD-013' },
+      { id: 'F-B06', nombre: 'Perfil y horarios', literal: 'Edición de información de la lavandería y ventanas de disponibilidad.', pendientes: 'BR-17' }
+    ] },
+    { id: 'modulo-c', titulo: 'Socio repartidor (C)', cita: 'NSV-2026-001-v8.pdf:18:ANEXO A, Sección A.3', nota: '"Versión operativa mínima". Sin asignación automática, sin rutas, sin GPS continuo y sin liquidaciones (RN-12).', funciones: [
+      { id: 'F-C01', nombre: 'Registro de repartidor', literal: 'Nombre, teléfono, correo, foto de perfil y tipo de vehículo. El alta, validación y autorización del repartidor corresponden a EL CLIENTE.', pendientes: 'BR-48' },
+      { id: 'F-C02', nombre: 'Gestión de pedidos asignados', literal: 'Lista en tiempo real de pedidos asignados. Aceptar o rechazar con motivo.', pendientes: 'DD-014 · BR-49' },
+      { id: 'F-C03', nombre: 'Actualización de estado', literal: 'Botones: Recolectado → En tránsito → Entregado.', pendientes: 'BR-22 · BR-29' },
+      { id: 'F-C04', nombre: 'Historial de entregas', literal: 'Entregas completadas con fecha, monto y calificación recibida.', pendientes: 'BR-28 · DD-019' },
+      { id: 'F-C05', nombre: 'Estadísticas básicas', literal: 'Entregas del día y de la semana, e ingreso total acumulado.', pendientes: 'BR-28' }
+    ] },
+    { id: 'modulo-d', titulo: 'Administración (D, web)', cita: 'NSV-2026-001-v8.pdf:19:ANEXO A, Sección A.3', nota: 'Panel web completo, más una vista reducida de administración en la app (DD-040, cerrada por C-140). Lo usa EL CLIENTE.', funciones: [
+      { id: 'F-D01', nombre: 'Gestión de lavanderías', literal: 'Alta, baja, suspensión y edición de socios.', pendientes: 'BR-26' },
+      { id: 'F-D02', nombre: 'Gestión de repartidores', literal: 'Alta, baja, suspensión y edición de socios repartidores.', pendientes: '—' },
+      { id: 'F-D03', nombre: 'Gestión de usuarios', literal: 'Consulta de usuarios activos, historial y bloqueo.', pendientes: 'BR-33' },
+      { id: 'F-D04', nombre: 'Monitoreo de pedidos', literal: 'Vista en tiempo real de todos los pedidos activos con mapa.', pendientes: 'BR-30' },
+      { id: 'F-D05', nombre: 'Configuración de comisiones', literal: 'Porcentaje de comisión por socio o global.', pendientes: 'BR-31 · BR-46' },
+      { id: 'F-D06', nombre: 'Reportes financieros', literal: 'Ingresos por periodo, comisiones y conciliación con Conekta.', pendientes: 'BR-31 · DD-013' },
+      { id: 'F-D07', nombre: 'Notificaciones push masivas', literal: 'Envío segmentado o global para promociones o mantenimiento.', pendientes: 'BR-32' }
+    ] },
+    { id: 'landing', titulo: 'Landing (12 secciones)', cita: 'NSV-2026-001-v8.pdf:15:ANEXO A, Sección A.2', nota: 'Página web pública.', funciones: [
+      { id: 'F-L01', nombre: 'Hero / Encabezado', literal: 'Logo, tagline, CTA principal de descarga e imagen hero (mockup de la app).', pendientes: 'Necesita pantallas terminadas' },
+      { id: 'F-L02', nombre: '¿Cómo funciona?', literal: 'Paso a paso visual: Pide → Recogemos → Lavamos → Entregamos.', pendientes: '—' },
+      { id: 'F-L03', nombre: 'Beneficios para usuarios', literal: '3 pilares: comodidad, precio y confianza. Iconos animados.', pendientes: '—' },
+      { id: 'F-L04', nombre: 'Descarga la app', literal: 'Botones de App Store y Google Play. Mockup de pantalla.', pendientes: 'Enlaces al publicar' },
+      { id: 'F-L05', nombre: 'Lavanderías partner', literal: 'Invitación a lavanderías a unirse. Formulario de interés.', pendientes: 'BR-41' },
+      { id: 'F-L06', nombre: 'Beneficios para socios', literal: '3 pilares: más clientes, pagos seguros y cero gestión de cobranza.', pendientes: 'BR-31 · DD-013' },
+      { id: 'F-L07', nombre: 'Cobertura', literal: 'Mapa interactivo con las zonas de servicio del TERRITORIO INICIAL: Estado de Durango, y municipios de Torreón y Matamoros, Coahuila.', pendientes: 'BR-12 · BR-02' },
+      { id: 'F-L08', nombre: 'Testimonios', literal: '3 a 5 tarjetas de opiniones de usuarios beta (marcador de posición en lanzamiento).', pendientes: 'BR-11' },
+      { id: 'F-L09', nombre: 'Preguntas frecuentes', literal: 'Acordeón expandible con 6 a 8 preguntas.', pendientes: 'Insumo de EL CLIENTE' },
+      { id: 'F-L10', nombre: 'Prensa / Reconocimientos', literal: 'Logos de medios o menciones, activables conforme se obtengan.', pendientes: 'BR-11' },
+      { id: 'F-L11', nombre: 'Contacto & Soporte', literal: 'Correo, WhatsApp Business y formulario de contacto.', pendientes: 'BR-41' },
+      { id: 'F-L12', nombre: 'Footer legal', literal: 'Aviso de privacidad, términos de servicio y aviso de derechos de autor.', pendientes: 'RN-27 · F-T18' }
+    ] },
+    { id: 'indicadores', titulo: 'Indicadores (11)', cita: 'NSV-2026-001-v8.pdf:22:ANEXO A, Sección A.5', nota: '"Panel de indicadores integrado en la sección de administración": vive en el panel web.', funciones: [
+      { id: 'F-I01', nombre: 'Operaciones · pedidos totales', literal: 'Pedidos totales (diarios, semanales y mensuales) · Gráfica de barras y tabla comparativa', pendientes: 'BR-33' },
+      { id: 'F-I02', nombre: 'Operaciones · pedidos por estado', literal: 'Pedidos por estado (activos, completados y cancelados) · Gráfica de dona', pendientes: 'BR-22' },
+      { id: 'F-I03', nombre: 'Usuarios · activos', literal: 'Usuarios activos por día, por semana y por mes · Línea de tendencia', pendientes: 'BR-33' },
+      { id: 'F-I04', nombre: 'Usuarios · recompra por cohorte', literal: 'Porcentaje de usuarios que vuelven a pedir, agrupados según el mes en que se registraron · Tabla comparativa', pendientes: 'BR-33' },
+      { id: 'F-I05', nombre: 'Usuarios · monto promedio', literal: 'Monto promedio por pedido · Indicador destacado con tendencia', pendientes: 'BR-16' },
+      { id: 'F-I06', nombre: 'Socios · lavanderías activas', literal: 'Lavanderías activas frente a registradas · Indicador destacado', pendientes: 'BR-15' },
+      { id: 'F-I07', nombre: 'Socios · calificación por lavandería', literal: 'Calificación promedio por lavandería · Ranking con semáforo', pendientes: 'BR-33' },
+      { id: 'F-I08', nombre: 'Socios · entregas por repartidor', literal: 'Entregas completadas por repartidor · Tabla comparativa', pendientes: '—' },
+      { id: 'F-I09', nombre: 'Financiero · ingresos brutos', literal: 'Ingresos brutos por periodo · Gráfica de barras agrupadas', pendientes: 'BR-31' },
+      { id: 'F-I10', nombre: 'Financiero · comisiones', literal: 'Comisiones generadas por socio y en total · Tabla detallada con total', pendientes: 'BR-31' },
+      { id: 'F-I11', nombre: 'Geográfico · mapa de calor', literal: 'Mapa de calor de pedidos por colonia o zona · Mapa interactivo', pendientes: 'BR-33' }
+    ] }
+  ];
+
+  var total = 0, hechas = 0, pantallas = 0;
+  var html = MODULOS.map(function (m) {
+    var hechasMod = 0;
+    var tarjetas = m.funciones.map(function (f) {
+      total++;
+      var hecha = !!(f.pantallas && f.pantallas.length);
+      if (hecha) { hechas++; hechasMod++; pantallas += f.pantallas.length; }
+      var enlaces = hecha ? '<div class="enlaces">' + f.pantallas.map(function (p) {
+        return '<a href="usuario/' + p[0] + '.html">' + p[1] + '</a>';
+      }).join('') + '</div>' : '';
+      return '<article class="funcion' + (hecha ? '' : ' por-hacer') + '">' +
+        '<div class="cabeza-funcion"><span class="id">' + f.id + '</span>' +
+        '<span class="insignia ' + (hecha ? 'e-exito' : 'e-neutro') + '"><span class="punto"></span>' + (hecha ? 'hecha' : 'por hacer') + '</span></div>' +
+        '<h3>' + f.nombre + '</h3>' +
+        '<p class="literal">"' + f.literal + '"</p>' +
+        '<p class="pendientes-funcion mb-0">Pendiente: ' + f.pendientes + '</p>' + enlaces + '</article>';
+    }).join('');
+    return '<section class="modulo" id="' + m.id + '" aria-labelledby="t-' + m.id + '">' +
+      '<header><h2 id="t-' + m.id + '">' + m.titulo + '</h2><span class="menor suave">' + hechasMod + ' de ' + m.funciones.length + ' hechas · <span class="cita">' + m.cita + '</span></span></header>' +
+      '<p>' + m.nota + '</p><div class="rejilla-funciones">' + tarjetas + '</div></section>';
+  }).join('');
+  document.getElementById('modulos').innerHTML = html;
+
+  document.getElementById('avance').innerHTML =
+    '<div class="cifra"><strong>' + hechas + ' de ' + total + '</strong><span class="menor suave">funciones con mock</span></div>' +
+    '<div class="cifra"><strong>' + pantallas + '</strong><span class="menor suave">pantallas navegables</span></div>' +
+    '<div class="cifra"><strong>' + (total - hechas) + '</strong><span class="menor suave">funciones por hacer</span></div>' +
+    '<div class="cifra"><a class="btn btn-primario" href="usuario/a01-bienvenida.html">Empezar el recorrido</a></div>';
+
+  document.getElementById('reiniciar').addEventListener('click', function () {
+    try {
+      Object.keys(window.localStorage).forEach(function (k) { if (k.indexOf('mockLavandi.') === 0) window.localStorage.removeItem(k); });
+    } catch (e) { /* sin almacenamiento */ }
+    this.textContent = 'Datos reiniciados';
+  });
+})();
+</script>
+</body>
+</html>

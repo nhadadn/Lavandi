@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="es" data-plataforma-activa="ios">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F-A17 · Notificaciones push — Mocks de Lavandi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../comun/tokens.css">
+<link rel="stylesheet" href="../comun/estilos.css">
+</head>
+<body data-pantalla="a17-notificaciones">
+<div class="escenario">
+  <div class="columna-telefono">
+    <div class="telefono">
+      <div class="pantalla oscura" id="pantalla">
+        <div class="barra-estado"><span aria-hidden="true">9:41</span><span class="cinta-mock" role="note">Mock · datos de ejemplo</span><span class="iconos-estado" aria-hidden="true"><svg class="icono"><use href="#i-senal"/></svg><svg class="icono"><use href="#i-wifi"/></svg><svg class="icono"><use href="#i-bateria"/></svg></span></div>
+
+        <!-- Vista 1: pantalla de bloqueo con los avisos del pedido -->
+        <main class="contenido sin-margen" data-variante="vista-a17:bloqueo">
+          <div class="bloqueo">
+            <h1 class="solo-lector">Avisos en la pantalla de bloqueo</h1>
+            <div class="reloj" aria-hidden="true">9:41</div>
+            <div class="fecha" id="fecha-bloqueo">Miércoles 18 de noviembre</div>
+            <div id="avisos" class="apilado"></div>
+          </div>
+        </main>
+
+        <!-- Vista 2: explicar y pedir el permiso de avisos -->
+        <main class="contenido" data-variante="vista-a17:permiso" style="display:flex;flex-direction:column;justify-content:center;text-align:center">
+          <div class="centrado mb-4">
+            <span style="display:inline-flex;width:120px;height:120px;border-radius:50%;background:var(--mock-ilustracion-2);align-items:center;justify-content:center;color:var(--c-texto)">
+              <svg class="icono" style="width:56px;height:56px;stroke-width:1.8"><use href="#i-campana"/></svg></span>
+          </div>
+          <h1 class="titulo-pantalla">Activa los avisos</h1>
+          <p class="suave">Te avisamos cuando confirmemos tu pedido, recojamos tu ropa, esté lista y la entreguemos.</p>
+          <div class="apilado mt-5">
+            <button type="button" class="btn btn-primario btn-grande btn-bloque" id="activar">Activar avisos</button>
+            <button type="button" class="btn btn-texto btn-bloque" id="ahora-no">Ahora no</button>
+          </div>
+        </main>
+
+        <!-- Permiso del sistema, simulado -->
+        <div class="velo centrado" id="permiso" hidden>
+          <div class="dialogo centrado" role="alertdialog" aria-modal="true" aria-labelledby="titulo-permiso">
+            <h2 id="titulo-permiso" style="font-size:var(--t-cuerpo-grande)">
+              <span data-plataforma="ios">“Lavandi” quiere enviarte notificaciones</span>
+              <span data-plataforma="android">¿Permitir que Lavandi te envíe notificaciones?</span>
+            </h2>
+            <p class="micro suave">Ventana del sistema operativo (simulada).</p>
+            <div class="fila mt-4" style="gap:var(--s-2)">
+              <button type="button" class="btn" style="flex:1" data-respuesta="no">No permitir</button>
+              <button type="button" class="btn btn-primario" style="flex:1" data-respuesta="si">Permitir</button>
+            </div>
+          </div>
+        </div>
+        <div class="indicador-inicio" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="anotaciones" id="anotaciones" aria-labelledby="titulo-anotaciones">
+    <div class="encabezado-panel">
+      <div><h2 id="titulo-anotaciones">Anotaciones</h2><p class="suave micro mb-0">Qué dibuja esta pantalla y qué falta decidir.</p></div>
+      <button type="button" class="btn btn-icono" data-cerrar-anotaciones aria-label="Ocultar anotaciones"><svg class="icono"><use href="#i-cerrar"/></svg></button>
+    </div>
+
+    <h3>Función</h3>
+    <p class="mb-2"><strong>F-A17 · Notificaciones push</strong></p>
+    <blockquote>"Confirmación, recolección, listo para entrega y entregado."</blockquote>
+    <p><span class="cita">NSV-2026-001-v8.pdf:16-17:ANEXO A, Sección A.3</span> · Módulo A, numeral 17 · RN-06 · RN-30</p>
+
+    <h3>Vista</h3>
+    <div class="variante-control" data-grupo="vista-a17">
+      <div class="grupo-segmentado" role="group" aria-label="Qué mirar">
+        <button type="button" data-valor="bloqueo">Avisos en bloqueo</button>
+        <button type="button" data-valor="permiso">Pedir permiso</button>
+      </div>
+    </div>
+    <p class="menor suave">Toca un aviso para abrir el pedido en ese estado.</p>
+
+    <h3>Componentes del design system</h3>
+    <p>Ninguno de los seis. La pantalla de bloqueo es del sistema operativo; aquí se pinta con la rampa neutra de <span class="cita">tokens.json</span>.</p>
+
+    <h3>Decisiones tomadas que respeta</h3>
+    <div class="nota nota-decision">
+      <div class="rotulo"><span>ADR-0008</span><span>vigente</span></div>
+      <p>Avisos por Firebase Cloud Messaging directo, "el servicio gratuito de Google" (RN-30). En Android 13 o superior la app pide permiso, y ningún paso crítico depende solo del aviso.</p>
+    </div>
+    <div class="nota nota-decision">
+      <div class="rotulo"><span>ADR-0007</span><span>vigente</span></div>
+      <p>Si la persona niega los avisos, con la app abierta el estado se actualiza igual cada 30 s; con la app cerrada, lo ve al volver.</p>
+    </div>
+
+    <h3>Pendiente</h3>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>DD-011 · BR-22 · BR-24</span><span>abierta · Nadir + EL CLIENTE</span></div>
+      <p>El numeral 17 enumera <strong>cuatro</strong> avisos y el criterio de aceptación exige "los cinco momentos definidos del pedido" (<span class="cita">NSV-2026-001-v8.pdf:21:ANEXO A, Sección A.4.3</span>). El quinto no está definido y no hay recomendación escrita en el vault: por eso va como hueco punteado.</p>
+    </div>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>BR-24</span><span>Cliente + F3 + F5</span></div>
+      <p>El texto de cada aviso. Los de esta pantalla son provisionales.</p>
+    </div>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>DD-069 · DD-017</span><span>abiertas</span></div>
+      <p>En iPhone, FCM necesita la clave de la cuenta de desarrollador de Apple, que espera el D-U-N-S del cliente. Arthur: "Ok, esperamos" (C-164).</p>
+    </div>
+    <div class="nota nota-cliente">
+      <div class="rotulo"><span>Marca del cliente · 2026-11-05</span><span>sin confirmar</span></div>
+      <p>En la guía marcó "los cinco" y agregó "cuando ya va en camino" (un sexto). En el formulario puso A17 "Puede esperar". Las dos marcas se contradicen y ninguna es grado C.</p>
+    </div>
+  </aside>
+</div>
+<script src="../comun/app.js"></script>
+<script>
+(function () {
+  var F = Mock.fecha;
+  document.getElementById('fecha-bloqueo').textContent = F.texto(F.aIso(F.hoy()));
+
+  // Los cuatro momentos del numeral 17, del más reciente al más antiguo, y el quinto sin definir.
+  var indices = [4, 3, 1, 0];
+  var html = indices.map(function (i) {
+    var a = Mock.ESTADOS[i].aviso;
+    var destino = i === 4 ? 'a14-calificacion.html' : 'a12-seguimiento.html';
+    return '<p class="etiqueta-momento">Momento del contrato · ' + a.momento + '</p>' +
+      '<a class="notificacion" href="' + destino + '" data-guardar=\'{"estado":' + i + '}\'>' +
+      '<span class="monograma chico" aria-hidden="true">L</span><span class="cuerpo-push" style="flex:1;min-width:0">' +
+      '<span class="app-push"><span>' + Mock.MARCA + '</span><span>' + (i === 4 ? 'ahora' : 'hace ' + (4 - i) * 2 + ' h') + '</span></span>' +
+      '<span class="titulo-push" style="display:block">' + a.titulo + '</span>' +
+      '<span class="texto-push" style="display:block">' + a.texto + '</span></span></a>';
+  }).join('');
+  html += '<p class="etiqueta-momento">Quinto momento del criterio A.4.3</p>' +
+    '<div class="notificacion por-definir"><span class="cuerpo-push">' +
+    '<span class="titulo-push" style="display:block">Sin definir</span>' +
+    '<span class="texto-push" style="display:block">Falta decidir cuál es (DD-011).</span></span></div>';
+  document.getElementById('avisos').innerHTML = html;
+
+  // La pantalla es oscura solo en la vista de bloqueo.
+  function tono() {
+    document.getElementById('pantalla').classList.toggle('oscura', Mock.valorVariante('vista-a17') === 'bloqueo');
+  }
+  document.addEventListener('variantes-aplicadas', tono);
+  tono();
+
+  var permiso = document.getElementById('permiso');
+  document.getElementById('activar').addEventListener('click', function () { permiso.hidden = false; });
+  document.getElementById('ahora-no').addEventListener('click', function () {
+    Mock.brindis('Sin avisos, verás el estado de tu pedido al abrir la app.');
+  });
+  permiso.addEventListener('click', function (ev) {
+    var b = ev.target.closest('[data-respuesta]');
+    if (!b) return;
+    permiso.hidden = true;
+    Mock.brindis(b.getAttribute('data-respuesta') === 'si' ? 'Avisos activados.' : 'Sin avisos, verás el estado de tu pedido al abrir la app.');
+  });
+})();
+</script>
+</body>
+</html>

@@ -11,20 +11,21 @@ EL PRESTADOR: Nadir Hadad Navarrete, bajo la marca Nazmelia.
 
 ## Qué hay aquí
 
-| Carpeta | Contenido | ¿Se espeja a Notion? |
-|---|---|---|
-| `CLAUDE.md` | Instrucciones permanentes para Claude Code. Léelo primero. | — |
-| `legal/` | Contrato v8 y versiones previas. Fuente de verdad de los requerimientos ejecutivos. | **No** |
-| `vault/` | Vault de Obsidian: contrato leído, negocio, marca, design system, arquitectura, specs, formas de trabajo, riesgos, cliente, plantillas. | Sí, según audiencia (ver `vault/meta/convenciones.md`) |
-| `.claude/agents/` | Subagentes específicos de este proyecto (Fase 8). | — |
-| `.claude/skills/` | Skills del proyecto (Fase 8). | — |
+| Carpeta | Contenido |
+|---|---|
+| `CLAUDE.md` | Instrucciones permanentes para Claude Code. Léelo primero. |
+| `legal/` | Contrato v8 y versiones previas. Fuente de verdad de los requerimientos ejecutivos. |
+| `vault/` | Vault de Obsidian: contrato leído, negocio, marca, design system, arquitectura, specs, formas de trabajo, riesgos, cliente, plantillas. |
+| `.claude/agents/` | Subagentes específicos de este proyecto (Fase 8). |
+| `.claude/skills/` | Skills del proyecto (Fase 8). |
 
 ## Cómo se trabaja
 
-1. Abre Obsidian en `vault/`.
-2. Toda nota lleva frontmatter `estado`, `grado`, `fuente`, `fecha`, `dueño`.
-3. Toda afirmación lleva grado de evidencia (A–E o S). Ver `CLAUDE.md`, sección 3.
-4. Lo que no se sabe se escribe `SIN RESPUESTA — bloquea: <qué>` y se registra en
+1. Abre Obsidian en `vault/` (abrir carpeta como bóveda). El repo es la única copia: no hay espejo a Notion.
+2. Nadie escribe directo en `main`: rama por tarea y pull request. Ver `vault/formas-de-trabajo/colaboracion-en-el-vault.md`.
+3. Toda nota lleva frontmatter `estado`, `grado`, `fuente`, `fecha`, `dueño`.
+4. Toda afirmación lleva grado de evidencia (A–E o S). Ver `CLAUDE.md`, sección 3.
+5. Lo que no se sabe se escribe `SIN RESPUESTA — bloquea: <qué>` y se registra en
    `vault/meta/deuda-de-decision.md`.
 
 ## Estado

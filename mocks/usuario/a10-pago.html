@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="es" data-plataforma-activa="ios">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F-A10 · Pago — Mocks de Lavandi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../comun/tokens.css">
+<link rel="stylesheet" href="../comun/estilos.css">
+<style>
+  .pasos-pago { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--s-3); counter-reset: paso; }
+  .pasos-pago li { display: flex; gap: var(--s-3); align-items: flex-start; font-size: var(--t-menor); }
+  .pasos-pago li::before { counter-increment: paso; content: counter(paso); flex: none; width: 28px; height: 28px; border-radius: 50%;
+    border: 2px solid var(--c-accion); color: var(--c-accion); font-weight: var(--p-fuerte); display: flex; align-items: center; justify-content: center; }
+</style>
+</head>
+<body data-pantalla="a10-pago">
+<div class="escenario">
+  <div class="columna-telefono">
+    <div class="telefono">
+      <div class="pantalla">
+        <div class="barra-estado"><span aria-hidden="true">9:41</span><span class="cinta-mock" role="note">Mock · datos de ejemplo</span><span class="iconos-estado" aria-hidden="true"><svg class="icono"><use href="#i-senal"/></svg><svg class="icono"><use href="#i-wifi"/></svg><svg class="icono"><use href="#i-bateria"/></svg></span></div>
+
+        <div class="encabezado-app">
+          <a class="btn btn-icono" href="a09-resumen.html" aria-label="Regresar"><svg class="icono"><use href="#i-atras"/></svg></a>
+          <h1>Pago</h1>
+          <span class="lado"></span>
+        </div>
+
+        <main class="contenido">
+          <div class="aviso-error mb-4" id="error-pago" role="alert" hidden>
+            <svg class="icono"><use href="#i-alerta"/></svg>
+            <span><strong>El pago no se completó.</strong> Intenta de nuevo o usa otra tarjeta.</span>
+          </div>
+
+          <div class="tarjeta">
+            <div class="fila"><span class="suave">Total estimado</span><strong class="tabular" style="font-size:var(--t-titulo)">$ —</strong></div>
+            <p class="micro suave mt-2 mb-0"><span data-dato="lavanderia.nombre"></span> · <span data-dato="fecha.texto"></span>, <span data-dato="ventana"></span></p>
+          </div>
+
+          <!-- DD-012: con "al pesar", hoy no se cobra -->
+          <div class="aviso-info mt-4" data-variante="cobro:al-pesar">
+            <svg class="icono"><use href="#i-info"/></svg>
+            <span><strong>Hoy no se cobra.</strong> Te pediremos el pago cuando la lavandería pese tu ropa. Esta pantalla aparecería en ese momento.</span>
+          </div>
+          <div class="aviso-info mt-4" data-variante="cobro:apartar">
+            <svg class="icono"><use href="#i-info"/></svg>
+            <span>Conekta <strong>aparta</strong> el monto estimado y cobra el final cuando la lavandería pese tu ropa.</span>
+          </div>
+
+          <h2 class="titulo-seccion">Método de pago</h2>
+          <fieldset style="border:0;padding:0;margin:0">
+            <legend class="solo-lector">Método de pago</legend>
+
+            <!-- DD-055 · recomendación: tarjeta guardada como referencia de Conekta -->
+            <label class="opcion" data-variante="tarjeta:guardada">
+              <input type="radio" name="metodo" value="guardada">
+              <span class="cuerpo-opcion"><span class="nombre-opcion">Tarjeta terminada en 0000</span>
+                <span class="menor suave">Guardada en Conekta. La app no conoce el número.</span></span>
+              <svg class="icono" style="color:var(--c-texto-suave)"><use href="#i-tarjeta"/></svg>
+            </label>
+
+            <label class="opcion">
+              <input type="radio" name="metodo" value="tarjeta" checked>
+              <span class="cuerpo-opcion"><span class="nombre-opcion">Tarjeta de crédito o débito</span>
+                <span class="menor suave">La capturas en la página segura de Conekta.</span></span>
+              <svg class="icono" style="color:var(--c-texto-suave)"><use href="#i-tarjeta"/></svg>
+            </label>
+
+            <!-- DD-056: tres caminos para el efectivo -->
+            <label class="opcion" data-variante="efectivo:literal">
+              <input type="radio" name="metodo" value="oxxo" disabled>
+              <span class="cuerpo-opcion"><span class="nombre-opcion">OXXO Pay</span>
+                <span class="menor suave">Pago en efectivo en tienda.</span><br><span class="pendiente">Por confirmar con Conekta</span></span>
+              <svg class="icono" style="color:var(--c-texto-suave)"><use href="#i-efectivo"/></svg>
+            </label>
+            <label class="opcion" data-variante="efectivo:conekta">
+              <input type="radio" name="metodo" value="efectivo">
+              <span class="cuerpo-opcion"><span class="nombre-opcion">Efectivo en tienda</span>
+                <span class="menor suave">Pagas con una referencia en tiendas y farmacias afiliadas a Conekta. Tu pedido se confirma cuando Conekta avisa del pago.</span></span>
+              <svg class="icono" style="color:var(--c-texto-suave)"><use href="#i-efectivo"/></svg>
+            </label>
+          </fieldset>
+
+          <div class="tarjeta mt-4">
+            <div class="fila-izq mb-2" style="align-items:flex-start">
+              <svg class="icono" style="color:var(--c-exito)"><use href="#i-escudo"/></svg>
+              <p class="menor mb-0"><strong>Pagas en la página segura de Conekta.</strong> Tu tarjeta la captura y la resguarda Conekta: esta app nunca ve ni guarda el número.</p>
+            </div>
+            <ol class="pasos-pago mt-3">
+              <li>Abrimos la página de pago de Conekta.</li>
+              <li>Pagas ahí con tu tarjeta.</li>
+              <li>Vuelves a la app y esperamos a que Conekta confirme el pago.</li>
+            </ol>
+          </div>
+        </main>
+
+        <div class="acciones-fijas">
+          <button type="button" class="btn btn-primario btn-grande btn-bloque" id="pagar" data-variante="cobro:al-pedir cobro:apartar"><svg class="icono"><use href="#i-externo"/></svg>Pagar con Conekta</button>
+          <a class="btn btn-primario btn-grande btn-bloque" href="a11-confirmacion.html" data-variante="cobro:al-pesar">Confirmar pedido</a>
+        </div>
+
+        <!-- Navegador del sistema con el checkout de Conekta: simulado. No se dibujan campos de tarjeta. -->
+        <div class="navegador-simulado" id="navegador" hidden>
+          <div class="barra-url">
+            <button type="button" class="btn btn-icono" id="cerrar-navegador" aria-label="Cerrar la página de pago"><svg class="icono"><use href="#i-cerrar"/></svg></button>
+            <span class="url">Navegador del sistema · checkout de Conekta (simulado)</span>
+          </div>
+          <div style="padding:var(--s-5) var(--s-4);display:flex;flex-direction:column;gap:var(--s-3);flex:1;overflow:auto">
+            <p class="micro suave mb-0 fuerte" style="letter-spacing:var(--l-versalita);text-transform:uppercase">Página de Conekta, fuera de la app</p>
+            <h2 style="font-size:var(--t-titulo)">Pago a Lavandi</h2>
+            <p class="suave mb-0">Monto: <strong class="tabular">$ — MXN</strong> (estimado)</p>
+            <div class="caja-pendiente">
+              <span class="titulo-caja">Datos de la tarjeta</span>
+              <p>Aquí Conekta pide los datos de la tarjeta. El mock no los dibuja: la app nunca los toca (RN-10, ADR-0010).</p>
+            </div>
+            <div class="bloque-gris"></div>
+            <div class="bloque-gris" style="width:60%"></div>
+            <div style="margin-top:auto" class="apilado">
+              <button type="button" class="btn btn-primario btn-grande btn-bloque" id="simular-aprobado">Simular pago aprobado</button>
+              <button type="button" class="btn btn-bloque" id="simular-rechazado">Simular pago rechazado</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Espera del webhook -->
+        <div class="velo centrado" id="procesando" hidden>
+          <div class="dialogo centrado" role="alertdialog" aria-labelledby="titulo-procesando" aria-describedby="texto-procesando">
+            <svg class="icono grande girando" style="color:var(--c-accion)"><use href="#i-cargando"/></svg>
+            <h2 id="titulo-procesando" class="mt-3">Procesando pago</h2>
+            <p class="suave mb-0" id="texto-procesando">Esperamos la confirmación de Conekta. No cierres la app.</p>
+          </div>
+        </div>
+
+        <!-- Referencia de pago en efectivo (variante DD-056 a) -->
+        <div class="velo" id="ficha" hidden>
+          <div class="dialogo" role="dialog" aria-modal="true" aria-labelledby="titulo-ficha">
+            <h2 id="titulo-ficha">Tu referencia de pago</h2>
+            <p class="suave menor">Paga en una tienda o farmacia afiliada a Conekta con esta referencia.</p>
+            <p class="mono centrado" style="font-size:var(--t-titulo-menor);background:var(--c-superficie-hundida);padding:var(--s-3);border-radius:var(--r-medio)">0000 0000 0000 0000</p>
+            <div class="aviso-info mb-4"><svg class="icono"><use href="#i-reloj"/></svg><span>El pago en efectivo <strong>puede tardar en confirmarse</strong>. Tu pedido queda confirmado cuando Conekta nos avisa.</span></div>
+            <a class="btn btn-primario btn-grande btn-bloque" href="a11-confirmacion.html">Simular pago en tienda</a>
+            <button type="button" class="btn btn-texto btn-bloque mt-2" id="cerrar-ficha">Cerrar</button>
+          </div>
+        </div>
+        <div class="indicador-inicio" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="anotaciones" id="anotaciones" aria-labelledby="titulo-anotaciones">
+    <div class="encabezado-panel">
+      <div><h2 id="titulo-anotaciones">Anotaciones</h2><p class="suave micro mb-0">Qué dibuja esta pantalla y qué falta decidir.</p></div>
+      <button type="button" class="btn btn-icono" data-cerrar-anotaciones aria-label="Ocultar anotaciones"><svg class="icono"><use href="#i-cerrar"/></svg></button>
+    </div>
+
+    <h3>Función</h3>
+    <p class="mb-2"><strong>F-A10 · Pasarela de pago</strong></p>
+    <blockquote>"Conekta: tarjeta de crédito o débito y OXXO Pay."</blockquote>
+    <p><span class="cita">NSV-2026-001-v8.pdf:16-17:ANEXO A, Sección A.3</span> · Módulo A, numeral 10 · RN-28 · F-T01 · F-T11</p>
+    <p class="menor suave">Toca "Pagar con Conekta" y simula un pago aprobado o rechazado.</p>
+
+    <h3>Componentes del design system</h3>
+    <p>Ninguno de los seis. Reusa el total del <strong>6 · Resumen</strong> en corto.</p>
+
+    <h3>Decisiones tomadas que respeta</h3>
+    <div class="nota nota-decision">
+      <div class="rotulo"><span>ADR-0010</span><span>vigente</span></div>
+      <p>La app cobra con el <strong>checkout redirigido de Conekta</strong> (<span class="cita">HostedPayment</span>), abierto en el navegador del sistema. <strong>La app nunca pide el número de tarjeta</strong> (RN-10). El pago se da por bueno solo cuando llega el webhook de Conekta al servidor, nunca porque la app regrese del navegador: por eso existe la espera "Procesando pago".</p>
+    </div>
+
+    <h3>Variantes</h3>
+    <div class="variante-control" data-grupo="efectivo">
+      <span class="leyenda">DD-056 · pago en efectivo</span>
+      <div class="grupo-segmentado" role="group" aria-label="Variante DD-056">
+        <button type="button" data-valor="literal">OXXO Pay (contrato)</button>
+        <button type="button" data-valor="conekta">(a) Efectivo Conekta</button>
+        <button type="button" data-valor="solo-tarjeta">(c) Solo tarjeta</button>
+      </div>
+    </div>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>DD-056 · R-028 · BR-20</span><span>abierta · contractual</span></div>
+      <p>El contrato pide OXXO Pay, pero Conekta vendió OXXO Pay en 2024 y su efectivo actual no incluye OXXO (grado E, falta confirmarlo por escrito con Conekta). El ADR-0010 deja el efectivo fuera hasta cerrar DD-056. Cualquier opción cambia lo que dice el contrato y se firma.</p>
+    </div>
+    <div class="nota nota-recomendacion">
+      <div class="rotulo"><span>Recomendación, no decisión</span><span>DD-056 (a)</span></div>
+      <p>"El efectivo que Conekta ofrece hoy […], con la misma integración." Decide EL CLIENTE. El cliente escribió "solo se entregaría en Oxxo" (2026-11-05, sin confirmar).</p>
+    </div>
+
+    <div class="variante-control" data-grupo="tarjeta">
+      <span class="leyenda">DD-055 · tarjeta guardada</span>
+      <div class="grupo-segmentado" role="group" aria-label="Variante DD-055">
+        <button type="button" data-valor="cada-vez">Cobrar cada vez</button>
+        <button type="button" data-valor="guardada">Tarjeta guardada</button>
+      </div>
+    </div>
+    <div class="nota nota-recomendacion">
+      <div class="rotulo"><span>Recomendación, no decisión</span><span>DD-055 · BR-50</span></div>
+      <p>"Guardar solo la referencia que da la pasarela, nunca el número." El ADR-0010 (punto 5) manda verificar en el sandbox si el checkout redirigido permite reutilizarla; si no, la v1 cobra cada vez.</p>
+    </div>
+
+    <div class="variante-control" data-grupo="cobro">
+      <span class="leyenda">DD-012 · cuándo se cobra (la misma de A09)</span>
+      <div class="grupo-segmentado" role="group" aria-label="Variante DD-012">
+        <button type="button" data-valor="al-pedir">Al pedir</button>
+        <button type="button" data-valor="al-pesar">Al pesar</button>
+        <button type="button" data-valor="apartar">Apartar</button>
+      </div>
+    </div>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>DD-012</span><span>abierta · grado E en "apartar"</span></div>
+      <p>Si Conekta permite apartar y cobrar después con el checkout redirigido no está verificado (<span class="cita">SIN VERIFICAR</span>).</p>
+    </div>
+  </aside>
+</div>
+<script src="../comun/app.js"></script>
+<script>
+(function () {
+  var navegador = document.getElementById('navegador');
+  var procesando = document.getElementById('procesando');
+  var error = document.getElementById('error-pago');
+
+  // Si la variante oculta el método elegido, se vuelve a tarjeta.
+  document.addEventListener('variantes-aplicadas', function () {
+    var elegido = document.querySelector('input[name="metodo"]:checked');
+    if (!elegido || elegido.closest('[hidden]')) document.querySelector('input[name="metodo"][value="tarjeta"]').checked = true;
+  });
+
+  document.getElementById('pagar').addEventListener('click', function () {
+    error.hidden = true;
+    var metodo = document.querySelector('input[name="metodo"]:checked').value;
+    if (metodo === 'efectivo') { document.getElementById('ficha').hidden = false; return; }
+    if (metodo === 'guardada') { procesar(); return; }
+    navegador.hidden = false;
+  });
+  document.getElementById('cerrar-ficha').addEventListener('click', function () { document.getElementById('ficha').hidden = true; });
+  document.getElementById('cerrar-navegador').addEventListener('click', function () {
+    navegador.hidden = true;
+    Mock.brindis('Cerraste la página de pago. No se hizo ningún cargo.');
+  });
+  document.getElementById('simular-rechazado').addEventListener('click', function () {
+    navegador.hidden = true;
+    error.hidden = false;
+    error.scrollIntoView({ block: 'nearest' });
+  });
+  document.getElementById('simular-aprobado').addEventListener('click', function () {
+    navegador.hidden = true;
+    procesar();
+  });
+  function procesar() {
+    procesando.hidden = false;
+    setTimeout(function () { window.location.href = 'a11-confirmacion.html'; }, 2500);
+  }
+})();
+</script>
+</body>
+</html>

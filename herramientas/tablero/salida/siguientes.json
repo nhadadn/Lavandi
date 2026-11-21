@@ -1,96 +1,116 @@
 [
  {
   "orden": 1,
-  "accion": "Responder la sala de la Fase 6 en una sesión propia: si el modelo es el correcto, si cabe, construir o comprar (DD-063) y, al final, los pesos. Después, candidatos y ADRs",
-  "quien": "Nadir, con Claude",
-  "desbloquea": "Las Fases 7 y 8, y con ellas el arranque del desarrollo",
-  "limite": "2026-09-27",
+  "accion": "Asentar lo que Arthur acordó con Nadir sobre desde cuándo cuentan los \"tres meses\" (DD-068) y con qué cuenta de Apple se prueba en iPhone (DD-069)",
+  "quien": "Arthur",
+  "desbloquea": "El calendario de la Orden de Cambio",
+  "limite": "2026-11-15",
   "vencida": true,
-  "dias_vencida": 12,
-  "origen_fecha": "El calendario pide arquitectura, stack y formas de trabajo cerradas antes de la semana 4"
+  "dias_vencida": 3,
+  "origen_fecha": "Fin de la semana 10"
  },
  {
   "orden": 2,
-  "accion": "Reunión con EL CLIENTE para sus ocho decisiones del negocio (la sesión de asesoría, O-23), con la guía vault/cliente/comunicaciones/2026-10-09-guia-de-reunion-decisiones-del-negocio.md. Nadir anota las respuestas; después se le mandan por escrito para que las confirme",
-  "quien": "Nadir, con EL CLIENTE",
-  "desbloquea": "Quién recoge y entrega, cómo se cobra, con qué lavanderías y en qué ciudad se arranca: varias decisiones de la Fase 6 dependen de esto (C-109)",
-  "limite": null,
-  "vencida": false,
-  "dias_vencida": 0,
-  "origen_fecha": "Nadir pidió no poner fechas (C-109)"
+  "accion": "Pedir por escrito a EL CLIENTE que arranque los trámites del B.10: D-U-N-S, cuentas de Apple y de Google y alta en Conekta",
+  "quien": "Nadir",
+  "desbloquea": "La publicación en las tiendas y los cobros en producción, de los que depende el pago 2",
+  "limite": "2026-11-15",
+  "vencida": true,
+  "dias_vencida": 3,
+  "origen_fecha": "El D-U-N-S y la cuenta de Apple pueden tardar hasta unas seis semanas juntos (contrato/calendario-contractual.md, E)"
  },
  {
   "orden": 3,
-  "accion": "Decidir si la v1 lleva modo claro y oscuro (DD-039) y dónde vive el panel de administración (DD-040)",
+  "accion": "Enviar al cliente el reporte «Lo que nos dejó la reunión» y el kit actualizado, y confirmar las dos lecturas dudosas de su letra (meta/pase-de-proyecto.md, \"Lo que sigue\")",
   "quien": "Nadir",
-  "desbloquea": "Dos ADRs de la Fase 6 y el diseño de pantallas",
-  "limite": "2026-09-18",
+  "desbloquea": "Las decisiones del negocio: precio, comisión y quién entrega (DD-010, DD-020, DD-022)",
+  "limite": "2026-11-15",
   "vencida": true,
-  "dias_vencida": 21,
-  "origen_fecha": "Límite sugerido de DD-040"
+  "dias_vencida": 3,
+  "origen_fecha": "Fin de la semana 10"
  },
  {
   "orden": 4,
-  "accion": "Confirmar las horas reales por semana para el producto (repregunta de C-91, supuesto S-006)",
-  "quien": "Nadir",
-  "desbloquea": "Saber si el alcance cabe: hoy, con la estimación media, no está listo",
-  "limite": "2026-10-11",
-  "vencida": false,
-  "dias_vencida": 0,
-  "origen_fecha": "Fin de la semana 5"
- },
- {
-  "orden": 5,
-  "accion": "Avisar por escrito a EL CLIENTE que el desarrollo va atrasado (RN-34, DD-064). Borrador listo: vault/cliente/comunicaciones/2026-10-09-aviso-de-retraso-del-desarrollo.md; lo envía Nadir por correo",
+  "accion": "Avisar por escrito a EL CLIENTE que el desarrollo va atrasado (RN-34, DD-064). Borrador listo: cliente/comunicaciones/2026-10-09-aviso-de-retraso-del-desarrollo.md. Lo envía Nadir",
   "quien": "Nadir",
   "desbloquea": "Que el retraso quede explicado por escrito",
   "limite": "2026-10-11",
-  "vencida": false,
-  "dias_vencida": 0,
+  "vencida": true,
+  "dias_vencida": 38,
   "origen_fecha": "El contrato pide 48 h de aviso; el retraso existe desde el 2026-09-28"
  },
  {
-  "orden": 6,
-  "accion": "Pedir por escrito a EL CLIENTE el estado de los trámites del B.10",
-  "quien": "Nadir",
-  "desbloquea": "La publicación en las tiendas y los cobros en producción, de los que depende el pago 2",
-  "limite": "2026-10-11",
+  "orden": 5,
+  "accion": "Negociar con EL CLIENTE la Orden de Cambio por etapas (camino B de la recalibración), con alcance, calendario e hitos de pago por etapa",
+  "quien": "Nadir, con el cálculo de horas de Arthur",
+  "desbloquea": "Que el calendario nuevo y los pagos 2 y 3 queden por escrito",
+  "limite": null,
   "vencida": false,
   "dias_vencida": 0,
-  "origen_fecha": "La cuenta de Apple toca en las semanas 5 y 6"
+  "origen_fecha": "Depende de DD-068"
+ },
+ {
+  "orden": 6,
+  "accion": "Calcular las horas de la etapa 1: cruzar el inventario de 76 funciones con lo que el cliente marcó \"para abrir\"",
+  "quien": "Arthur, con Claude",
+  "desbloquea": "El tamaño de la etapa 1 y la propuesta de la Orden de Cambio",
+  "limite": "2026-11-19",
+  "vencida": false,
+  "dias_vencida": 0,
+  "origen_fecha": "Estimación de Claude, con sesiones diarias de 2 h (C-134)"
  },
  {
   "orden": 7,
-  "accion": "Notificar por correo la entrega parcial del branding: logotipo, paleta, tipografías, manual y guía",
-  "quien": "Nadir",
-  "desbloquea": "Que lo terminado quede con fecha cierta (DD-050)",
-  "limite": "2026-10-11",
+  "accion": "Cerrar los pendientes de la Fase 6: hosting (DD-070, lo decide Arthur con Nadir; mientras tanto, solo local, C-154), correo (DD-071) y prueba en iPhone (DD-069). La fase quedó cerrada con pendientes el 2026-11-13",
+  "quien": "Arthur, con Claude",
+  "desbloquea": "El primer despliegue y la prueba temprana (R-025)",
+  "limite": "2026-11-22",
   "vencida": false,
   "dias_vencida": 0,
-  "origen_fecha": "Fin de la semana 5"
+  "origen_fecha": "Estimación de Claude, con sesiones diarias de 2 h (C-134)"
  },
  {
   "orden": 8,
-  "accion": "Empezar las 12 plantillas en Canva, en una cuenta a nombre del cliente",
-  "quien": "Nadir, con Claude",
-  "desbloquea": "El criterio de aceptación del branding (A.4.1)",
-  "limite": "2026-11-08",
+  "accion": "Cerrar los pendientes de la Fase 7: que Nadir apruebe los protocolos con el cliente (DD-074) y decidir el espejo a Notion (DD-075). El repositorio (DD-073) y las cuentas de prueba (DD-072) se cerraron el 2026-11-18 (C-169, C-170)",
+  "quien": "Arthur con Nadir",
+  "desbloquea": "Los avisos formales al cliente",
+  "limite": "2026-11-24",
   "vencida": false,
   "dias_vencida": 0,
-  "origen_fecha": "Antes de la semana 10 (C-73)"
+  "origen_fecha": "Una semana, el plazo de un sprint (C-157)"
  },
  {
   "orden": 9,
+  "accion": "Preparar el sprint 1. Hecho el 2026-11-18: el entorno local (formas-de-trabajo/entorno-local.md, C-166). Falta: abrir las cuentas de prueba con el correo de Arthur (C-170), los mocks (C-167) y, con ellos, la primera spec. La prueba temprana en iPhone espera (DD-069, C-164)",
+  "quien": "Arthur, con Claude",
+  "desbloquea": "El desarrollo del producto",
+  "limite": "2026-11-24",
+  "vencida": false,
+  "dias_vencida": 0,
+  "origen_fecha": "Una semana, el plazo de un sprint (C-157)"
+ },
+ {
+  "orden": 10,
+  "accion": "Empezar las 12 plantillas en Canva, en una cuenta a nombre del cliente",
+  "quien": "Por definir: Nadir o Arthur",
+  "desbloquea": "El criterio de aceptación del branding (A.4.1)",
+  "limite": "2026-11-08",
+  "vencida": true,
+  "dias_vencida": 10,
+  "origen_fecha": "Antes de la semana 10 (C-73)"
+ },
+ {
+  "orden": 11,
   "accion": "Empezar el reporte semanal a EL CLIENTE",
   "quien": "Nadir",
   "desbloquea": "La comunicación semanal durante el desarrollo (O-29)",
   "limite": "2026-10-09",
-  "vencida": false,
-  "dias_vencida": 0,
+  "vencida": true,
+  "dias_vencida": 40,
   "origen_fecha": "El calendario pone el desarrollo desde la semana 4"
  },
  {
-  "orden": 10,
+  "orden": 12,
   "accion": "Preguntar al diseñador con qué licencia usó Berlin Sans FB, y hacer la búsqueda fonética ante el IMPI",
   "quien": "Nadir",
   "desbloquea": "El registro de la marca (DD-060, DD-030)",
@@ -98,5 +118,15 @@
   "vencida": false,
   "dias_vencida": 0,
   "origen_fecha": "Antes del trámite ante el IMPI"
+ },
+ {
+  "orden": 13,
+  "accion": "Notificar por correo la entrega parcial del branding: logotipo, paleta, tipografías, manual y guía",
+  "quien": "Nadir",
+  "desbloquea": "Que lo terminado quede con fecha cierta (DD-050)",
+  "limite": "2026-10-11",
+  "vencida": true,
+  "dias_vencida": 38,
+  "origen_fecha": "Fin de la semana 5"
  }
 ]

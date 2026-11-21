@@ -1,0 +1,5 @@
+# Términos que no pueden aparecer escritos a mano en movil/ ni en servidor/ (CLAUDE.md §5).
+# En el código, la marca y el dominio salen siempre de una variable de configuración.
+# Un término por línea, sin distinguir mayúsculas. Las líneas con # se ignoran.
+lavandi
+lavandi.mx

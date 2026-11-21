@@ -1,11 +1,23 @@
 ---
-estado: borrador
+estado: vigente
 grado: mixto
-fuente: prompt-maestro-01-fundacion-v4.md:277-294 (C); restricciones-no-negociables.md (B); acta C-13 (C)
-fecha: 2026-09-11
-dueño: Nadir Hadad Navarrete
+fuente: prompt-maestro-01-fundacion-v4.md:277-294 (C); restricciones-no-negociables.md (B); acta C-13 (C); pesos fijados en acta-2026-11-12-traspaso-del-proyecto.md C-142 (C)
+fecha: 2026-11-12
+dueño: Arthur Naranjo
 ---
 # Matriz de criterios del stack — para que Nadir ajuste los pesos
+
+> **Pesos fijados el 2026-11-12** por Arthur Naranjo, que lleva la Fase 6 desde el traspaso (C-132). Eligió la
+> propuesta del 2026-09-25 (C-142): **familiaridad 30, velocidad 25, proveedor único y ruta de salida 15, tiempo real
+> 10, costo 10, multi-plaza 10**. Está al final de esta nota.
+>
+> - La familiaridad se califica ahora con el perfil de Arthur (C-135): Laravel, web con Vite y PWA, y Android nativo
+>   en Java con Gradle; sin experiencia en iPhone. Deja de calificarse con el de Nadir (C-89).
+> - DD-040 se cerró por C-140: panel web, más una vista de administración en la app.
+> - P-17, si falta un criterio como "gente en México que lo pueda mantener", no se planteó. Si se agrega, se reabre
+>   esta nota.
+>
+> Siguiente paso: puntuar candidatos (paso 6) y escribir los ADR-0002 a 0014.
 
 **Esta nota se escribe antes de mirar un solo candidato.** Es el orden que manda el método, y no es
 ceremonia: fijar los pesos después de ver las opciones es elegir primero y justificar al rato.
@@ -13,7 +25,7 @@ ceremonia: fijar los pesos después de ver las opciones es elegir primero y just
 > *"Stack abierto: construye la matriz desde cero. **Primero los criterios y sus pesos, después los
 > candidatos** — nunca al revés."* — `prompt-maestro-01-fundacion-v4.md:278-279`
 
-`estado: borrador` hasta que Nadir ajuste los pesos y responda DD-038.
+`estado: borrador` hasta que Nadir ajuste los pesos y responda DD-038. **Pasó a `vigente` el 2026-11-12: ver el recuadro de arriba.**
 
 ## Primero: lo que no se pondera, se cumple o se descarta
 

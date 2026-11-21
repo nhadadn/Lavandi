@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="es" data-plataforma-activa="ios">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F-A15 · Perfil de usuario — Mocks de Lavandi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../comun/tokens.css">
+<link rel="stylesheet" href="../comun/estilos.css">
+</head>
+<body data-pantalla="a15-perfil">
+<div class="escenario">
+  <div class="columna-telefono">
+    <div class="telefono">
+      <div class="pantalla">
+        <div class="barra-estado"><span aria-hidden="true">9:41</span><span class="cinta-mock" role="note">Mock · datos de ejemplo</span><span class="iconos-estado" aria-hidden="true"><svg class="icono"><use href="#i-senal"/></svg><svg class="icono"><use href="#i-wifi"/></svg><svg class="icono"><use href="#i-bateria"/></svg></span></div>
+
+        <div class="encabezado-app" style="padding-left:var(--s-4)">
+          <h1 style="font-size:var(--t-titulo)">Mi perfil</h1>
+        </div>
+
+        <main class="contenido">
+          <div class="centrado">
+            <div style="position:relative;display:inline-block">
+              <div class="avatar" aria-hidden="true">UE</div>
+              <button type="button" class="btn btn-icono" id="cambiar-foto" aria-label="Cambiar foto" style="position:absolute;right:-8px;bottom:-8px;background:var(--c-superficie);border:1px solid var(--c-borde-fuerte)"><svg class="icono"><use href="#i-camara"/></svg></button>
+            </div>
+          </div>
+
+          <div class="campo mt-4"><label for="nombre">Nombre</label><input class="entrada" id="nombre" value="Usuario Ejemplo" autocomplete="name"></div>
+          <div class="campo"><label for="correo">Correo</label><input class="entrada" id="correo" value="usuario@ejemplo.com" readonly aria-describedby="ayuda-correo"><span class="ayuda" id="ayuda-correo">Es el correo con el que entras.</span></div>
+
+          <h2 class="titulo-seccion">Direcciones guardadas</h2>
+          <ul class="lista" id="direcciones"></ul>
+          <a class="btn btn-texto mt-2" href="a08-direccion.html"><svg class="icono"><use href="#i-mas"/></svg>Agregar dirección</a>
+
+          <h2 class="titulo-seccion">Métodos de pago</h2>
+          <!-- DD-055: sin tarjeta guardada (ADR-0010, punto 5) -->
+          <div class="aviso-info" data-variante="tarjeta:cada-vez">
+            <svg class="icono"><use href="#i-escudo"/></svg>
+            <span>No guardamos tarjetas. En cada pedido pagas en la página segura de Conekta.</span>
+          </div>
+          <!-- DD-055 · recomendación: solo la referencia de Conekta -->
+          <div data-variante="tarjeta:guardada">
+            <ul class="lista">
+              <li><div class="elemento"><svg class="icono icono-elemento"><use href="#i-tarjeta"/></svg>
+                <div class="cuerpo-elemento"><strong>Tarjeta terminada en 0000</strong><br><span class="micro suave">Guardada en Conekta. La app no conoce el número.</span></div>
+                <button type="button" class="btn btn-icono" aria-label="Eliminar tarjeta" id="eliminar-tarjeta"><svg class="icono"><use href="#i-basura"/></svg></button></div></li>
+            </ul>
+            <button type="button" class="btn btn-texto mt-2" id="agregar-tarjeta"><svg class="icono"><use href="#i-mas"/></svg>Agregar tarjeta</button>
+          </div>
+
+          <h2 class="titulo-seccion">Notificaciones</h2>
+          <div class="tarjeta">
+            <label class="interruptor-fila"><span><strong>Avisos de tus pedidos</strong><br><span class="micro suave">Confirmación, recolección, listo y entregado.</span></span><input type="checkbox" class="interruptor" checked></label>
+            <hr class="separador" style="margin:var(--s-2) 0">
+            <label class="interruptor-fila"><span><strong>Promociones y avisos del servicio</strong></span><input type="checkbox" class="interruptor"></label>
+          </div>
+
+          <h2 class="titulo-seccion">Legal</h2>
+          <ul class="lista">
+            <li><button type="button" class="elemento" data-legal><svg class="icono icono-elemento"><use href="#i-documento"/></svg><span class="cuerpo-elemento">Aviso de privacidad</span><svg class="icono flecha"><use href="#i-adelante"/></svg></button></li>
+            <li><button type="button" class="elemento" data-legal><svg class="icono icono-elemento"><use href="#i-documento"/></svg><span class="cuerpo-elemento">Términos y condiciones</span><svg class="icono flecha"><use href="#i-adelante"/></svg></button></li>
+          </ul>
+
+          <div class="apilado mt-5">
+            <a class="btn btn-bloque" href="a02-inicio-sesion.html"><svg class="icono"><use href="#i-salir"/></svg>Cerrar sesión</a>
+            <button type="button" class="btn btn-texto btn-bloque" id="eliminar-cuenta" style="color:var(--c-error)">Eliminar mi cuenta</button>
+          </div>
+        </main>
+
+        <nav class="barra-pestanas" aria-label="Secciones de la app">
+          <a href="a03-principal.html"><svg class="icono"><use href="#i-casa"/></svg>Inicio</a>
+          <a href="a13-historial.html"><svg class="icono"><use href="#i-pedidos"/></svg>Pedidos</a>
+          <a href="a16-soporte.html"><svg class="icono"><use href="#i-soporte"/></svg>Ayuda</a>
+          <a href="a15-perfil.html" aria-current="page"><svg class="icono"><use href="#i-perfil"/></svg>Perfil</a>
+        </nav>
+
+        <!-- Hoja: cambiar foto -->
+        <div class="velo" id="hoja-foto" hidden>
+          <div class="dialogo" role="dialog" aria-modal="true" aria-labelledby="titulo-foto">
+            <h2 id="titulo-foto">Foto de perfil</h2>
+            <div class="apilado mt-3">
+              <button type="button" class="btn btn-bloque" data-foto="cámara"><svg class="icono"><use href="#i-camara"/></svg>Tomar foto</button>
+              <button type="button" class="btn btn-bloque" data-foto="galería"><svg class="icono"><use href="#i-imagen"/></svg>Elegir de la galería</button>
+              <button type="button" class="btn btn-texto btn-bloque" data-cerrar-hoja>Cancelar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Diálogo: eliminar cuenta -->
+        <div class="velo centrado" id="dialogo-eliminar" hidden>
+          <div class="dialogo" role="alertdialog" aria-modal="true" aria-labelledby="titulo-eliminar" aria-describedby="texto-eliminar">
+            <h2 id="titulo-eliminar">¿Eliminar tu cuenta?</h2>
+            <p class="suave" id="texto-eliminar">No se puede deshacer.</p>
+            <div class="fila" style="gap:var(--s-2)">
+              <button type="button" class="btn" style="flex:1" data-cerrar-dialogo>Cancelar</button>
+              <button type="button" class="btn btn-peligro" style="flex:1" id="confirmar-eliminar">Eliminar</button>
+            </div>
+          </div>
+        </div>
+        <div class="indicador-inicio" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="anotaciones" id="anotaciones" aria-labelledby="titulo-anotaciones">
+    <div class="encabezado-panel">
+      <div><h2 id="titulo-anotaciones">Anotaciones</h2><p class="suave micro mb-0">Qué dibuja esta pantalla y qué falta decidir.</p></div>
+      <button type="button" class="btn btn-icono" data-cerrar-anotaciones aria-label="Ocultar anotaciones"><svg class="icono"><use href="#i-cerrar"/></svg></button>
+    </div>
+
+    <h3>Función</h3>
+    <p class="mb-2"><strong>F-A15 · Perfil de usuario</strong></p>
+    <blockquote>"Nombre, foto, direcciones guardadas, métodos de pago y notificaciones."</blockquote>
+    <p><span class="cita">NSV-2026-001-v8.pdf:16-17:ANEXO A, Sección A.3</span> · Módulo A, numeral 15 · F-T11 · F-T18</p>
+
+    <h3>Componentes del design system</h3>
+    <p>Ninguno de los seis.</p>
+
+    <h3>Decisiones tomadas que respeta</h3>
+    <div class="nota nota-decision">
+      <div class="rotulo"><span>ADR-0005</span><span>vigente</span></div>
+      <p>Borrar la cuenta se puede desde la app, como piden las dos tiendas.</p>
+    </div>
+    <div class="nota nota-decision">
+      <div class="rotulo"><span>ADR-0006</span><span>vigente</span></div>
+      <p>La foto se comprime en el teléfono antes de subirla y se guarda en almacenamiento privado.</p>
+    </div>
+
+    <h3>Variantes</h3>
+    <div class="variante-control" data-grupo="tarjeta">
+      <span class="leyenda">DD-055 · tarjeta guardada (la misma de A10)</span>
+      <div class="grupo-segmentado" role="group" aria-label="Variante DD-055">
+        <button type="button" data-valor="cada-vez">Cobrar cada vez</button>
+        <button type="button" data-valor="guardada">Tarjeta guardada</button>
+      </div>
+    </div>
+    <div class="nota nota-recomendacion">
+      <div class="rotulo"><span>Recomendación, no decisión</span><span>DD-055 · BR-50</span></div>
+      <p>"Guardar solo la referencia que da la pasarela, nunca el número" (F-T11: "Los números de tarjeta nunca se guardan en la plataforma"). El ADR-0010 lo deja a una prueba en el sandbox.</p>
+    </div>
+
+    <h3>Pendiente</h3>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>BR-09</span><span>F5 + F6</span></div>
+      <p>Qué pasa con los datos al eliminar la cuenta (retención, borrado, pedidos en curso). Por eso el diálogo solo dice que no se puede deshacer.</p>
+    </div>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>DD-011 · BR-32</span><span>spec de avisos</span></div>
+      <p>Qué avisos puede apagar la persona. Los dos interruptores son una propuesta del mock: avisos del pedido y los masivos de promociones o mantenimiento que manda la administración (F-D07).</p>
+    </div>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>RN-27 · F-T18</span><span>insumo de EL CLIENTE</span></div>
+      <p>El Aviso de privacidad y los Términos los redacta EL CLIENTE.</p>
+    </div>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>F-T12</span><span>grado E · SIN VERIFICAR</span></div>
+      <p>Explicar por qué se pide la cámara antes del permiso del sistema (inventario §4).</p>
+    </div>
+  </aside>
+</div>
+<script src="../comun/app.js"></script>
+<script>
+(function () {
+  document.getElementById('direcciones').innerHTML = Object.keys(Mock.DIRECCIONES).map(function (k) {
+    var d = Mock.DIRECCIONES[k];
+    return '<li><a class="elemento" href="a08-direccion.html"><svg class="icono icono-elemento"><use href="#i-ubicacion"/></svg>' +
+      '<span class="cuerpo-elemento"><strong>' + d.alias + '</strong><br><span class="menor suave">' + d.linea + ', ' + d.colonia + '</span></span>' +
+      '<svg class="icono flecha"><use href="#i-editar"/></svg></a></li>';
+  }).join('');
+
+  var hojaFoto = document.getElementById('hoja-foto');
+  document.getElementById('cambiar-foto').addEventListener('click', function () { hojaFoto.hidden = false; });
+  hojaFoto.addEventListener('click', function (ev) {
+    var b = ev.target.closest('[data-foto]');
+    if (b) { hojaFoto.hidden = true; Mock.brindis('Se pediría permiso de ' + b.getAttribute('data-foto') + ' y se abriría (simulado).'); return; }
+    if (ev.target === hojaFoto || ev.target.closest('[data-cerrar-hoja]')) hojaFoto.hidden = true;
+  });
+
+  document.querySelectorAll('[data-legal]').forEach(function (b) {
+    b.addEventListener('click', function () { Mock.brindis('Texto que proporciona EL CLIENTE (RN-27). Pendiente.'); });
+  });
+  document.getElementById('agregar-tarjeta').addEventListener('click', function () {
+    Mock.brindis('Se abriría la página de Conekta para registrar la tarjeta.');
+  });
+  document.getElementById('eliminar-tarjeta').addEventListener('click', function () {
+    Mock.brindis('Tarjeta eliminada (simulado).');
+  });
+
+  var dialogo = document.getElementById('dialogo-eliminar');
+  document.getElementById('eliminar-cuenta').addEventListener('click', function () { dialogo.hidden = false; });
+  dialogo.addEventListener('click', function (ev) {
+    if (ev.target === dialogo || ev.target.closest('[data-cerrar-dialogo]')) dialogo.hidden = true;
+  });
+  document.getElementById('confirmar-eliminar').addEventListener('click', function () {
+    dialogo.hidden = true;
+    Mock.brindis('Cuenta eliminada (simulado).', 1500);
+    setTimeout(function () { window.location.href = 'a01-bienvenida.html'; }, 1500);
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="es" data-plataforma-activa="ios">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F-A08 · Dirección de recogida y entrega — Mocks de Lavandi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../comun/tokens.css">
+<link rel="stylesheet" href="../comun/estilos.css">
+<style>
+  .dialogo-direccion { max-height: 92%; overflow-y: auto; }
+  .mapa-elegir { height: 260px; border-radius: var(--r-grande); border: 1px solid var(--c-borde); touch-action: none; cursor: grab; }
+  .mapa-elegir > svg.dibujo { inset: auto; left: -35%; top: -35%; width: 170%; height: 170%; }
+  .mapa-elegir .etiqueta-mapa { bottom: var(--s-2); left: var(--s-2); }
+</style>
+</head>
+<body data-pantalla="a08-direccion">
+<div class="escenario">
+  <div class="columna-telefono">
+    <div class="telefono">
+      <div class="pantalla">
+        <div class="barra-estado"><span aria-hidden="true">9:41</span><span class="cinta-mock" role="note">Mock · datos de ejemplo</span><span class="iconos-estado" aria-hidden="true"><svg class="icono"><use href="#i-senal"/></svg><svg class="icono"><use href="#i-wifi"/></svg><svg class="icono"><use href="#i-bateria"/></svg></span></div>
+
+        <div class="encabezado-app">
+          <a class="btn btn-icono" href="a07-fecha-hora.html" aria-label="Regresar"><svg class="icono"><use href="#i-atras"/></svg></a>
+          <h1>Pedido nuevo · 3 de 4</h1>
+          <span class="lado"></span>
+        </div>
+
+        <main class="contenido">
+          <h2 class="titulo-pantalla">¿Dónde recogemos?</h2>
+          <fieldset style="border:0;padding:0;margin:var(--s-3) 0 0">
+            <legend class="fuerte menor mb-2">Tus direcciones guardadas</legend>
+            <div id="lista-recogida"></div>
+          </fieldset>
+          <button type="button" class="btn btn-texto mt-2" id="agregar"><svg class="icono"><use href="#i-mas"/></svg>Agregar dirección</button>
+
+          <hr class="separador">
+
+          <h2 class="titulo-seccion mt-0">Entrega</h2>
+          <label class="interruptor-fila">
+            <span>Entregar en la misma dirección</span>
+            <input type="checkbox" class="interruptor" id="misma" checked>
+          </label>
+          <fieldset id="bloque-entrega" style="border:0;padding:0;margin:var(--s-3) 0 0" hidden>
+            <legend class="fuerte menor mb-2">¿Dónde la entregamos?</legend>
+            <div id="lista-entrega"></div>
+          </fieldset>
+        </main>
+
+        <div class="acciones-fijas">
+          <a class="btn btn-primario btn-grande btn-bloque" id="continuar" href="a09-resumen.html">Continuar</a>
+        </div>
+
+        <!-- Hoja para agregar una dirección: escribirla o marcarla en el mapa -->
+        <div class="velo" id="velo" hidden>
+          <div class="dialogo dialogo-direccion" role="dialog" aria-modal="true" aria-labelledby="titulo-nueva">
+            <div class="fila mb-2">
+              <h2 id="titulo-nueva" style="margin:0">Nueva dirección</h2>
+              <button type="button" class="btn btn-icono" id="cerrar" aria-label="Cerrar"><svg class="icono"><use href="#i-cerrar"/></svg></button>
+            </div>
+            <div class="grupo-segmentado mb-4" role="group" aria-label="Cómo agregarla" style="display:flex">
+              <button type="button" data-pestana="escribir" aria-pressed="true" style="flex:1">Escribir</button>
+              <button type="button" data-pestana="mapa" aria-pressed="false" style="flex:1">En el mapa</button>
+            </div>
+
+            <form id="pestana-escribir" novalidate>
+              <div class="campo"><label for="calle">Calle y número</label><input class="entrada" id="calle" placeholder="Ej. Calle Ejemplo 123"></div>
+              <div class="campo"><label for="colonia">Colonia</label><input class="entrada" id="colonia" placeholder="Ej. Col. Centro" required><span class="ayuda">La pedimos aparte para ubicar mejor la entrega.</span></div>
+              <div class="campo"><label for="municipio">Municipio y estado</label><input class="entrada" id="municipio" placeholder="Ej. Durango, Dgo."></div>
+              <div class="campo"><label for="referencias">Referencias</label><textarea class="entrada" id="referencias" placeholder="Ej. portón gris, junto a la tienda"></textarea></div>
+              <label class="interruptor-fila"><span>Guardar como favorita</span><input type="checkbox" class="interruptor" id="favorita" checked></label>
+              <div class="campo mt-2" id="campo-alias"><label for="alias">Nombre</label><input class="entrada" id="alias" placeholder="Casa, Oficina…"></div>
+              <button type="submit" class="btn btn-primario btn-grande btn-bloque">Guardar dirección</button>
+            </form>
+
+            <div id="pestana-mapa" hidden>
+              <div class="mapa mapa-elegir" id="mapa-elegir">
+                <span class="pin-centro" aria-hidden="true"></span>
+                <span class="etiqueta-mapa">Dibujo de ejemplo · en la app: <span data-plataforma="ios">mapa de Apple</span><span data-plataforma="android">mapa de Google</span></span>
+              </div>
+              <p class="menor suave mt-2">Arrastra el mapa para poner el pin en tu puerta.</p>
+              <div class="dato-resumen mb-4">
+                <svg class="icono"><use href="#i-ubicacion"/></svg>
+                <div class="valor"><strong>Calle Ejemplo 789</strong>Dirección aproximada. Después te pedimos la colonia y las referencias.</div>
+              </div>
+              <button type="button" class="btn btn-primario btn-grande btn-bloque" id="usar-punto">Usar este punto</button>
+            </div>
+          </div>
+        </div>
+        <div class="indicador-inicio" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="anotaciones" id="anotaciones" aria-labelledby="titulo-anotaciones">
+    <div class="encabezado-panel">
+      <div><h2 id="titulo-anotaciones">Anotaciones</h2><p class="suave micro mb-0">Qué dibuja esta pantalla y qué falta decidir.</p></div>
+      <button type="button" class="btn btn-icono" data-cerrar-anotaciones aria-label="Ocultar anotaciones"><svg class="icono"><use href="#i-cerrar"/></svg></button>
+    </div>
+
+    <h3>Función</h3>
+    <p class="mb-2"><strong>F-A08 · Dirección de recogida y entrega</strong></p>
+    <blockquote>"Ingreso manual o desde mapa. Guardado de direcciones favoritas."</blockquote>
+    <p><span class="cita">NSV-2026-001-v8.pdf:16-17:ANEXO A, Sección A.3</span> · Módulo A, numeral 8</p>
+    <p class="menor suave">Toca "Agregar dirección" para ver las dos formas: escribirla o marcarla en el mapa.</p>
+
+    <h3>Componentes del design system</h3>
+    <p>Ninguno de los seis.</p>
+
+    <h3>Decisiones tomadas que respeta</h3>
+    <div class="nota nota-decision">
+      <div class="rotulo"><span>ADR-0009</span><span>vigente</span></div>
+      <p>Mapa nativo por plataforma. La dirección se geocodifica <strong>una sola vez</strong>, al guardarla; una favorita ya no consume. La <strong>colonia es un campo del formulario</strong>, no se deduce del mapa (decisiones 3 y 4 de <span class="cita">arquitectura/presupuesto-de-mapas.md</span>, que el ADR adopta). La colonia alimenta además el mapa de calor por colonia (F-I11).</p>
+    </div>
+
+    <h3>Pendiente</h3>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>BR-18</span><span>F5 + spec</span></div>
+      <p>Validación contra la zona de servicio y precisión requerida. El mock no dibuja el mensaje de "fuera de zona" porque no hay regla para escribirlo.</p>
+    </div>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>BR-02</span><span>F5 + spec</span></div>
+      <p>Cómo se trazan las zonas del territorio inicial (polígonos, radios, códigos postales o colonias).</p>
+    </div>
+    <div class="nota nota-pendiente">
+      <div class="rotulo"><span>BR-12</span><span>ESPECIFICACIÓN PENDIENTE</span></div>
+      <p>Si el autocompletado de direcciones usa un servicio de pago o una lista propia. Por eso los campos son libres.</p>
+    </div>
+  </aside>
+</div>
+<script src="../comun/app.js"></script>
+<script>
+(function () {
+  var p = Mock.pedido();
+
+  function lista(nombre, elegida) {
+    return Object.keys(Mock.DIRECCIONES).map(function (k) {
+      var d = Mock.DIRECCIONES[k];
+      return '<label class="opcion"><input type="radio" name="' + nombre + '" value="' + k + '"' + (k === elegida ? ' checked' : '') + '>' +
+        '<span class="cuerpo-opcion"><span class="nombre-opcion">' + d.alias + ' <svg class="icono chico" style="color:var(--c-atencion);vertical-align:-3px" aria-label="favorita"><use href="#i-estrella"/></svg></span>' +
+        '<span class="menor">' + d.linea + ', ' + d.colonia + '</span><br><span class="menor suave">' + d.municipio + ' · ' + d.referencias + '</span></span></label>';
+    }).join('');
+  }
+  document.getElementById('lista-recogida').innerHTML = lista('recogida', p.recogida);
+  document.getElementById('lista-entrega').innerHTML = lista('entrega', p.entrega);
+
+  var misma = document.getElementById('misma');
+  misma.checked = p.mismaDireccion !== false;
+  function alternar() { document.getElementById('bloque-entrega').hidden = misma.checked; }
+  misma.addEventListener('change', alternar);
+  alternar();
+
+  document.getElementById('continuar').addEventListener('click', function () {
+    var rec = document.querySelector('input[name="recogida"]:checked').value;
+    var ent = document.querySelector('input[name="entrega"]:checked').value;
+    Mock.guardarPedido({ recogida: rec, entrega: misma.checked ? rec : ent, mismaDireccion: misma.checked });
+  });
+
+  // Hoja para agregar dirección
+  var velo = document.getElementById('velo');
+  function pestana(nombre) {
+    document.querySelectorAll('[data-pestana]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-pestana') === nombre)); });
+    document.getElementById('pestana-escribir').hidden = nombre !== 'escribir';
+    document.getElementById('pestana-mapa').hidden = nombre !== 'mapa';
+  }
+  document.getElementById('agregar').addEventListener('click', function () { velo.hidden = false; pestana('escribir'); document.getElementById('calle').focus(); });
+  document.getElementById('cerrar').addEventListener('click', function () { velo.hidden = true; });
+  velo.addEventListener('click', function (ev) { if (ev.target === velo) velo.hidden = true; });
+  document.querySelectorAll('[data-pestana]').forEach(function (b) { b.addEventListener('click', function () { pestana(b.getAttribute('data-pestana')); }); });
+  document.getElementById('favorita').addEventListener('change', function () { document.getElementById('campo-alias').hidden = !this.checked; });
+  document.getElementById('usar-punto').addEventListener('click', function () {
+    document.getElementById('calle').value = 'Calle Ejemplo 789';
+    pestana('escribir');
+    document.getElementById('colonia').focus();
+  });
+  document.getElementById('pestana-escribir').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    if (!document.getElementById('colonia').value.trim()) {
+      Mock.brindis('Escribe la colonia.');
+      document.getElementById('colonia').focus();
+      return;
+    }
+    velo.hidden = true;
+    Mock.brindis('Dirección guardada (simulado).');
+  });
+
+  // Mapa para elegir el punto: se arrastra el dibujo bajo un pin fijo.
+  var mapa = document.getElementById('mapa-elegir');
+  mapa.insertAdjacentHTML('afterbegin', Mock.dibujoMapa());
+  mapa.querySelector('.pin-centro').innerHTML = Mock.pinSvg();
+  var dibujo = mapa.querySelector('svg.dibujo');
+  var arrastre = null, dx = 0, dy = 0;
+  mapa.addEventListener('pointerdown', function (e) { arrastre = { x: e.clientX - dx, y: e.clientY - dy }; mapa.setPointerCapture(e.pointerId); mapa.style.cursor = 'grabbing'; });
+  mapa.addEventListener('pointermove', function (e) {
+    if (!arrastre) return;
+    dx = Math.max(-120, Math.min(120, e.clientX - arrastre.x));
+    dy = Math.max(-120, Math.min(120, e.clientY - arrastre.y));
+    dibujo.style.transform = 'translate(' + dx + 'px,' + dy + 'px)';
+  });
+  function soltar() { arrastre = null; mapa.style.cursor = 'grab'; }
+  mapa.addEventListener('pointerup', soltar);
+  mapa.addEventListener('pointercancel', soltar);
+})();
+</script>
+</body>
+</html>
