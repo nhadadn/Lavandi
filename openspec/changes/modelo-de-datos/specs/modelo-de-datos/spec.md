@@ -38,7 +38,7 @@ Cita: D → ADR-0016, regla 5 (C-190, C-194)
 Toda tabla de operación DEBE (MUST) llevar `id_plazas`. Cuando su tabla padre también la lleva, la llave foránea DEBE
 (MUST) ser compuesta con la plaza, de modo que la base rechace una fila hija de otra plaza. Las tablas sin plaza son
 las de la lista cerrada del diseño: las del framework, los catálogos, `plazas`, las de cuentas y las de la pasarela.
-`id_plazas` es no nula, salvo en las cuatro tablas de la lista de plaza opcional del diseño.
+`id_plazas` es no nula, salvo en las tablas de la lista de plaza opcional del diseño.
 
 Cita: A → `NSV-2026-001-v8.pdf:4:Cláusula I`; D → ADR-0016, regla 4
 

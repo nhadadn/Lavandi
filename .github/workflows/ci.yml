@@ -34,9 +34,12 @@ jobs:
       # Falla si la marca o el dominio aparecen escritos a mano en movil/ o servidor/ (CLAUDE.md §5).
       - name: Sin marca ni dominio en el código
         run: python herramientas/ci/verificar_marca.py
-      # Falla si se sube un .env, una llave privada o un archivo de firma (ADR-0012).
+      # Falla si se sube un .env, una llave privada, una llave de Conekta o un archivo de firma (ADR-0012; DD-102).
       - name: Sin secretos en el repositorio
         run: python herramientas/ci/verificar_secretos.py
+      # Falla si el verificador de secretos deja de detectar lo que debe, como las llaves de Conekta (DD-102, punto 3).
+      - name: Pruebas de los verificadores
+        run: python -m unittest discover -s herramientas/ci -p "test_*.py"
 
   servidor:
     needs: detectar
@@ -92,9 +95,83 @@ jobs:
       # Falla si las migraciones no corren desde cero sobre PostgreSQL con PostGIS (ADR-0004).
       - name: Migraciones desde cero
         run: php artisan migrate:fresh --force
-      # Falla si un test falla.
+      # Falla si una ruta no declara su regla de autorización o si alguna respuesta trae datos de otro socio, de otro
+      # usuario o de otra plaza (autorizacion-E01 y E14, SEG-3). Corre en su propio paso para que una fuga se vea sola.
+      - name: Barrido contra fugas
+        run: php artisan test --group=barrido-contra-fugas
+      # Falla si un test falla. El barrido ya corrió en el paso anterior.
       - name: Tests
-        run: php artisan test
+        run: php artisan test --exclude-group=barrido-contra-fugas
+
+  # La velocidad de la portada en teléfono, como alerta temprana de A42-4 (medicion-E11): Lighthouse CI en perfil de
+  # teléfono sobre la portada con su contenido de prueba, servida como en las pruebas de navegador. Falla si el
+  # rendimiento baja de 0.70 (servidor/lighthouserc.json). El contenedor de medición es el de prueba de la variable del
+  # repositorio MEDICION_GTM_PRUEBA (ADR-0012); sin ella, la portada se mide sin medición. La acreditación es PageSpeed
+  # Insights sobre la dirección publicada (medicion-E12).
+  landing-velocidad:
+    needs: detectar
+    if: needs.detectar.outputs.servidor == 'true'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: servidor
+    services:
+      postgres:
+        image: postgis/postgis:17-3.5
+        env:
+          POSTGRES_DB: prueba
+          POSTGRES_USER: prueba
+          POSTGRES_PASSWORD: prueba
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U prueba"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_DATABASE: prueba
+      DB_USERNAME: prueba
+      DB_PASSWORD: prueba
+      APP_ENV: testing
+      APP_DEBUG: 'false'
+      APP_URL: http://127.0.0.1:8124
+      CACHE_STORE: array
+      SESSION_DRIVER: file
+      QUEUE_CONNECTION: sync
+      MAIL_MAILER: array
+      LANDING_PREGUNTAS_FRECUENTES: tests/Browser/Soporte/preguntas-frecuentes-de-prueba.json
+      MEDICION_GTM: ${{ vars.MEDICION_GTM_PRUEBA }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: pdo_pgsql, pgsql, intl, mbstring, bcmath, zip
+          coverage: none
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: servidor/package-lock.json
+      - name: Dependencias
+        run: |
+          composer install --no-interaction --prefer-dist --no-progress
+          npm ci
+      - name: Entorno de prueba
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+      - name: Estilos compilados
+        run: npm run build
+      - name: La portada con su contenido de prueba
+        run: php artisan migrate:fresh --force --seeder="Tests\\Browser\\Soporte\\PortadaDePrueba"
+      # Falla si la mediana de tres corridas baja de 0.70 en rendimiento.
+      - name: Lighthouse CI en teléfono
+        run: npx --yes @lhci/cli@0.15.1 autorun
 
   movil:
     needs: detectar
@@ -112,6 +189,9 @@ jobs:
           cache-dependency-path: movil/package-lock.json
       - name: Dependencias
         run: npm ci
+      # La configuración de Expo falla si le faltan sus variables (base-E05); aquí salen de .env.example.
+      - name: Entorno de prueba
+        run: cp .env.example .env
       # Falla si TypeScript encuentra un error de tipos.
       - name: Tipos
         run: npx tsc --noEmit

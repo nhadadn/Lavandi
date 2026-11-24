@@ -84,3 +84,81 @@ Bajo. El mapa vive en uno o dos componentes de la app, y las dos librerías tien
 - **Restricciones:** RN-29 y BR-42.
 - **Notas:** `presupuesto-de-mapas.md`.
 - **ADRs relacionados:** ADR-0002, ADR-0003, ADR-0004 y ADR-0012.
+
+## Adenda del 2026-11-21: la dirección asistida y desde dónde se geocodifica
+
+**Contexto.**
+
+- Arthur pidió la dirección asistida y aprobó sus tres piezas (C-238). F-A08 pide "Ingreso manual o desde mapa" sin
+  decir cómo (`NSV-2026-001-v8.pdf:16:ANEXO A, Sección A.3`, Módulo A #8).
+- RN-29 restringe el mapa, no la geocodificación ni el autocompletado. RN-23 pide el consumo de mapas acotado por diseño
+  (`NSV-2026-001-v8.pdf:29-30:ANEXO B, Sección B.5`).
+- `presupuesto-de-mapas.md` dejó pendiente "si el autocompletado de direcciones usa un servicio de pago o una lista
+  propia", para este ADR.
+- DD-135, punto 6, decidió que la geocodificación sale del servidor, "con un ADR corto" (C-236).
+
+**Decisión.**
+
+- **4, precisión.** La geocodificación de la decisión 4 la hace el servidor (`api`), nunca la app. La llave no viaja en
+  la app y las consultas de pago se cuentan en un solo lugar. El texto que se geocodifica lleva el municipio y el estado
+  del catálogo.
+- **6. El municipio y la colonia se asisten con listas propias, sin costo por consulta.** Los municipios del territorio
+  y las colonias por código postal, del Catálogo Nacional de Códigos Postales de Correos de México, cargados en la base
+  con un comando. El municipio se elige de la lista y la API rechaza uno que no esté en ella. La colonia y el código
+  postal siguen siendo texto: el catálogo los sugiere y no los exige.
+- **7. La calle se autocompleta con Google Places (la API nueva), desde el servidor, apagado por omisión.** Se enciende
+  en cada entorno con `GOOGLE_PLACES_ACTIVO` y `GOOGLE_PLACES_LLAVE` (ADR-0012). Una vez construidas las tareas 3.2 a
+  3.4, encenderlo o apagarlo no pide otra versión de la app ni cambia el resto de la API.
+  - **Una sesión por dirección.** La app crea un token, un UUID v4, al empezar a escribir la calle de una dirección
+    nueva. Lo manda en cada petición de sugerencias y al guardar.
+  - **La sesión termina en una sola consulta de detalle,** al guardar, con el mismo token y la máscara de campos
+    `location`. Esa consulta sustituye a la geocodificación de esa dirección, así que una dirección sigue costando una
+    sola consulta de pago al guardarse.
+  - **Menos peticiones:** tres caracteres antes de pedir, 300 ms de espera entre teclas, hasta cinco sugerencias, 30
+    peticiones por minuto por cuenta, y la app deja de pedir cuando el servidor responde que está apagado.
+  - **Solo México,** con el municipio y el estado elegidos.
+  - **Con la atribución de Google** que pidan sus condiciones (grado E).
+
+**Alternativas para la calle.**
+
+| Alternativa | Qué pasa con ella |
+|---|---|
+| Places desde la app, con la llave en la app | Se descarta. La llave de un servicio web viaja en cada teléfono y se restringe peor que en el servidor (grado E). El conteo de consultas queda repartido. Contradice la precisión de la decisión 4 |
+| Un catálogo propio de calles | Se descarta. SEPOMEX no trae calles. El de vialidades del INEGI (grado E, sin verificar) pesa más y hay que mantenerlo y cruzarlo con los números |
+| Sin autocompletado | No se descarta: es lo que queda mientras esté apagado, y la dirección escrita se sigue pudiendo guardar |
+
+**Costo** (grado E, `SIN VERIFICAR`; precios en dólares):
+
+- **De `verificaciones-fase-6.md`, fila 6, consultado el 2026-09-28** en
+  `https://developers.google.com/maps/billing-and-pricing/pricing`:
+  - geocodificación: 10,000 gratis al mes y después 5 USD por mil;
+  - autocompletado: 10,000 gratis y después 2.83 USD por mil.
+- **De memoria de Claude, sin consulta en esta sesión,** en esa página y en
+  `https://developers.google.com/maps/documentation/places/web-service/session-pricing`:
+  - el detalle de un lugar con solo campos básicos, como `location`, se cobra en el nivel más bajo, con un precio
+    cercano al de la geocodificación;
+  - las sugerencias de una sesión que termina en una consulta de detalle no se cobran aparte;
+  - las de una sesión que no termina se cobran por petición.
+
+**Consumo por dirección nueva escrita:**
+
+| Evento de pago | Apagado | Encendido, eligió una sugerencia | Encendido, escribió sin elegir |
+|---|---|---|---|
+| Geocodificación | 1 | 0 | 1 |
+| Detalle de Places | 0 | 1 | 0 |
+| Peticiones de sugerencias que se cobran | 0 | 0 (E) | Las que pidió (E) |
+
+Esta nota no estima el gasto en pesos. Para eso falta el número de direcciones nuevas al mes, que es dato del negocio
+(regla 3 de evidencia).
+
+**Quién decide qué.** La asentó Claude por delegación de Arthur Naranjo (C-236), sobre su pedido (C-238). Encender el autocompletado en producción es gasto de un
+servicio contratado a nombre de EL CLIENTE (RN-20): lo acepta Nadir con EL CLIENTE, en la fila que propone este diseño.
+
+**Criterio de reversión.** Si en el primer mes con el autocompletado encendido las sugerencias pasan del nivel
+gratuito, se apaga por configuración, sin tocar nada más. Si la licencia de SEPOMEX no permite usar el catálogo, la
+colonia vuelve a ser solo texto y el municipio sale de otra fuente.
+
+**Costo estimado de revertir.** Bajo: el autocompletado es un interruptor, y la colonia sin lista es el formulario de
+hoy.
+
+**Trazabilidad.** direcciones-E16 a E23; DD-137, DD-138 y DD-139; decisión 29 del acta del 2026-11-20.

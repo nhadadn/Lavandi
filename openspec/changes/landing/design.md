@@ -45,10 +45,59 @@ cambiar sin tocar los requisitos:
 - La sección de prensa sigue presente sin logos activos, para que las 12 secciones estén siempre (landing-E18).
 - Un botón de tienda sin enlace se muestra sin enlace, nunca con uno vacío (landing-E09).
 
+Al implementar se tomó una quinta lectura, del mismo tipo (2026-11-22, por delegación de Arthur, C-236):
+
+- **Los campos de los formularios, mientras DD-119 no los diga:** lo mínimo para responder, todos obligatorios. El de
+  interés pide el nombre de quien escribe, el de la lavandería y el correo; el de contacto, nombre, correo y mensaje
+  (landing-E10, landing-E21 y landing-E23). Un envío completo no se rechaza; mientras landing-E22 siga bloqueado, no se
+  entrega, no se guarda ni se registra, y la portada le dice a quien lo envió que no se entregó, en vez de una
+  confirmación que no sería cierta.
+
+### Cómo quedó implementado (tareas 1.1 a 5.3, 2026-11-22)
+
+Sin decisiones técnicas nuevas: cada punto aplica un ADR o responde una pregunta abierta de abajo con su opción sin
+dependencias.
+
+- **Portada:** `GET /` sirve `portada.index`, con el diseño base `publico.layout`, donde `medicion-de-la-landing` pone
+  su contenedor. Cada sección lleva `data-seccion`; los títulos de las secciones, los cuatro pasos y los títulos de los
+  seis pilares son los del contrato y viven en la vista.
+- **Contenido de EL CLIENTE:** en `servidor/config/landing.php`, con sus variables `LANDING_*` en `.env.example`.
+  Vacío, cada lugar muestra un marcador "Contenido de prueba: …", marcado con `data-de-prueba` para que la
+  acreditación (landing-E03) compruebe que no queda ninguno. El nombre es `APP_NAME`; el logo, `LANDING_LOGO`, con el
+  símbolo aprobado (C-63) en `public/marca/logotipo.png`; el WhatsApp, `SOPORTE_WHATSAPP`, el mismo de la app.
+- **Tokens (ADR-0013):** `servidor/resources/css/tokens.css` sale de `tokens.json` con la salida CSS del adaptador:
+  variables `--ds-*`, solo modo claro y, con movimiento reducido, las duraciones en 0. La extensión del generador para
+  esa salida está pendiente de entrar a `herramientas/tokens/generar.js` (fuera de `servidor/`).
+- **Letras:** Nunito y Source Sans 3, en woff2 del subconjunto latino, servidas desde `servidor/resources/fuentes/`
+  con su licencia SIL Open Font License: ninguna petición a otro servidor.
+- **Iconos:** los de Heroicons que ya trae Filament. Los de los pilares para usuarios flotan y se quedan quietos con
+  movimiento reducido.
+- **Plantilla (pregunta 2):** no se compró; se siguió la opción B de ADR-0011, sin plantilla.
+- **Mapa (pregunta 3):** SVG propio, dibujado en el servidor con las zonas activas de las plazas activas, simplificadas
+  por PostGIS (`ST_SimplifyPreserveTopology`, 0.0005 grados) y proyectadas en equirectangular. Acercar, alejar,
+  arrastrar y el nombre de la zona, en `resources/js/portada.js`, sin dependencias.
+- **Preguntas frecuentes (pregunta 4):** con la lectura mínima de ADR-0011, en un archivo JSON cuya ruta es
+  `LANDING_PREGUNTAS_FRECUENTES`; se muestran a lo más ocho, en `details` y `summary`.
+- **Pie legal (tarea 6.1, 2026-11-22):** lo pone el diseño base, `publico.layout`, con `publico/pie-legal.blade.php`,
+  así que lo llevan la portada y las páginas de textos-legales, y cualquier página pública que llegue después
+  (landing-E24). Sus dos enlaces van por el nombre de la ruta, `textos-legales.aviso-de-privacidad` (`/aviso-de-privacidad`)
+  y `textos-legales.terminos` (`/terminos`), con el título de cada documento como texto. El aviso de derechos de autor
+  es "© {año} {titular}. Todos los derechos reservados.", con `LANDING_DERECHOS_TITULAR` y `LANDING_DERECHOS_ANIO`
+  (`landing.derechos`; landing-E25). Una lectura del mismo tipo que las de arriba, por delegación de Arthur (C-236):
+  mientras falte el titular o el año (DD-120), fuera de producción el pie lleva un marcador de contenido de prueba; en
+  producción no lleva ninguno ni inventa el aviso, porque textos-legales-E02 no admite texto de prueba en las páginas de
+  los documentos. Los demás marcadores de la portada no cambian.
+- **Pruebas de navegador (pregunta 7):** Playwright desde Node, 1.57.0, en `servidor/tests/Browser/**/*.spec.js`, con
+  `npx playwright test` desde `servidor/`. Su servidor de prueba compila los estilos, deja la base de pruebas desde cero
+  con `tests/Browser/Soporte/PortadaDePrueba.php` y la sirve en un puerto propio. La integración continua todavía no
+  las corre: agregarlas toca `.github/workflows/ci.yml`.
+
 ## Tablas y migración
 
-Este cambio no crea ninguna tabla del modelo: en `vault/arquitectura/modelo-de-datos.md` ninguna tabla tiene `landing`
-en "Nace en" (ADR-0016). No trae migración ni trigger `impedir_cambio()`.
+Este cambio crea una tabla del modelo, `testimonios` (tarea 4.0), que entró a `vault/arquitectura/modelo-de-datos.md`,
+sección "Landing", con "Nace en" `landing` (ADR-0016): autor, texto, interruptor de activo (`false` por omisión) y
+orden. Sin `id_plazas`, porque la portada es una para todo el sitio: está en la lista `sin_plaza` de
+`servidor/config/modelo.php`, como decisión visible (modelo-E05). Sin el trigger `impedir_cambio()`.
 
 Lee, sin escribir:
 
@@ -60,17 +109,13 @@ Lee, sin escribir:
 
 Lo que esta spec guarda y el modelo todavía no tiene:
 
-- **Testimonios y logos de prensa** (landing-E15 a landing-E19). ADR-0011 los hace editables desde Filament, con su
-  interruptor de activo y su orden, así que necesitan dónde guardarse. El modelo los deja fuera a propósito: "los
-  textos de la landing (ADR-0011): entran cuando se decidan" (sección "Lo que no tiene tabla todavía"). Esta spec no
-  fija sus nombres ni sus columnas: primero tienen que entrar a `modelo-de-datos.md`, con su "Nace en", antes de las
-  tareas 4.1 y 4.2. Su migración pasará la prueba de esquema de `modelo-de-datos` (modelo-E01 a modelo-E17): o llevan
-  `id_plazas`, o entran a la lista cerrada de tablas sin plaza de `servidor/config/modelo.php`, como decisión visible en
-  el diff (modelo-E05). No llevan el trigger `impedir_cambio()`.
+- **Logos de prensa** (landing-E17 y landing-E18). ADR-0011 los hace editables desde Filament, con su interruptor de
+  activo y su orden, así que necesitan dónde guardarse. Su tabla tiene que entrar a `modelo-de-datos.md`, con su "Nace
+  en", antes de la tarea 4.2, y pasará la prueba de esquema como `testimonios`. Los testimonios ya entraron (arriba).
 - **Los formularios de interés y de contacto** (landing-E22). Si van por correo, como recomienda DD-119, no guardan
   nada. Si se guardan para verlos en el panel, la tabla no existe en el modelo (pregunta abierta 5).
-- **Preguntas frecuentes y demás textos.** Si se vuelven editables en Filament (pregunta abierta 4), tampoco tienen
-  tabla en el modelo.
+- **Preguntas frecuentes y demás textos.** Salen de la configuración y de un archivo de contenido (pregunta abierta 4).
+  Si algún día se vuelven editables en Filament, tampoco tienen tabla en el modelo.
 - **Los enlaces de las tiendas, el correo, el número de WhatsApp Business y el titular del aviso de derechos de autor**
   salen de la configuración, no de una tabla.
 
@@ -90,18 +135,23 @@ Lo que esta spec guarda y el modelo todavía no tiene:
 ## Open Questions
 
 1. **¿Quién diseña las 12 secciones?** No hay mocks ni componentes del design system para ellas. Lo decide Arthur.
+   *Mientras tanto:* Claude las armó con los tokens y las reglas transversales de `componentes.md`, por delegación de
+   Arthur (C-236); se pueden rehacer sin tocar los requisitos.
 2. **¿Se compra una plantilla?** ADR-0011 lo permite solo si su licencia completa, leída con sesión iniciada, permite
-   entregar el sitio, y esa licencia se archiva en el vault. Si no, se sigue sin plantilla.
+   entregar el sitio, y esa licencia se archiva en el vault. Si no, se sigue sin plantilla. *Resuelta el 2026-11-22:*
+   sin plantilla (opción B).
 3. **Cómo se dibujan los polígonos.** Un SVG propio a partir del GeoJSON de las zonas no agrega dependencias y cabe en
    ADR-0009. Una librería de mapas para web o un fondo de calles de un tercero, aunque sea gratuito, es una dependencia
-   nueva: **necesita ADR**.
+   nueva: **necesita ADR**. *Resuelta el 2026-11-22:* SVG propio.
 4. **Preguntas frecuentes y demás textos: ¿archivo de contenido o editables en Filament?** ADR-0011 solo hace
-   editables los testimonios y la prensa. Hacer editable lo demás **necesita que Arthur amplíe ADR-0011**.
+   editables los testimonios y la prensa. Hacer editable lo demás **necesita que Arthur amplíe ADR-0011**. *Resuelta el
+   2026-11-22 con la lectura mínima:* archivo de contenido y configuración.
 5. **El destino de los formularios** (BR-41, DD-119). Si van por correo, usan el proveedor de ADR-0014, que
    sigue abierto (DD-071). Si se guardan para verlos en el panel, es una vista que el Módulo D no enumera
    (`NSV-2026-001-v8.pdf:19:ANEXO A, Sección A.3`).
 6. **Protección contra envíos automáticos en los formularios.** El contrato no la nombra. Si se agrega, **necesita
-   ADR**.
+   ADR**. *Sigue abierta:* no se agregó ninguna.
 7. **Las pruebas de navegador.** Playwright desde Pest o desde Node. Las tareas usan `servidor/tests/Browser/Landing/`;
    la ruta se ajusta al confirmarlo (`vault/formas-de-trabajo/ciclo-openspec-tdd.md`, "Herramientas de prueba", que es
-   propuesta).
+   propuesta). *Resuelta el 2026-11-22:* desde Node, con la dependencia de desarrollo `@playwright/test` que ya nombra
+   `proposal.md`; las pruebas son `*.spec.js`. Falta que la integración continua las corra.

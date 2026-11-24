@@ -26,6 +26,19 @@ es de negocio: quién fija el precio y en qué unidad va el lavado en seco (DD-0
 1. **Fotos:** `Storage` con driver S3 y bucket privado; la app recibe URLs temporales con el vencimiento de la
    configuración (ADR-0006). Las fotos de prueba son imágenes neutras, sin marca (`CLAUDE.md` §5), y solo se siembran en
    local y en prueba (ADR-0012).
+   - **Lo que hizo la tarea 2.1** (Claude por delegación de Arthur, C-236). El perfil usa el mismo disco que el alta de
+     lavanderías, el de `servidor/config/fotos.php`: `fotos_s3`, el bucket S3 privado del entorno, en producción, y
+     `fotos_local`, un disco local privado que sirve cada foto en `/archivos/fotos/…` solo con firma válida, en los
+     demás (`alta-de-lavanderias/design.md`, "La foto"). La URL firmada y su vencimiento salen de un solo lugar,
+     `App\Fotos\AlmacenDeFotos`, que usan las fotos de la lavandería y la foto de perfil del usuario
+     (`perfil-y-soporte`, tarea 1.2).
+   - **Las fotos de prueba** las hace el sembrado en el momento, con GD: tres por lavandería de prueba, PNG de 800 × 600,
+     cada una de un color gris liso con el nombre de la lavandería y su número, en `lavanderias/{id_publico}/prueba-N.png`
+     del disco del entorno, con `orden` 1, 2 y 3. No se descarga ni se versiona ninguna imagen. Solo se siembran si la
+     lavandería todavía no tiene fotos, como el horario y las calificaciones, y nunca en producción.
+   - **Las pruebas no escriben en el disco de la máquina:** `servidor/tests/TestCase.php` pone el disco falso de fotos en
+     cada prueba. Las que revisan la firma usan el disco local con su raíz en un directorio temporal
+     (`tests/Feature/PerfilLavanderia/Soporte/DiscoLocalDeFotos.php`), porque el falso no firma.
 2. **Precio por lavandería y tipo de servicio, con monto y unidad como datos.** Es la forma más general: cubre que el
    precio lo fije la lavandería o que lo fije Lavandi, la plataforma, y se cargue en cada una (DD-010), sin migración. Es una fila
    de `lavanderia_servicios`: `precio` en pesos, `numeric(12,2)`, y la unidad como llave a `unidades_medida`
@@ -101,9 +114,13 @@ llevan `id_plazas`, no nula y con llave foránea a `plazas` (plazas-E09).
   deja elegir más de uno, sin fila. Sin respuesta, la app deja elegir uno.
 - **El orden y la cantidad de reseñas en pantalla.** El contrato no los fija. Lo decide Arthur, o se deja a
   `historial-y-calificacion`.
-- **El almacenamiento en local.** ¿Un MinIO en Docker, que habla S3 como dice el ADR-0006, o el disco local de Laravel
-  con URLs firmadas? Si se aparta del driver S3, se anota en el ADR-0006.
-- **El vencimiento de las URLs:** es un valor técnico de la configuración; lo fija Arthur.
+- **El almacenamiento en local: resuelta para local** por `alta-de-lavanderias` (`design.md`, "La foto"): el disco local
+  privado de Laravel, `fotos_local`, con URLs firmadas; la tarea 2.1 lo reusa. Se aparta del driver S3 solo fuera de
+  producción, así que **falta anotarlo en el ADR-0006**; lo anota quien cuida los ADRs (el implementador no los toca).
+  En producción, el disco `fotos_s3` necesita la librería `league/flysystem-aws-s3-v3`, que no está instalada: se
+  propone instalarla cuando se decida el hosting (DD-070).
+- **El vencimiento de las URLs:** es un valor técnico de la configuración; lo fija Arthur. Hoy es
+  `FOTOS_VIGENCIA_MINUTOS`, 60 minutos por omisión (`servidor/config/fotos.php`).
 - **Pregunta de diseño:** el design system no tiene componente para la galería de fotos, la lista de reseñas ni la
   selección de servicio. La tarea los crea con los tokens, o se agregan antes a `vault/design-system/componentes.md`.
 
@@ -111,9 +128,47 @@ llevan `id_plazas`, no nula y con llave foránea a `plazas` (plazas-E09).
 
 - **La fecha de la reseña.** Resuelta: es `calificaciones.created_at`, en `timestamptz` (modelo-E17; ADR-0016,
   regla 7).
-- **`codigo` único en los catálogos.** El modelo lo escribe para `roles`, no para `tipos_servicio` ni para
-  `unidades_medida`. Este diseño lo pone igual en los dos, porque la semilla y el código buscan por `codigo`; falta que
-  el modelo lo diga.
+- **`codigo` único en los catálogos.** Resuelta: único en `tipos_servicio` y `unidades_medida`, como en `roles`
+  (C-235; `vault/arquitectura/modelo-de-datos.md`, tablas de catálogo).
 - **El orden con `lavanderias-cercanas`.** Ese cambio va antes en el plan y lee `lavanderias` y `calificaciones`, que
   crea la tarea 1.1 de este cambio (ver el `design.md` de `lavanderias-cercanas`, Open Questions). Lo decide Arthur al
   rehacer el plan.
+
+## Contrato de la API: las fotos del perfil
+
+Lo que agrega la tarea 2.1 (perfil-lavanderia-E03 y E04) a `GET /api/lavanderias/{id_publico}`, para que la app (tarea
+3.1) pinte las fotos. Lo demás del perfil sigue igual que en la tarea 1.2; el contrato completo vive en el comentario de
+`servidor/app/Http/Controllers/Api/PerfilDeLavanderiaController.php`.
+
+```
+200
+{
+  "lavanderia": {
+    "id_publico": "01jd8x6m3v2c9q4w5e7r8t0y1u",
+    "nombre": "Lavandería de prueba 1",
+    "descripcion": "Texto de la lavandería" | null,
+    "fotos": [
+      { "url": "https://…firmada…", "vence_en": "2026-11-22T18:00:00Z" },
+      { "url": "https://…firmada…", "vence_en": "2026-11-22T18:00:00Z" }
+    ],
+    "servicios": [ … ],
+    "calificacion_promedio": 4.25 | null,
+    "numero_de_calificaciones": 4,
+    "resenas": [ … ]
+  }
+}
+```
+
+- **`fotos`** es una lista, siempre presente: todas las fotos de la lavandería por su `orden` (y, si dos empatan, por
+  la que se guardó primero). La primera es la principal, la del registro del socio. Vacía si no tiene ninguna.
+- **Cada foto trae solo `url` y `vence_en`,** la misma forma que la foto de la lavandería en el Módulo B y la foto de
+  perfil del usuario. Ni la ruta del archivo, ni la llave, ni el orden salen como campo: el orden es el de la lista.
+- **`url`** es la URL firmada del almacenamiento privado del entorno: en producción, la URL prefirmada del bucket S3;
+  en local, `{APP_URL}/archivos/fotos/…?expires=…&signature=…`. Sin la firma, o con una firma que no es la suya, el
+  almacenamiento responde 403 y no entrega la foto (E03). Para verla desde un teléfono en local, `APP_URL` tiene que ser
+  una dirección que el teléfono alcance.
+- **`vence_en`** es el instante en que vence la URL, en UTC, a los `FOTOS_VIGENCIA_MINUTOS` de la configuración (60 por
+  omisión). Después, la URL responde 403 (E04). La app no la renueva: al volver a entrar al perfil lo pide otra vez y
+  recibe URLs nuevas (Risks / Trade-offs).
+- **Sin sesión, sin el rol de usuario, o de una lavandería que no está activa,** el perfil se rechaza como en la tarea
+  1.2 (401, 403 o 404) y no sale ninguna URL de sus fotos.

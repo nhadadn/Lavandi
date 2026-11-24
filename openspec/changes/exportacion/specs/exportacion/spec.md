@@ -108,3 +108,13 @@ Cita: D → ADR-0003; A → `NSV-2026-001-v8.pdf:20:ANEXO A, Sección A.3` (sepa
 - **DADO** un archivo generado para una cuenta de administración
 - **CUANDO** otra cuenta intenta abrir su enlace
 - **ENTONCES** se le niega el archivo
+
+#### Scenario: exportacion-E12 — La descarga caduca y se borra
+
+- **DADO** una descarga generada hace más días que los de vida de la configuración, 7 por omisión, y otra más reciente
+- **CUANDO** corre el borrado, programado una vez al día
+- **ENTONCES** la vieja se borra con sus archivos y su enlace deja de servir
+- **Y** la reciente se conserva
+
+Los días no los fija el contrato: son configuración (`EXPORTACION_DIAS_DE_VIDA`), decidida por delegación (C-236) en
+`design.md`, pregunta abierta 2. El borrado necesita que el hosting corra el programador (DD-070).

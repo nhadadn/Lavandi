@@ -74,7 +74,9 @@ Este cambio crea tres tablas, tal como las fija `vault/arquitectura/modelo-de-da
   verifica antes de escribir el archivo del territorio.
 - [Polígonos municipales pesados] → si se usan los límites oficiales completos, las consultas se apoyan en el índice
   espacial y el archivo puede simplificarse al cargarlo. Se mide con los datos reales.
-- [Zonas encimadas] → si dos zonas de plazas distintas se enciman, un punto resuelve a dos plazas. Ver Open Questions.
+- [Zonas encimadas] → la carga rechaza dos zonas que comparten área, de cualquier plaza (plazas-E12, C-234). El chequeo
+  es en el plano y la resolución en la esfera: con bordes que comparten vértices coinciden; con un borde largo de
+  vértices distintos puede quedar un encimado de metros (anotado en `AperturaDePlaza`).
 - [El criterio de O-26 queda a medias] → plazas-E08 prueba la carga sin migraciones, pero el criterio completo pide el
   recorrido entero en la plaza nueva. Se completa con un escenario en `estados-del-pedido` o en `publicacion`.
 
@@ -86,17 +88,15 @@ Este cambio crea tres tablas, tal como las fija `vault/arquitectura/modelo-de-da
 - **DD-094: zonas del territorio inicial (BR-02).** ¿Cada zona es el límite oficial completo del municipio o un
   área menor dentro de él? ¿De qué fuente sale el polígono y quién lo aprueba? Bloquea plazas-E10 y plazas-E11, y el
   mapa de cobertura de la landing (F-L07).
-- **Zonas encimadas.** ¿La carga rechaza una zona que se encima con la de otra plaza? Lo confirma Arthur; sin
-  escenario no se programa.
+- **Zonas encimadas.** Resuelta: la carga las rechaza (plazas-E12; DD-134, C-234).
 - **Tipos espaciales en Eloquent.** Sin paquete, las consultas usan las funciones de PostGIS directamente y no hace
   falta ADR. Si se quiere un paquete de tipos espaciales, necesita ADR.
 - **La fuente de los límites oficiales** (por ejemplo, el marco geoestadístico del INEGI) y su licencia: grado E,
   `SIN VERIFICAR`.
 - **Con qué reconoce la carga una plaza que ya existe.** plazas-E08 pide que volver a cargar el mismo archivo no
   duplique. Para eso la carga necesita una llave natural, por ejemplo `nombre` único en `plazas` y
-  `(id_plazas, nombre)` único en `zonas`, que el modelo de datos no trae. Lo decide Arthur en el modelo antes de la
-  tarea 1.1.
-- **`zonas.activa`.** El modelo la trae, pero la spec resuelve un punto solo por plaza activa (plazas-E04 a E06). Si
-  una zona que no está activa deja de dar servicio dentro de una plaza activa, falta su escenario; sin escenario, la
-  resolución no la mira.
+  `(id_plazas, nombre)` único en `zonas`. **Resuelta:** el modelo de datos aprobado ya los trae (ADR-0016, C-193;
+  `vault/arquitectura/modelo-de-datos.md`, filas `plazas` y `zonas`).
+- **`zonas.activa`.** Resuelta: una zona que no está activa no da servicio, y al recargar se desactiva la que ya no
+  viene (plazas-E13 y E14; DD-134, C-234).
 - **Las marcas `created_at` y `updated_at`.** Resuelta: van en toda tabla del negocio, en `timestamptz` (modelo-E17; ADR-0016, regla 7).

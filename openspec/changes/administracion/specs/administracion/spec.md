@@ -108,7 +108,7 @@ Criterio: A43-6
 
 ### Requirement: Porcentaje de comisión global y por socio
 
-El panel DEBE (MUST) permitir a la administración fijar un porcentaje de comisión global y un porcentaje propio para cada socio. Al socio con porcentaje propio le aplica el suyo; a los demás, el global. El sistema no trae ningún porcentaje de fábrica: los valores los captura EL CLIENTE.
+El panel DEBE (MUST) permitir a la administración fijar un porcentaje de comisión global, uno solo para todas las plazas, y un porcentaje propio para cada socio. Al socio con porcentaje propio le aplica el suyo; a los demás, de cualquier plaza, el global. El sistema no trae ningún porcentaje de fábrica: los valores los captura EL CLIENTE.
 
 Cita: A → `NSV-2026-001-v8.pdf:19:ANEXO A, Sección A.3` (Módulo D #5)
 
@@ -116,7 +116,7 @@ Cita: A → `NSV-2026-001-v8.pdf:19:ANEXO A, Sección A.3` (Módulo D #5)
 
 - **DADO** que no hay porcentaje global guardado
 - **CUANDO** la administración guarda un porcentaje global
-- **ENTONCES** ese porcentaje aplica a toda lavandería sin porcentaje propio
+- **ENTONCES** ese porcentaje aplica a toda lavandería sin porcentaje propio, de cualquier plaza
 
 Criterio: A43-6
 
@@ -209,9 +209,9 @@ elegida.
 - **CUANDO** la administración concilia el periodo
 - **ENTONCES** el reporte marca los tres como conciliados
 
-Criterio: A43-6
+Cita: D → `ADR-0010`, segunda adenda del 2026-11-22: los movimientos salen de la API de la pasarela, por la misma interfaz neutral del cobro, cuando la administración concilia un periodo, y se guardan en `movimientos_pasarela`, una fila por orden, sin plaza propia (decisión 34 de `acta-2026-11-20-modelo-y-pasarela.md`; cierra DD-112)
 
-SIN RESPUESTA — bloquea: administracion-E20 (DD-112: de dónde salen los movimientos y la forma de `movimientos_pasarela`)
+Criterio: A43-6
 
 #### Scenario: administracion-E21 — Periodo con diferencias
 
@@ -219,7 +219,7 @@ SIN RESPUESTA — bloquea: administracion-E20 (DD-112: de dónde salen los movim
 - **CUANDO** la administración concilia el periodo
 - **ENTONCES** el reporte señala cada uno con su tipo de diferencia
 
-SIN RESPUESTA — bloquea: administracion-E21 (DD-112)
+Cita: D → `ADR-0010`, segunda adenda del 2026-11-22: un movimiento sin pedido es justo una diferencia, y la plaza de un movimiento es la del pedido con el que cuadra (decisión 34 de `acta-2026-11-20-modelo-y-pasarela.md`; cierra DD-112)
 
 #### Scenario: administracion-E22 — La comisión que retiene la pasarela
 

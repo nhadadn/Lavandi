@@ -97,3 +97,10 @@ librería que venga.
 - **Restricciones:** RN-08, RN-17, RN-24, BR-14 y BR-48.
 - **Pendientes:** DD-053.
 - **ADRs relacionados:** ADR-0002, ADR-0003, ADR-0012 y ADR-0014.
+
+## Adenda del 2026-11-21: la librería que valida el `idToken` de Google
+
+El servidor valida el `idToken` de Google con `firebase/php-jwt` (licencia BSD-3): la firma contra las llaves públicas
+de Google, guardadas en caché, más el emisor, el cliente, el vencimiento, el sujeto y el correo verificado
+(registro-E16 y E17). Se descartó `google/apiclient`, que trae el cliente completo de las API de Google para usar una
+sola función. La tomó Claude por delegación de Arthur Naranjo (C-236), con la recomendación de DD-130.

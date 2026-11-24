@@ -35,6 +35,11 @@ precio y en qué unidad va el lavado en seco). Mientras tanto, el renglón se re
 SIN RESPUESTA — bloquea: confirmacion-E03 (DD-019: si el envío es por pedido o por trayecto, fijo o por distancia;
 DD-025: si va aparte, incluido en un pedido mínimo o gratis desde un umbral).
 
+Mientras tanto, el resumen no lleva renglón de envío. El Módulo A #9 enumera "Servicio, fecha, dirección, precio
+estimado y política de cancelación" (`NSV-2026-001-v8.pdf:16:ANEXO A, Sección A.3`), y el envío como cargo aparte no
+aparece: si lo es, y cómo se muestra, es parte de DD-019 y DD-025. La prueba que lo fija lleva confirmacion-E03 en su
+nombre (`movil/__tests__/confirmacion/resumen.test.tsx`).
+
 #### Scenario: confirmacion-E04 — La política de cancelación
 
 - **DADO** la política de cancelación de la plaza
@@ -124,6 +129,17 @@ Cita: A → `NSV-2026-001-v8.pdf:21:ANEXO A, Sección A.4.3`; D → ADR-0003
 - **CUANDO** el usuario lo acepta cuando esa ventana ya empezó
 - **ENTONCES** el servidor lo rechaza con su motivo, sin crear el pedido
 - **Y** la app lleva al usuario a elegir otra ventana, con los demás datos del pedido intactos
+
+Criterio: A43-2
+
+#### Scenario: confirmacion-E15 — La dirección ya se usó con su plaza anterior
+
+- **DADO** una dirección guardada que ya se copió en un pedido de su plaza
+- **Y** las zonas cambiaron y su punto cae hoy en una zona de otra plaza
+- **CUANDO** el usuario acepta un resumen con esa dirección y una lavandería de la plaza de hoy
+- **ENTONCES** el servidor lo rechaza con el motivo `plaza_de_la_direccion_desactualizada`, sin crear el pedido
+- **Y** el pedido anterior y su copia de la dirección no cambian
+- **Y** la app ofrece guardar la dirección de nuevo
 
 Criterio: A43-2
 

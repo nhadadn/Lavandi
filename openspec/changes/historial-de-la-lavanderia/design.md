@@ -46,6 +46,72 @@ ADR-0016):
 E03 y E07, que ya están bloqueados. `pedidos` trae además su columna `comision_porcentaje`; si vale para el monto neto
 de un pedido ya cobrado lo dice DD-020 ("desde cuándo aplica un cambio de porcentaje").
 
+## Contrato de la API
+
+Lo implementó el implementador del servidor con las tareas 1.1 y 1.2. Es el mismo que está en el comentario de
+`servidor/app/Http/Controllers/Api/HistorialDeLaLavanderiaController.php`. La app del Módulo B (tareas 2.1 y 2.2) se
+hace contra él.
+
+**Sesión y autorización.** Como las de `/api/lavanderia/pedidos` (`pedidos-de-la-lavanderia`, "Contrato de la API"):
+`Authorization: Bearer <token>`, `auth:sanctum` y `autorizar:lavanderia`. La tenencia la decide
+`App\Autorizacion\Autorizacion::pedidosDeLaLavanderia()`: los pedidos de las lavanderías que administra la cuenta, de su
+misma plaza y con el pago acreditado (C-188).
+
+| Respuesta | Cuándo |
+|---|---|
+| `401 { "message": "Unauthenticated." }` | Sin sesión |
+| `403 { "message": "Esta cuenta no tiene acceso." }` | La cuenta no tiene el rol de lavandería, como una de usuario |
+
+**El historial**, `GET /api/lavanderia/historial` (historial-lavanderia-E01 y E02):
+
+```json
+{
+  "pedidos": [
+    {
+      "id_publico": "01jd8x6m3v2c9q4w5e7r8t0y1z",
+      "folio": "7KQ2M9XA",
+      "entregado_en": "2026-12-04T01:30:00Z",
+      "fecha": "2026-12-03"
+    }
+  ]
+}
+```
+
+| Campo | Qué es |
+|---|---|
+| `id_publico` | El ULID del pedido, el mismo de `GET /api/lavanderia/pedidos/{id_publico}` |
+| `folio` | Siempre lleno: la lavandería solo ve pedidos pagados (ADR-0020) |
+| `entregado_en` | El instante del paso a Entregado, en UTC, del historial del pedido en `pedido_eventos` (decisión 1) |
+| `fecha` | Ese instante en la fecha de la plaza (decisión 3): una entrega a las 19:30 del 3 de diciembre en la plaza es el 3, aunque en UTC ya sea el 4 |
+
+- Entran solo los pedidos en Entregado. No entran el que sigue en curso (de `confirmado` a `en_entrega`), el rechazado
+  ni el que espera su pago.
+- Solo los de las lavanderías de la cuenta, de su plaza. Uno de otra lavandería o de otra plaza no aparece, y pedirlo por
+  su `id_publico` a `GET /api/lavanderia/pedidos/{id_publico}` responde `404 { "message": "No existe el pedido." }`, igual
+  que uno que no existe (ADR-0019, decisión 3). El detalle de un pedido del historial es esa misma ruta: no hay otra.
+- De la entrega más reciente a la más antigua; con la misma, del pedido más nuevo al más viejo. Sin paginación. Sin
+  entregados, `"pedidos": []`.
+- **Todavía sin monto ni calificación:** esperan DD-013, DD-020, DD-012 y DD-052 (E03 y E04). Cuando se respondan,
+  entran como campos nuevos del mismo objeto, sin cambiar los que ya están.
+
+**Las estadísticas**, `GET /api/lavanderia/estadisticas` (historial-lavanderia-E05 y E06):
+
+```json
+{ "pedidos_del_dia": 2, "pedidos_de_la_semana": 5 }
+```
+
+| Campo | Qué es |
+|---|---|
+| `pedidos_del_dia` | Los pedidos del historial cuyo paso a Entregado cae en el día de hoy de su plaza |
+| `pedidos_de_la_semana` | Los que caen en la semana de hoy de su plaza, de lunes a domingo; incluye los de hoy |
+
+- Cuentan los mismos pedidos del historial: solo los entregados, solo los de la cuenta y de su plaza.
+- "Hoy" y "esta semana" se leen en la zona horaria de la plaza de cada pedido (decisión 3), con el reloj del servidor:
+  el lunes a las 00:30 de la plaza empieza otra semana, aunque en UTC todavía sea domingo por la noche.
+- Sin entregados, los dos en `0`.
+- **Todavía sin ingreso total ni calificación promedio:** esperan DD-013, DD-020, DD-012 y DD-052 (E07 y E08). Cuando
+  se respondan, entran como campos nuevos del mismo objeto.
+
 ## Risks / Trade-offs
 
 - [Se usa el historial antes de cerrar DD-013 y DD-052] → la lavandería ve folio y fecha, pero no monto ni

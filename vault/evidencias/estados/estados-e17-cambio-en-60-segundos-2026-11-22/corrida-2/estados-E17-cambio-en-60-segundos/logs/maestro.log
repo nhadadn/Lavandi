@@ -1,0 +1,337 @@
+16:15:18.151 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$0: Define variables RUNNING
+16:15:18.161 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Define variables metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(defineVariablesCommand=DefineVariablesCommand(env={APP_ID=mx.ejemplo.desarrollo, API_URL=http://127.0.0.1:8000/api, PEDIDO=01m82n7avp4vdv2bf3stf5tvd4, USUARIO_CORREO=usuario.de.prueba@ejemplo.com, USUARIO_CONTRASENA=contrasena-de-prueba, LAVANDERIA_CORREO=lavanderia.centro@ejemplo.com, LAVANDERIA_CONTRASENA=lavanderia-de-prueba, MAESTRO_CLI_NO_ANALYTICS=1, MAESTRO_CLI_ANALYSIS_NOTIFICATION_DISABLED=true, MAESTRO_FILENAME=cambio-en-60-segundos, MAESTRO_DEVICE_UDID=emulator-5554, MAESTRO_SHARD_ID=1, MAESTRO_SHARD_INDEX=0}, label=null, optional=false)), logMessages=[], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:15:18.164 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$2: Define variables COMPLETED
+16:15:19.446 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$0: Apply configuration RUNNING
+16:15:19.468 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Apply configuration metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(applyConfigurationCommand=ApplyConfigurationCommand(config=MaestroConfig(appId=mx.ejemplo.desarrollo, name=estados-E17-cambio-en-60-segundos, tags=[estados, A43-3], ext={}, onFlowStart=null, onFlowComplete=MaestroOnFlowComplete(commands=[MaestroCommand(runScriptCommand=RunScriptCommand(script=// Al terminar el flujo, pase o falle, cierra la sesión que abrió marcar-recolectado.js (DELETE /api/sesion), para no
+// dejar tokens vivos de la lavandería de prueba. Corre dentro de Maestro (onFlowComplete de cambio-en-60-segundos.yaml).
+/* global http, output, API_URL */
+if (output.tokenDeLaLavanderia) {
+  const respuesta = http.request(API_URL + '/sesion', {
+    method: 'DELETE',
+    headers: { Accept: 'application/json', Authorization: 'Bearer ' + output.tokenDeLaLavanderia },
+  });
+  console.log('Sesión de la lavandería cerrada: ' + respuesta.status);
+  output.tokenDeLaLavanderia = null;
+}
+, env={}, sourceDescription=pasos/cerrar-sesion-de-la-lavanderia.js, condition=null, label=null, optional=false, scriptDir=C:\np\Lavandi\.claude\worktrees\agent-ac4b58ad09d5675e3\movil\.maestro\estados\pasos))]), properties={}), label=null, optional=false)), logMessages=[], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:15:19.468 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$2: Apply configuration COMPLETED
+16:15:19.469 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$0: Run pasos/entrar-como-usuario.yaml RUNNING
+16:15:19.517 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Run pasos/entrar-como-usuario.yaml metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(runFlowCommand=RunFlowCommand(commands=[MaestroCommand(applyConfigurationCommand=ApplyConfigurationCommand(config=MaestroConfig(appId=${APP_ID}, name=null, tags=[], ext={}, onFlowStart=null, onFlowComplete=null, properties={}), label=null, optional=false)), MaestroCommand(launchAppCommand=LaunchAppCommand(appId=${APP_ID}, clearState=true, clearKeychain=null, stopApp=true, permissions={location=allow}, launchArguments=null, label=null, optional=false)), MaestroCommand(assertConditionCommand=AssertConditionCommand(condition=Condition(platform=null, visible=ElementSelector(textRegex=Comenzar, idRegex=null, size=null, below=null, above=null, leftOf=null, rightOf=null, containsChild=null, containsDescendants=null, traits=null, index=null, enabled=null, optional=false, selected=null, checked=null, focused=null, childOf=null, css=null), notVisible=null, scriptCondition=null, label=null), timeout=30000, label=null, optional=false)), MaestroCommand(tapOnElementCommand=TapOnElementCommand(selector=ElementSelector(textRegex=Comenzar, idRegex=null, size=null, below=null, above=null, leftOf=null, rightOf=null, containsChild=null, containsDescendants=null, traits=null, index=null, enabled=null, optional=false, selected=null, checked=null, focused=null, childOf=null, css=null), retryIfNoChange=false, waitUntilVisible=false, longPress=false, repeat=null, waitToSettleTimeoutMs=null, relativePoint=null, label=null, optional=false)), MaestroCommand(tapOnElementCommand=TapOnElementCommand(selector=ElementSelector(textRegex=Siguiente, idRegex=null, size=null, below=null, above=null, leftOf=null, rightOf=null, containsChild=null, containsDescendants=null, traits=null, index=null, enabled=null, optional=false, selected=null, checked=null, focused=null, childOf=null, css=null), retryIfNoChange=false, waitUntilVisible=false, longPress=false, repeat=null, waitToSettleTimeoutMs=null, relativePoint=null, label=null, optional=false)), MaestroCommand(tapOnElementCommand=TapOnElementCommand(selector=ElementSelector(textRegex=Siguiente, idRegex=null, size=null, below=null, above=null, leftOf=null, rightOf=null, containsChild=null, containsDescendants=null, traits=null, index=null, enabled=null, optional=false, selected=null, checked=null, focused=null, childOf=null, css=null), retryIfNoChange=false, waitUntilVisible=false, longPress=false, repeat=null, waitToSettleTimeoutMs=null, relativePoint=null, label=null, optional=false)), MaestroCommand(tapOnElementCommand=TapOnElementCommand(selector=ElementSelector(textRegex=Siguiente, idRegex=null, size=null, below=null, above=null, leftOf=null, rightOf=null, containsChild=null, containsDescendants=null, traits=null, index=null, enabled=null, optional=false, selected=null, checked=null, focused=null, childOf=null, css=null), retryIfNoChange=false, waitUntilVisible=false, longPress=false, repeat=null, waitToSettleTimeoutMs=null, relativePoint=null, label=null, optional=false)), MaestroCommand(assertConditionCommand=AssertConditionCommand(condition=Condition(platform=null, visible=ElementSelector(textRegex=Hola de nuevo, idRegex=null, size=null, below=null, above=null, leftOf=null, rightOf=null, containsChild=null, containsDescendants=null, traits=null, index=null, enabled=null, optional=false, selected=null, checked=null, focused=null, childOf=null, css=null), notVisible=null, scriptCondition=null, label=null), timeout=15000, label=null, optional=false)), MaestroCommand(tapOnElementCommand=TapOnElementCommand(selector=ElementSelector(textRegex=null, idRegex=campo-correo, size=null, below=null, above=null, leftOf=null, rightOf=null, containsChild=null, containsDescendants=null, traits=null, index=null, enabled=null, optional=false, selected=null, checked=null, focused=null, childOf=null, css=null), retryIfNoChange=false, waitUntilVisible=false, longPress=false, repeat=null, waitToSettleTimeoutMs=null, relativePoint=null, label=null, optional=false)), MaestroCommand(inputTextCommand=InputTextCommand(text=${USUARIO_CORREO}, label=null, optional=false)), MaestroCommand(tapOnElementCommand=TapOnElementCommand(selector=ElementSelector(textRegex=null, idRegex=campo-password, size=null, below=null, above=null, leftOf=null, rightOf=null, containsChild=null, containsDescendants=null, traits=null, index=null, enabled=null, optional=false, selected=null, checked=null, focused=null, childOf=null, css=null), retryIfNoChange=false, waitUntilVisible=false, longPress=false, repeat=null, waitToSettleTimeoutMs=null, relativePoint=null, label=null, optional=false)), MaestroCommand(inputTextCommand=InputTextCommand(text=${USUARIO_CONTRASENA}, label=null, optional=false)), MaestroCommand(hideKeyboardCommand=HideKeyboardCommand()), MaestroCommand(tapOnElementCommand=TapOnElementCommand(selector=ElementSelector(textRegex=Iniciar sesión, idRegex=null, size=null, below=ElementSelector(textRegex=null, idRegex=campo-password, size=null, below=null, above=null, leftOf=null, rightOf=null, containsChild=null, containsDescendants=null, traits=null, index=null, enabled=null, optional=false, selected=null, checked=null, focused=null, childOf=null, css=null), above=null, leftOf=null, rightOf=null, containsChild=null, containsDescendants=null, traits=null, index=null, enabled=null, optional=false, selected=null, checked=null, focused=null, childOf=null, css=null), retryIfNoChange=false, waitUntilVisible=false, longPress=false, repeat=null, waitToSettleTimeoutMs=null, relativePoint=null, label=null, optional=false)), MaestroCommand(assertConditionCommand=AssertConditionCommand(condition=Condition(platform=null, visible=ElementSelector(textRegex=Lavanderías cerca de ti, idRegex=null, size=null, below=null, above=null, leftOf=null, rightOf=null, containsChild=null, containsDescendants=null, traits=null, index=null, enabled=null, optional=false, selected=null, checked=null, focused=null, childOf=null, css=null), notVisible=null, scriptCondition=null, label=null), timeout=30000, label=null, optional=false))], condition=null, sourceDescription=pasos/entrar-como-usuario.yaml, config=MaestroConfig(appId=mx.ejemplo.desarrollo, name=null, tags=[], ext={}, onFlowStart=null, onFlowComplete=null, properties={}), label=null, optional=false)), logMessages=[], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:15:19.521 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$0: Apply configuration RUNNING
+16:15:19.525 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Apply configuration metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(applyConfigurationCommand=ApplyConfigurationCommand(config=MaestroConfig(appId=mx.ejemplo.desarrollo, name=null, tags=[], ext={}, onFlowStart=null, onFlowComplete=null, properties={}), label=null, optional=false)), logMessages=[], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:15:19.526 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$2: Apply configuration COMPLETED
+16:15:19.526 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$0: Launch app "${APP_ID}" with clear state RUNNING
+16:15:19.529 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Launch app "${APP_ID}" with clear state metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(launchAppCommand=LaunchAppCommand(appId=mx.ejemplo.desarrollo, clearState=true, clearKeychain=null, stopApp=true, permissions={location=allow}, launchArguments=null, label=null, optional=false)), logMessages=[], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:15:19.540 [ INFO] maestro.Maestro.clearAppState$lambda$9: Clearing app state mx.ejemplo.desarrollo
+16:15:20.435 [ INFO] maestro.Maestro.launchApp$lambda$6: Launching app mx.ejemplo.desarrollo
+16:15:20.435 [ INFO] maestro.Maestro.launchApp$lambda$6: Stopping mx.ejemplo.desarrollo app during launch
+16:15:21.857 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$2: Launch app "${APP_ID}" with clear state COMPLETED
+16:15:21.858 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$0: Assert that "Comenzar" is visible RUNNING
+16:15:21.859 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Assert that "Comenzar" is visible metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(assertConditionCommand=AssertConditionCommand(condition=Condition(platform=null, visible=ElementSelector(textRegex=Comenzar, idRegex=null, size=null, below=null, above=null, leftOf=null, rightOf=null, containsChild=null, containsDescendants=null, traits=null, index=null, enabled=null, optional=false, selected=null, checked=null, focused=null, childOf=null, css=null), notVisible=null, scriptCondition=null, label=null), timeout=30000, label=null, optional=false)), logMessages=[], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:15:27.528 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$2: Assert that "Comenzar" is visible COMPLETED
+16:15:27.529 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$0: Tap on "Comenzar" RUNNING
+16:15:27.529 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Tap on "Comenzar" metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(tapOnElementCommand=TapOnElementCommand(selector=ElementSelector(textRegex=Comenzar, idRegex=null, size=null, below=null, above=null, leftOf=null, rightOf=null, containsChild=null, containsDescendants=null, traits=null, index=null, enabled=null, optional=false, selected=null, checked=null, focused=null, childOf=null, css=null), retryIfNoChange=false, waitUntilVisible=false, longPress=false, repeat=null, waitToSettleTimeoutMs=null, relativePoint=null, label=null, optional=false)), logMessages=[], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:15:27.676 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tapping on element:  UiElement(treeNode=TreeNode(attributes={text=Comenzar, accessibilityText=, hintText=, ignoreBoundsFiltering=false, resource-id=, clickable=false, bounds=[446,2196][634,2257], enabled=true, focused=false, checked=false, scrollable=false, selected=false, class=android.widget.TextView, important-for-accessibility=true, error=}, children=[], clickable=false, enabled=true, focused=false, checked=false, selected=false), bounds=Bounds(x=446, y=2196, width=188, height=61))
+16:15:28.996 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tap aimed via settled hierarchy
+16:15:29.013 [ INFO] maestro.Maestro.hierarchyBasedTap-ogj28Uc: Tapping at (540, 2226) using hierarchy based logic for wait
+16:15:30.284 [ INFO] maestro.Maestro.hierarchyBasedTap-ogj28Uc: Something has changed in the UI judging by view hierarchy. Proceed.
+16:15:30.285 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$2: Tap on "Comenzar" COMPLETED
+16:15:30.286 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$0: Tap on "Siguiente" RUNNING
+16:15:30.286 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Tap on "Siguiente" metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(tapOnElementCommand=TapOnElementCommand(selector=ElementSelector(textRegex=Siguiente, idRegex=null, size=null, below=null, above=null, leftOf=null, rightOf=null, containsChild=null, containsDescendants=null, traits=null, index=null, enabled=null, optional=false, selected=null, checked=null, focused=null, childOf=null, css=null), retryIfNoChange=false, waitUntilVisible=false, longPress=false, repeat=null, waitToSettleTimeoutMs=null, relativePoint=null, label=null, optional=false)), logMessages=[], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:15:30.419 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tapping on element:  UiElement(treeNode=TreeNode(attributes={text=Siguiente, accessibilityText=, hintText=, ignoreBoundsFiltering=false, resource-id=, clickable=false, bounds=[452,2196][628,2257], enabled=true, focused=false, checked=false, scrollable=false, selected=false, class=android.widget.TextView, important-for-accessibility=true, error=}, children=[], clickable=false, enabled=true, focused=false, checked=false, selected=false), bounds=Bounds(x=452, y=2196, width=176, height=61))
+16:15:31.779 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tap aimed via settled hierarchy
+16:15:31.791 [ INFO] maestro.Maestro.hierarchyBasedTap-ogj28Uc: Tapping at (540, 2226) using hierarchy based logic for wait
+16:15:33.326 [ INFO] maestro.Maestro.hierarchyBasedTap-ogj28Uc: Something has changed in the UI judging by view hierarchy. Proceed.
+16:15:33.326 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$2: Tap on "Siguiente" COMPLETED
+16:15:33.327 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$0: Tap on "Siguiente" RUNNING
+16:15:33.327 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Tap on "Siguiente" metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(tapOnElementCommand=TapOnElementCommand(selector=ElementSelector(textRegex=Siguiente, idRegex=null, size=null, below=null, above=null, leftOf=null, rightOf=null, containsChild=null, containsDescendants=null, traits=null, index=null, enabled=null, optional=false, selected=null, checked=null, focused=null, childOf=null, css=null), retryIfNoChange=false, waitUntilVisible=false, longPress=false, repeat=null, waitToSettleTimeoutMs=null, relativePoint=null, label=null, optional=false)), logMessages=[], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:15:33.433 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tapping on element:  UiElement(treeNode=TreeNode(attributes={text=Siguiente, accessibilityText=, hintText=, ignoreBoundsFiltering=false, resource-id=, clickable=false, bounds=[452,2196][628,2257], enabled=true, focused=false, checked=false, scrollable=false, selected=false, class=android.widget.TextView, important-for-accessibility=true, error=}, children=[], clickable=false, enabled=true, focused=false, checked=false, selected=false), bounds=Bounds(x=452, y=2196, width=176, height=61))
+16:15:34.782 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tap aimed via settled hierarchy
+16:15:34.786 [ INFO] maestro.Maestro.hierarchyBasedTap-ogj28Uc: Tapping at (540, 2226) using hierarchy based logic for wait
+16:15:35.888 [ INFO] maestro.Maestro.hierarchyBasedTap-ogj28Uc: Something has changed in the UI judging by view hierarchy. Proceed.
+16:15:35.888 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$2: Tap on "Siguiente" COMPLETED
+16:15:35.888 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$0: Tap on "Siguiente" RUNNING
+16:15:35.889 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Tap on "Siguiente" metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(tapOnElementCommand=TapOnElementCommand(selector=ElementSelector(textRegex=Siguiente, idRegex=null, size=null, below=null, above=null, leftOf=null, rightOf=null, containsChild=null, containsDescendants=null, traits=null, index=null, enabled=null, optional=false, selected=null, checked=null, focused=null, childOf=null, css=null), retryIfNoChange=false, waitUntilVisible=false, longPress=false, repeat=null, waitToSettleTimeoutMs=null, relativePoint=null, label=null, optional=false)), logMessages=[], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:15:36.053 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tapping on element:  UiElement(treeNode=TreeNode(attributes={text=Siguiente, accessibilityText=, hintText=, ignoreBoundsFiltering=false, resource-id=, clickable=false, bounds=[452,2196][628,2257], enabled=true, focused=false, checked=false, scrollable=false, selected=false, class=android.widget.TextView, important-for-accessibility=true, error=}, children=[], clickable=false, enabled=true, focused=false, checked=false, selected=false), bounds=Bounds(x=452, y=2196, width=176, height=61))
+16:15:37.374 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tap aimed via settled hierarchy
+16:15:37.389 [ INFO] maestro.Maestro.hierarchyBasedTap-ogj28Uc: Tapping at (540, 2226) using hierarchy based logic for wait
+16:15:38.900 [ INFO] maestro.Maestro.hierarchyBasedTap-ogj28Uc: Something has changed in the UI judging by view hierarchy. Proceed.
+16:15:38.900 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$2: Tap on "Siguiente" COMPLETED
+16:15:38.901 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$0: Assert that "Hola de nuevo" is visible RUNNING
+16:15:38.901 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Assert that "Hola de nuevo" is visible metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(assertConditionCommand=AssertConditionCommand(condition=Condition(platform=null, visible=ElementSelector(textRegex=Hola de nuevo, idRegex=null, size=null, below=null, above=null, leftOf=null, rightOf=null, containsChild=null, containsDescendants=null, traits=null, index=null, enabled=null, optional=false, selected=null, checked=null, focused=null, childOf=null, css=null), notVisible=null, scriptCondition=null, label=null), timeout=15000, label=null, optional=false)), logMessages=[], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:15:39.024 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$2: Assert that "Hola de nuevo" is visible COMPLETED
+16:15:39.025 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$0: Tap on id: campo-correo RUNNING
+16:15:39.025 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Tap on id: campo-correo metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(tapOnElementCommand=TapOnElementCommand(selector=ElementSelector(textRegex=null, idRegex=campo-correo, size=null, below=null, above=null, leftOf=null, rightOf=null, containsChild=null, containsDescendants=null, traits=null, index=null, enabled=null, optional=false, selected=null, checked=null, focused=null, childOf=null, css=null), retryIfNoChange=false, waitUntilVisible=false, longPress=false, repeat=null, waitToSettleTimeoutMs=null, relativePoint=null, label=null, optional=false)), logMessages=[], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:15:39.189 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tapping on element:  UiElement(treeNode=TreeNode(attributes={text=, accessibilityText=, hintText=, ignoreBoundsFiltering=false, resource-id=campo-correo, clickable=false, bounds=[42,669][1038,858], enabled=true, focused=false, checked=false, scrollable=false, selected=false, class=android.view.ViewGroup, important-for-accessibility=true, error=}, children=[], clickable=false, enabled=true, focused=false, checked=false, selected=false), bounds=Bounds(x=42, y=669, width=996, height=189))
+16:15:40.569 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tap aimed via settled hierarchy
+16:15:40.584 [ INFO] maestro.Maestro.hierarchyBasedTap-ogj28Uc: Tapping at (540, 763) using hierarchy based logic for wait
+16:15:42.553 [ INFO] maestro.Maestro.hierarchyBasedTap-ogj28Uc: Something has changed in the UI judging by view hierarchy. Proceed.
+16:15:42.553 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$2: Tap on id: campo-correo COMPLETED
+16:15:42.553 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$0: Input text ${USUARIO_CORREO} RUNNING
+16:15:42.557 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Input text ${USUARIO_CORREO} metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(inputTextCommand=InputTextCommand(text=usuario.de.prueba@ejemplo.com, label=null, optional=false)), logMessages=[], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:15:42.558 [ INFO] maestro.Maestro.inputText: Inputting text: usuario.de.prueba@ejemplo.com
+16:15:50.050 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$2: Input text ${USUARIO_CORREO} COMPLETED
+16:15:50.050 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$0: Tap on id: campo-password RUNNING
+16:15:50.050 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Tap on id: campo-password metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(tapOnElementCommand=TapOnElementCommand(selector=ElementSelector(textRegex=null, idRegex=campo-password, size=null, below=null, above=null, leftOf=null, rightOf=null, containsChild=null, containsDescendants=null, traits=null, index=null, enabled=null, optional=false, selected=null, checked=null, focused=null, childOf=null, css=null), retryIfNoChange=false, waitUntilVisible=false, longPress=false, repeat=null, waitToSettleTimeoutMs=null, relativePoint=null, label=null, optional=false)), logMessages=[], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:15:50.173 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tapping on element:  UiElement(treeNode=TreeNode(attributes={text=, accessibilityText=, hintText=, ignoreBoundsFiltering=false, resource-id=campo-password, clickable=false, bounds=[42,900][1038,1090], enabled=true, focused=false, checked=false, scrollable=false, selected=false, class=android.view.ViewGroup, important-for-accessibility=true, error=}, children=[], clickable=false, enabled=true, focused=false, checked=false, selected=false), bounds=Bounds(x=42, y=900, width=996, height=190))
+16:15:51.533 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tap aimed via settled hierarchy
+16:15:51.548 [ INFO] maestro.Maestro.hierarchyBasedTap-ogj28Uc: Tapping at (540, 995) using hierarchy based logic for wait
+16:15:54.941 [ INFO] maestro.Maestro.hierarchyBasedTap-ogj28Uc: Something has changed in the UI judging by view hierarchy. Proceed.
+16:15:54.942 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$2: Tap on id: campo-password COMPLETED
+16:15:54.942 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$0: Input text ${USUARIO_CONTRASENA} RUNNING
+16:15:54.945 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Input text ${USUARIO_CONTRASENA} metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(inputTextCommand=InputTextCommand(text=contrasena-de-prueba, label=null, optional=false)), logMessages=[], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:15:54.945 [ INFO] maestro.Maestro.inputText: Inputting text: contrasena-de-prueba
+16:16:00.357 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$2: Input text ${USUARIO_CONTRASENA} COMPLETED
+16:16:00.358 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$0: Hide Keyboard RUNNING
+16:16:00.358 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Hide Keyboard metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(hideKeyboardCommand=HideKeyboardCommand()), logMessages=[], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:16:00.366 [ INFO] maestro.Maestro.hideKeyboard$lambda$13: Hiding Keyboard
+16:16:01.787 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$2: Hide Keyboard COMPLETED
+16:16:01.788 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$0: Tap on "Iniciar sesión", Below id: campo-password RUNNING
+16:16:01.788 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Tap on "Iniciar sesión", Below id: campo-password metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(tapOnElementCommand=TapOnElementCommand(selector=ElementSelector(textRegex=Iniciar sesión, idRegex=null, size=null, below=ElementSelector(textRegex=null, idRegex=campo-password, size=null, below=null, above=null, leftOf=null, rightOf=null, containsChild=null, containsDescendants=null, traits=null, index=null, enabled=null, optional=false, selected=null, checked=null, focused=null, childOf=null, css=null), above=null, leftOf=null, rightOf=null, containsChild=null, containsDescendants=null, traits=null, index=null, enabled=null, optional=false, selected=null, checked=null, focused=null, childOf=null, css=null), retryIfNoChange=false, waitUntilVisible=false, longPress=false, repeat=null, waitToSettleTimeoutMs=null, relativePoint=null, label=null, optional=false)), logMessages=[], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:16:01.997 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tapping on element:  UiElement(treeNode=TreeNode(attributes={text=Iniciar sesión, accessibilityText=, hintText=, ignoreBoundsFiltering=false, resource-id=, clickable=false, bounds=[417,1337][662,1398], enabled=true, focused=false, checked=false, scrollable=false, selected=false, class=android.widget.TextView, important-for-accessibility=true, error=}, children=[], clickable=false, enabled=true, focused=false, checked=false, selected=false), bounds=Bounds(x=417, y=1337, width=245, height=61))
+16:16:03.313 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tap aimed via settled hierarchy
+16:16:03.314 [ INFO] maestro.Maestro.hierarchyBasedTap-ogj28Uc: Tapping at (539, 1367) using hierarchy based logic for wait
+16:16:04.933 [ INFO] maestro.Maestro.hierarchyBasedTap-ogj28Uc: Something has changed in the UI judging by view hierarchy. Proceed.
+16:16:04.933 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$2: Tap on "Iniciar sesión", Below id: campo-password COMPLETED
+16:16:04.933 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$0: Assert that "Lavanderías cerca de ti" is visible RUNNING
+16:16:04.934 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Assert that "Lavanderías cerca de ti" is visible metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(assertConditionCommand=AssertConditionCommand(condition=Condition(platform=null, visible=ElementSelector(textRegex=Lavanderías cerca de ti, idRegex=null, size=null, below=null, above=null, leftOf=null, rightOf=null, containsChild=null, containsDescendants=null, traits=null, index=null, enabled=null, optional=false, selected=null, checked=null, focused=null, childOf=null, css=null), notVisible=null, scriptCondition=null, label=null), timeout=30000, label=null, optional=false)), logMessages=[], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:16:07.279 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$2: Assert that "Lavanderías cerca de ti" is visible COMPLETED
+16:16:07.280 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$2: Run pasos/entrar-como-usuario.yaml COMPLETED
+16:16:07.280 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$0: Open ${APP_ID}://pedido/seguimiento/${PEDIDO} RUNNING
+16:16:07.287 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Open ${APP_ID}://pedido/seguimiento/${PEDIDO} metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(openLinkCommand=OpenLinkCommand(link=mx.ejemplo.desarrollo://pedido/seguimiento/01m82n7avp4vdv2bf3stf5tvd4, autoVerify=false, browser=false, label=null, optional=false)), logMessages=[], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:16:07.289 [ INFO] maestro.Maestro.openLink: Opening link mx.ejemplo.desarrollo://pedido/seguimiento/01m82n7avp4vdv2bf3stf5tvd4 for app: mx.ejemplo.desarrollo with autoVerify config as false
+16:16:09.615 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$2: Open ${APP_ID}://pedido/seguimiento/${PEDIDO} COMPLETED
+16:16:09.616 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$0: Assert that "Confirmado, estado actual.*", id: paso-confirmado is visible RUNNING
+16:16:09.616 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Assert that "Confirmado, estado actual.*", id: paso-confirmado is visible metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(assertConditionCommand=AssertConditionCommand(condition=Condition(platform=null, visible=ElementSelector(textRegex=Confirmado, estado actual.*, idRegex=paso-confirmado, size=null, below=null, above=null, leftOf=null, rightOf=null, containsChild=null, containsDescendants=null, traits=null, index=null, enabled=null, optional=false, selected=null, checked=null, focused=null, childOf=null, css=null), notVisible=null, scriptCondition=null, label=null), timeout=30000, label=null, optional=false)), logMessages=[], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:16:09.738 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$2: Assert that "Confirmado, estado actual.*", id: paso-confirmado is visible COMPLETED
+16:16:09.739 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$0: Assert that "Confirmado", Above id: paso-confirmado is visible RUNNING
+16:16:09.739 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Assert that "Confirmado", Above id: paso-confirmado is visible metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(assertConditionCommand=AssertConditionCommand(condition=Condition(platform=null, visible=ElementSelector(textRegex=Confirmado, idRegex=null, size=null, below=null, above=ElementSelector(textRegex=null, idRegex=paso-confirmado, size=null, below=null, above=null, leftOf=null, rightOf=null, containsChild=null, containsDescendants=null, traits=null, index=null, enabled=null, optional=false, selected=null, checked=null, focused=null, childOf=null, css=null), leftOf=null, rightOf=null, containsChild=null, containsDescendants=null, traits=null, index=null, enabled=null, optional=false, selected=null, checked=null, focused=null, childOf=null, css=null), notVisible=null, scriptCondition=null, label=null), timeout=null, label=null, optional=false)), logMessages=[], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:16:09.905 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$2: Assert that "Confirmado", Above id: paso-confirmado is visible COMPLETED
+16:16:09.905 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$0: Assert that "Recolectado, pendiente", id: paso-recolectado is visible RUNNING
+16:16:09.906 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Assert that "Recolectado, pendiente", id: paso-recolectado is visible metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(assertConditionCommand=AssertConditionCommand(condition=Condition(platform=null, visible=ElementSelector(textRegex=Recolectado, pendiente, idRegex=paso-recolectado, size=null, below=null, above=null, leftOf=null, rightOf=null, containsChild=null, containsDescendants=null, traits=null, index=null, enabled=null, optional=false, selected=null, checked=null, focused=null, childOf=null, css=null), notVisible=null, scriptCondition=null, label=null), timeout=null, label=null, optional=false)), logMessages=[], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:16:10.034 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$2: Assert that "Recolectado, pendiente", id: paso-recolectado is visible COMPLETED
+16:16:10.035 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$0: Take screenshot 1-seguimiento-en-confirmado RUNNING
+16:16:10.036 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Take screenshot 1-seguimiento-en-confirmado metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(takeScreenshotCommand=TakeScreenshotCommand(path=1-seguimiento-en-confirmado, cropOn=null, label=null, optional=false)), logMessages=[], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:16:10.040 [ INFO] maestro.Maestro.takeScreenshot: Taking screenshot
+16:16:10.050 [TRACE] maestro.utils.ScreenshotUtils.takeScreenshot: Taking screenshot to output sink
+16:16:10.497 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$2: Take screenshot 1-seguimiento-en-confirmado COMPLETED
+16:16:10.498 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$0: Start recording cambio-de-confirmado-a-recolectado RUNNING
+16:16:10.498 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Start recording cambio-de-confirmado-a-recolectado metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(startRecordingCommand=StartRecordingCommand(path=cambio-de-confirmado-a-recolectado, label=null, optional=false)), logMessages=[], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:16:10.503 [ INFO] maestro.Maestro.startScreenRecording: Starting screen recording
+16:16:10.503 [ INFO] maestro.Maestro.startScreenRecording: Starting screen recording
+16:16:10.872 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$2: Start recording cambio-de-confirmado-a-recolectado COMPLETED
+16:16:10.872 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$0: Run pasos/marcar-recolectado.js RUNNING
+16:16:10.874 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Run pasos/marcar-recolectado.js metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(runScriptCommand=RunScriptCommand(script=// estados-E17: la lavandería marca Recolectado por la API, con su token, y se anota la hora (cambio-en-60-segundos.yaml).
+// Corre dentro de Maestro (runScript): http, json y output son de Maestro, y API_URL, PEDIDO, LAVANDERIA_CORREO y
+// LAVANDERIA_CONTRASENA llegan como variables del flujo.
+//
+// Primero abre la sesión de la lavandería, para que el inicio de sesión no cuente en el tiempo. Luego anota la hora
+// justo antes de mandar el botón (POST /api/lavanderia/pedidos/{id_publico}/estado, estados-E03): se cuenta desde que
+// sale la petición, así que el tiempo medido incluye lo que tarda el servidor en guardar el cambio y nunca se queda
+// corto. El cuerpo va en un bloque para que sus nombres no choquen con los de otro script del flujo.
+/* global http, json, output, API_URL, PEDIDO, LAVANDERIA_CORREO, LAVANDERIA_CONTRASENA */
+{
+  const sesion = http.post(API_URL + '/sesion', {
+    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+    body: JSON.stringify({ correo: LAVANDERIA_CORREO, password: LAVANDERIA_CONTRASENA }),
+  });
+  if (sesion.status !== 200) {
+    throw new Error('La lavandería no pudo iniciar sesión: ' + sesion.status + ' ' + sesion.body);
+  }
+  output.tokenDeLaLavanderia = json(sesion.body).token;
+
+  const marcadoEn = Date.now();
+  const respuesta = http.post(API_URL + '/lavanderia/pedidos/' + PEDIDO + '/estado', {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + output.tokenDeLaLavanderia,
+    },
+    body: JSON.stringify({ estado: 'recolectado' }),
+  });
+  const respondioEn = Date.now();
+
+  if (respuesta.status !== 200) {
+    throw new Error('La API no guardó Recolectado: ' + respuesta.status + ' ' + respuesta.body);
+  }
+  const estado = json(respuesta.body).pedido.estado.codigo;
+  if (estado !== 'recolectado') {
+    throw new Error('La API dejó el pedido en ' + estado + ', no en recolectado.');
+  }
+
+  output.marcadoEn = marcadoEn;
+  console.log(
+    'CRONOMETRO marcado pedido=' +
+      PEDIDO +
+      ' marcado_en=' +
+      new Date(marcadoEn).toISOString() +
+      ' respuesta_ms=' +
+      (respondioEn - marcadoEn),
+  );
+}
+, env={}, sourceDescription=pasos/marcar-recolectado.js, condition=null, label=null, optional=false, scriptDir=C:\np\Lavandi\.claude\worktrees\agent-ac4b58ad09d5675e3\movil\.maestro\estados\pasos)), logMessages=[], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:16:12.178 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Run pasos/marcar-recolectado.js metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(runScriptCommand=RunScriptCommand(script=// estados-E17: la lavandería marca Recolectado por la API, con su token, y se anota la hora (cambio-en-60-segundos.yaml).
+// Corre dentro de Maestro (runScript): http, json y output son de Maestro, y API_URL, PEDIDO, LAVANDERIA_CORREO y
+// LAVANDERIA_CONTRASENA llegan como variables del flujo.
+//
+// Primero abre la sesión de la lavandería, para que el inicio de sesión no cuente en el tiempo. Luego anota la hora
+// justo antes de mandar el botón (POST /api/lavanderia/pedidos/{id_publico}/estado, estados-E03): se cuenta desde que
+// sale la petición, así que el tiempo medido incluye lo que tarda el servidor en guardar el cambio y nunca se queda
+// corto. El cuerpo va en un bloque para que sus nombres no choquen con los de otro script del flujo.
+/* global http, json, output, API_URL, PEDIDO, LAVANDERIA_CORREO, LAVANDERIA_CONTRASENA */
+{
+  const sesion = http.post(API_URL + '/sesion', {
+    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+    body: JSON.stringify({ correo: LAVANDERIA_CORREO, password: LAVANDERIA_CONTRASENA }),
+  });
+  if (sesion.status !== 200) {
+    throw new Error('La lavandería no pudo iniciar sesión: ' + sesion.status + ' ' + sesion.body);
+  }
+  output.tokenDeLaLavanderia = json(sesion.body).token;
+
+  const marcadoEn = Date.now();
+  const respuesta = http.post(API_URL + '/lavanderia/pedidos/' + PEDIDO + '/estado', {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + output.tokenDeLaLavanderia,
+    },
+    body: JSON.stringify({ estado: 'recolectado' }),
+  });
+  const respondioEn = Date.now();
+
+  if (respuesta.status !== 200) {
+    throw new Error('La API no guardó Recolectado: ' + respuesta.status + ' ' + respuesta.body);
+  }
+  const estado = json(respuesta.body).pedido.estado.codigo;
+  if (estado !== 'recolectado') {
+    throw new Error('La API dejó el pedido en ' + estado + ', no en recolectado.');
+  }
+
+  output.marcadoEn = marcadoEn;
+  console.log(
+    'CRONOMETRO marcado pedido=' +
+      PEDIDO +
+      ' marcado_en=' +
+      new Date(marcadoEn).toISOString() +
+      ' respuesta_ms=' +
+      (respondioEn - marcadoEn),
+  );
+}
+, env={}, sourceDescription=pasos/marcar-recolectado.js, condition=null, label=null, optional=false, scriptDir=C:\np\Lavandi\.claude\worktrees\agent-ac4b58ad09d5675e3\movil\.maestro\estados\pasos)), logMessages=[CRONOMETRO marcado pedido=01m82n7avp4vdv2bf3stf5tvd4 marcado_en=2026-11-22T22:16:11.626Z respuesta_ms=405], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:16:12.179 [ INFO] maestro.orchestra.Orchestra.executeCommands$lambda$26$lambda$24: JsConsole: CRONOMETRO marcado pedido=01m82n7avp4vdv2bf3stf5tvd4 marcado_en=2026-11-22T22:16:11.626Z respuesta_ms=405
+16:16:12.179 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$2: Run pasos/marcar-recolectado.js COMPLETED
+16:16:12.179 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$0: Assert that "Recolectado, estado actual.*", id: paso-recolectado is visible RUNNING
+16:16:12.179 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Assert that "Recolectado, estado actual.*", id: paso-recolectado is visible metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(assertConditionCommand=AssertConditionCommand(condition=Condition(platform=null, visible=ElementSelector(textRegex=Recolectado, estado actual.*, idRegex=paso-recolectado, size=null, below=null, above=null, leftOf=null, rightOf=null, containsChild=null, containsDescendants=null, traits=null, index=null, enabled=null, optional=false, selected=null, checked=null, focused=null, childOf=null, css=null), notVisible=null, scriptCondition=null, label=null), timeout=60000, label=null, optional=false)), logMessages=[], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:16:38.665 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$2: Assert that "Recolectado, estado actual.*", id: paso-recolectado is visible COMPLETED
+16:16:38.666 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$0: Run pasos/cronometrar.js RUNNING
+16:16:38.666 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Run pasos/cronometrar.js metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(runScriptCommand=RunScriptCommand(script=// estados-E17: cuánto tardó "Recolectado" en verse en el seguimiento desde que la lavandería lo marcó
+// (cambio-en-60-segundos.yaml; NSV-2026-001-v8.pdf:21:ANEXO A, Sección A.4.3). Corre dentro de Maestro (runScript),
+// justo después de que la pantalla lo mostró: output.marcadoEn lo dejó marcar-recolectado.js.
+//
+// El tiempo incluye lo que tarda Maestro en leer la pantalla, así que puede pasarse un poco del real, nunca quedarse
+// corto. Si pasa de 60 segundos, la prueba falla. El cuerpo va en un bloque para que sus nombres no choquen con los de
+// otro script del flujo.
+/* global output */
+{
+  const LIMITE_MS = 60000;
+
+  const vistoEn = Date.now();
+  const tardo = vistoEn - output.marcadoEn;
+  output.segundos = (tardo / 1000).toFixed(1);
+
+  console.log(
+    'CRONOMETRO visto marcado_en=' +
+      new Date(output.marcadoEn).toISOString() +
+      ' visto_en=' +
+      new Date(vistoEn).toISOString() +
+      ' tardo_ms=' +
+      tardo,
+  );
+
+  if (tardo > LIMITE_MS) {
+    throw new Error('Recolectado tardó ' + output.segundos + ' s en verse: el contrato pide 60 s o menos.');
+  }
+}
+, env={}, sourceDescription=pasos/cronometrar.js, condition=null, label=null, optional=false, scriptDir=C:\np\Lavandi\.claude\worktrees\agent-ac4b58ad09d5675e3\movil\.maestro\estados\pasos)), logMessages=[], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:16:38.679 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Run pasos/cronometrar.js metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(runScriptCommand=RunScriptCommand(script=// estados-E17: cuánto tardó "Recolectado" en verse en el seguimiento desde que la lavandería lo marcó
+// (cambio-en-60-segundos.yaml; NSV-2026-001-v8.pdf:21:ANEXO A, Sección A.4.3). Corre dentro de Maestro (runScript),
+// justo después de que la pantalla lo mostró: output.marcadoEn lo dejó marcar-recolectado.js.
+//
+// El tiempo incluye lo que tarda Maestro en leer la pantalla, así que puede pasarse un poco del real, nunca quedarse
+// corto. Si pasa de 60 segundos, la prueba falla. El cuerpo va en un bloque para que sus nombres no choquen con los de
+// otro script del flujo.
+/* global output */
+{
+  const LIMITE_MS = 60000;
+
+  const vistoEn = Date.now();
+  const tardo = vistoEn - output.marcadoEn;
+  output.segundos = (tardo / 1000).toFixed(1);
+
+  console.log(
+    'CRONOMETRO visto marcado_en=' +
+      new Date(output.marcadoEn).toISOString() +
+      ' visto_en=' +
+      new Date(vistoEn).toISOString() +
+      ' tardo_ms=' +
+      tardo,
+  );
+
+  if (tardo > LIMITE_MS) {
+    throw new Error('Recolectado tardó ' + output.segundos + ' s en verse: el contrato pide 60 s o menos.');
+  }
+}
+, env={}, sourceDescription=pasos/cronometrar.js, condition=null, label=null, optional=false, scriptDir=C:\np\Lavandi\.claude\worktrees\agent-ac4b58ad09d5675e3\movil\.maestro\estados\pasos)), logMessages=[CRONOMETRO visto marcado_en=2026-11-22T22:16:11.626Z visto_en=2026-11-22T22:16:38.674Z tardo_ms=27048], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:16:38.679 [ INFO] maestro.orchestra.Orchestra.executeCommands$lambda$26$lambda$24: JsConsole: CRONOMETRO visto marcado_en=2026-11-22T22:16:11.626Z visto_en=2026-11-22T22:16:38.674Z tardo_ms=27048
+16:16:38.680 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$2: Run pasos/cronometrar.js COMPLETED
+16:16:38.680 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$0: Stop recording RUNNING
+16:16:38.680 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Stop recording metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(stopRecordingCommand=StopRecordingCommand(label=null, optional=false)), logMessages=[], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:16:38.681 [ INFO] maestro.Maestro.close: Stopping screen recording
+16:16:41.949 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$2: Stop recording COMPLETED
+16:16:41.949 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$0: Assert that "Recolectado", Above id: paso-confirmado is visible RUNNING
+16:16:41.950 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Assert that "Recolectado", Above id: paso-confirmado is visible metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(assertConditionCommand=AssertConditionCommand(condition=Condition(platform=null, visible=ElementSelector(textRegex=Recolectado, idRegex=null, size=null, below=null, above=ElementSelector(textRegex=null, idRegex=paso-confirmado, size=null, below=null, above=null, leftOf=null, rightOf=null, containsChild=null, containsDescendants=null, traits=null, index=null, enabled=null, optional=false, selected=null, checked=null, focused=null, childOf=null, css=null), leftOf=null, rightOf=null, containsChild=null, containsDescendants=null, traits=null, index=null, enabled=null, optional=false, selected=null, checked=null, focused=null, childOf=null, css=null), notVisible=null, scriptCondition=null, label=null), timeout=null, label=null, optional=false)), logMessages=[], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:16:42.064 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$2: Assert that "Recolectado", Above id: paso-confirmado is visible COMPLETED
+16:16:42.065 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$0: Take screenshot 2-seguimiento-en-recolectado RUNNING
+16:16:42.066 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Take screenshot 2-seguimiento-en-recolectado metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(takeScreenshotCommand=TakeScreenshotCommand(path=2-seguimiento-en-recolectado, cropOn=null, label=null, optional=false)), logMessages=[], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:16:42.068 [ INFO] maestro.Maestro.takeScreenshot: Taking screenshot
+16:16:42.069 [TRACE] maestro.utils.ScreenshotUtils.takeScreenshot: Taking screenshot to output sink
+16:16:42.251 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$2: Take screenshot 2-seguimiento-en-recolectado COMPLETED
+16:16:42.251 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$0: Tap on id: regresar RUNNING
+16:16:42.251 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Tap on id: regresar metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(tapOnElementCommand=TapOnElementCommand(selector=ElementSelector(textRegex=null, idRegex=regresar, size=null, below=null, above=null, leftOf=null, rightOf=null, containsChild=null, containsDescendants=null, traits=null, index=null, enabled=null, optional=false, selected=null, checked=null, focused=null, childOf=null, css=null), retryIfNoChange=false, waitUntilVisible=false, longPress=false, repeat=null, waitToSettleTimeoutMs=null, relativePoint=null, label=null, optional=false)), logMessages=[], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:16:42.347 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tapping on element:  UiElement(treeNode=TreeNode(attributes={text=, accessibilityText=Regresar, hintText=, ignoreBoundsFiltering=false, resource-id=regresar, clickable=true, bounds=[21,147][147,273], enabled=true, focused=false, checked=false, scrollable=false, selected=false, class=android.widget.Button, important-for-accessibility=true, error=}, children=[TreeNode(attributes={text=‹, accessibilityText=, hintText=, ignoreBoundsFiltering=false, resource-id=, clickable=false, bounds=[72,162][96,257], enabled=true, focused=false, checked=false, scrollable=false, selected=false, class=android.widget.TextView, important-for-accessibility=false, error=}, children=[], clickable=false, enabled=true, focused=false, checked=false, selected=false)], clickable=true, enabled=true, focused=false, checked=false, selected=false), bounds=Bounds(x=21, y=147, width=126, height=126))
+16:16:43.699 [ INFO] maestro.Maestro.tap-HgV9Ck0: Tap aimed via settled hierarchy
+16:16:43.700 [ INFO] maestro.Maestro.hierarchyBasedTap-ogj28Uc: Tapping at (84, 210) using hierarchy based logic for wait
+16:16:44.774 [ INFO] maestro.Maestro.hierarchyBasedTap-ogj28Uc: Something has changed in the UI judging by view hierarchy. Proceed.
+16:16:44.774 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$2: Tap on id: regresar COMPLETED
+16:16:44.775 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$0: Assert that "Lavanderías cerca de ti" is visible RUNNING
+16:16:44.775 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Assert that "Lavanderías cerca de ti" is visible metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(assertConditionCommand=AssertConditionCommand(condition=Condition(platform=null, visible=ElementSelector(textRegex=Lavanderías cerca de ti, idRegex=null, size=null, below=null, above=null, leftOf=null, rightOf=null, containsChild=null, containsDescendants=null, traits=null, index=null, enabled=null, optional=false, selected=null, checked=null, focused=null, childOf=null, css=null), notVisible=null, scriptCondition=null, label=null), timeout=15000, label=null, optional=false)), logMessages=[], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:16:44.911 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$2: Assert that "Lavanderías cerca de ti" is visible COMPLETED
+16:16:44.911 [ INFO] maestro.Maestro.close: Stopping screen recording
+16:16:47.975 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$0: Run pasos/cerrar-sesion-de-la-lavanderia.js RUNNING
+16:16:47.975 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Run pasos/cerrar-sesion-de-la-lavanderia.js metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(runScriptCommand=RunScriptCommand(script=// Al terminar el flujo, pase o falle, cierra la sesión que abrió marcar-recolectado.js (DELETE /api/sesion), para no
+// dejar tokens vivos de la lavandería de prueba. Corre dentro de Maestro (onFlowComplete de cambio-en-60-segundos.yaml).
+/* global http, output, API_URL */
+if (output.tokenDeLaLavanderia) {
+  const respuesta = http.request(API_URL + '/sesion', {
+    method: 'DELETE',
+    headers: { Accept: 'application/json', Authorization: 'Bearer ' + output.tokenDeLaLavanderia },
+  });
+  console.log('Sesión de la lavandería cerrada: ' + respuesta.status);
+  output.tokenDeLaLavanderia = null;
+}
+, env={}, sourceDescription=pasos/cerrar-sesion-de-la-lavanderia.js, condition=null, label=null, optional=false, scriptDir=C:\np\Lavandi\.claude\worktrees\agent-ac4b58ad09d5675e3\movil\.maestro\estados\pasos)), logMessages=[], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:16:48.333 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$11: Run pasos/cerrar-sesion-de-la-lavanderia.js metadata CommandMetadata(numberOfRuns=null, evaluatedCommand=MaestroCommand(runScriptCommand=RunScriptCommand(script=// Al terminar el flujo, pase o falle, cierra la sesión que abrió marcar-recolectado.js (DELETE /api/sesion), para no
+// dejar tokens vivos de la lavandería de prueba. Corre dentro de Maestro (onFlowComplete de cambio-en-60-segundos.yaml).
+/* global http, output, API_URL */
+if (output.tokenDeLaLavanderia) {
+  const respuesta = http.request(API_URL + '/sesion', {
+    method: 'DELETE',
+    headers: { Accept: 'application/json', Authorization: 'Bearer ' + output.tokenDeLaLavanderia },
+  });
+  console.log('Sesión de la lavandería cerrada: ' + respuesta.status);
+  output.tokenDeLaLavanderia = null;
+}
+, env={}, sourceDescription=pasos/cerrar-sesion-de-la-lavanderia.js, condition=null, label=null, optional=false, scriptDir=C:\np\Lavandi\.claude\worktrees\agent-ac4b58ad09d5675e3\movil\.maestro\estados\pasos)), logMessages=[Sesi?n de la lavander?a cerrada: 204], insight=Insight(message=, level=NONE), aiReasoning=null, labeledCommand=null)
+16:16:48.333 [ INFO] maestro.orchestra.Orchestra.executeCommands$lambda$26$lambda$24: JsConsole: Sesi?n de la lavander?a cerrada: 204
+16:16:48.334 [ INFO] maestro.cli.runner.MaestroCommandRunner.runCommands$lambda$2: Run pasos/cerrar-sesion-de-la-lavanderia.js COMPLETED

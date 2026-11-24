@@ -37,8 +37,10 @@ agentes (C-132), así que la prueba sustituye a la revisión a ojo de cada migra
      Laravel no se crea (grado E, sin verificar en Filament 5).
    - **Sin plaza, por diseño:** los cuatro catálogos, `plazas`, `usuarios`, `rol_usuario`, `cuentas_externas`,
      `dispositivos`, `actividad_usuarios`, `eventos_pasarela`, `metodos_pago_guardados` y `movimientos_pasarela`.
-   - **Plaza opcional:** `avisos_masivos` (vacía, el aviso es para todas las plazas), `reportes_soporte` (vacía si
-     no es de un pedido), `repartidores` (vacía solo si `estado` es `pendiente`, con su `CHECK`) y `direcciones`
+   - **Plaza opcional:** `avisos_masivos` (vacía, el aviso es para todas las plazas), `comisiones` (vacía, junto con
+     la lavandería, en la comisión global, que es una para todas las plazas: `administracion`, Open Questions 4),
+     `reportes_soporte` (vacía si
+     la cuenta no tiene de dónde tomarla: el reporte se guarda igual, perfil-usuario-E17), `repartidores` (vacía solo si `estado` es `pendiente`, con su `CHECK`) y `direcciones`
      (vacía si el punto no cae en ninguna zona).
 
    Una tabla nueva que no esté en la lista debe llevar `id_plazas`. Agregarla a la lista es una decisión visible en el

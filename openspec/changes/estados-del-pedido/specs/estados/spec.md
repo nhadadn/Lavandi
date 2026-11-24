@@ -20,6 +20,16 @@ Cita: A → `NSV-2026-001-v8.pdf:16-17:ANEXO A, Sección A.3` (Módulo A, numera
 - **ENTONCES** ve el estado actual con su nombre escrito, los anteriores como cumplidos y los siguientes como pendientes
 - **Y** no ve ningún nombre de estado fuera de los cinco
 
+#### Scenario: estados-E24 — Cada estado cumplido lleva su hora
+
+- **DADO** un pedido del usuario que ya pasó por uno o más de los cinco estados
+- **CUANDO** el usuario consulta el pedido o abre su seguimiento
+- **ENTONCES** cada estado cumplido, y el actual, trae la hora en que el pedido llegó a él, en la hora de la plaza
+- **Y** los estados pendientes no traen hora
+
+Cita: A → `NSV-2026-001-v8.pdf:17:ANEXO A, Sección A.3`, Módulo A #12 · C → decisión 25 del acta del 2026-11-20 (DD-135,
+punto 4, por delegación C-236)
+
 ### Requirement: Los botones de la lavandería
 
 La app de la lavandería DEBE (MUST) ofrecer, sobre cada pedido que aceptó, los botones Recolectado, En proceso, Listo y En proceso de entrega, en ese orden. Solo se puede tocar el botón del paso siguiente, y la api DEBE (MUST) rechazar un cambio que salte un paso o que regrese a uno anterior.

@@ -1,0 +1,7 @@
+Archivo de prueba con el formato del Catálogo Nacional de Códigos Postales de Correos de México. Los asentamientos son inventados; los municipios son reales.
+d_codigo|d_asenta|d_tipo_asenta|D_mnpio|d_estado|d_ciudad|d_CP|c_estado|c_oficina|c_tipo_asenta|c_mnpio|id_asenta_cpcons|d_zona|c_cve_ciudad|c_CP
+34000|Colonia de prueba Centro|Colonia|Durango|Durango|Victoria de Durango|34001|10|34001|09|005|0001|Urbano|01|
+34000|Fraccionamiento de prueba|Fraccionamiento|Durango|Durango|Victoria de Durango|34001|10|34001|21|005|0002|Urbano|01|
+34100|Colonia de prueba Norte|Colonia|Durango|Durango|Victoria de Durango|34101|10|34101|09|005|0003|Urbano|01|
+35000|Colonia de prueba Gómez|Colonia|Gómez Palacio|Durango|Gómez Palacio|35001|10|35001|09|007|0001|Urbano|02|
+35150|Ejido de prueba|Ejido|Lerdo|Durango||35151|10|35151|15|012|0001|Rural||

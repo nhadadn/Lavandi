@@ -47,8 +47,8 @@ inventario funcional, hito H10.
 - `servidor/`: dos rutas públicas y la carga del documento como contenido, no como código.
 - `movil/`: los enlaces al aviso y a los términos, con las direcciones de la configuración.
 - Base de datos o almacenamiento: el texto vigente de cada documento, que no tiene tabla en el modelo de datos. Dónde se
-  guarda es una pregunta abierta de `design.md`. La constancia de aceptación, `usuarios.terminos_aceptados_en`, es de
-  `registro-e-inicio-de-sesion` (`design.md`, "Tablas y migración").
+  guarda es una pregunta abierta de `design.md`. La constancia de aceptación no tiene columna: los
+  consentimientos son de EL CLIENTE, y si se guarda lo decide DD-080 (registro-E29; `design.md`, "Tablas y migración").
 - Dependencias: ninguna nueva.
 - ADRs: ADR-0002, ADR-0003 y ADR-0011.
 - La sirven `landing` (pie legal), `registro-e-inicio-de-sesion` (consentimiento) y `publicacion` (fichas de las

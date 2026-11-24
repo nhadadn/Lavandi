@@ -1,0 +1,34 @@
+﻿Running on emulator-5554
+ > Flow estados-E17-cambio-en-60-segundos
+  > On Flow Complete
+Run pasos/entrar-como-usuario.yaml...
+  Launch app "${APP_ID}" with clear state... COMPLETED
+  Assert that "Comenzar" is visible... COMPLETED
+  Tap on "Comenzar"... COMPLETED
+  Tap on "Siguiente"... COMPLETED
+  Tap on "Siguiente"... COMPLETED
+  Tap on "Siguiente"... COMPLETED
+  Assert that "Hola de nuevo" is visible... COMPLETED
+  Tap on id: campo-correo... COMPLETED
+  Input text ${USUARIO_CORREO}... COMPLETED
+  Tap on id: campo-password... COMPLETED
+  Input text ${USUARIO_CONTRASENA}... COMPLETED
+  Hide Keyboard... COMPLETED
+  Tap on "Iniciar sesi�n", Below id: campo-password... COMPLETED
+  Assert that "Lavander�as cerca de ti" is visible... COMPLETED
+Run pasos/entrar-como-usuario.yaml... COMPLETED
+Open ${APP_ID}://pedido/seguimiento/${PEDIDO}... COMPLETED
+Assert that "Confirmado, estado actual.*", id: paso-confirmado is visible... COMPLETED
+Assert that "Confirmado", Above id: paso-confirmado is visible... COMPLETED
+Assert that "Recolectado, pendiente", id: paso-recolectado is visible... COMPLETED
+Take screenshot 1-seguimiento-en-confirmado... COMPLETED
+Start recording cambio-de-confirmado-a-recolectado... COMPLETED
+Run pasos/marcar-recolectado.js... COMPLETED
+Assert that "Recolectado, estado actual.*", id: paso-recolectado is visible... COMPLETED
+Run pasos/cronometrar.js... COMPLETED
+Stop recording... COMPLETED
+Assert that "Recolectado", Above id: paso-confirmado is visible... COMPLETED
+Take screenshot 2-seguimiento-en-recolectado... COMPLETED
+Tap on id: regresar... COMPLETED
+Assert that "Lavander�as cerca de ti" is visible... COMPLETED
+Run pasos/cerrar-sesion-de-la-lavanderia.js... COMPLETED

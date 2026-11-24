@@ -230,7 +230,9 @@ Criterio: A44-1
 - **CUANDO** se fija cuánto es "en tiempo real" para los indicadores
 - **ENTONCES** el panel refresca con ese intervalo
 
-SIN RESPUESTA — bloquea: indicadores-E22 (BR-33; DD-116; necesita ADR)
+Cita: D → `ADR-0007`, adenda del 2026-11-22: los widgets de indicadores se refrescan cada 30 s, con `indicadores.refresco` en `30s` por omisión (decisión 33 de `acta-2026-11-20-modelo-y-pasarela.md`; cierra DD-116)
+
+Criterio: A44-1
 
 #### Scenario: indicadores-E23 — Cifras de la base, no de ejemplo
 

@@ -1,0 +1,15 @@
+* text=auto eol=lf
+
+# Los archivos de prueba del catálogo de Correos de México van byte por byte, como el real: ISO-8859-1 y CRLF
+# (openspec/changes/direcciones/design.md, "La carga del catálogo").
+/tests/Fixtures/sepomex/*.txt -text
+
+*.blade.php diff=html
+*.css diff=css
+*.html diff=html
+*.md diff=markdown
+*.php diff=php
+
+/.github export-ignore
+CHANGELOG.md export-ignore
+.styleci.yml export-ignore

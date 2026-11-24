@@ -1,0 +1,29 @@
+{
+  "type": "FeatureCollection",
+  "plaza": {
+    "nombre": "Plaza de prueba nueva",
+    "zona_horaria": "America/Mexico_City",
+    "activa": true
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Zona de prueba nueva",
+        "activa": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-130.0, 5.0],
+            [-129.0, 5.0],
+            [-129.0, 6.0],
+            [-130.0, 6.0],
+            [-130.0, 5.0]
+          ]
+        ]
+      }
+    }
+  ]
+}

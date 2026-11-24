@@ -61,7 +61,16 @@ necesita el alta real.
     valor por omisión). El estado con que nace un registro de la app no lo da la omisión: depende de DD-053
     (alta-lavanderias-E11 y E12; pregunta abierta 9).
   - `aprobada_en` (`timestamptz`, opcional): la hora del alta en el panel. En las filas que ya existen, la migración la
-    llena con la hora en que corre, porque esas lavanderías ya estaban activas.
+    llena con la hora en que corre, porque esas lavanderías ya estaban activas. **Al implementarse** (tarea 0.1),
+    `perfil-de-lavanderia` ya traía `estado` con su `CHECK` y `aprobada_en`: la migración
+    (`servidor/database/migrations/2026_11_22_100000_completar_lavanderias_para_el_alta.php`) no los repite; solo pone
+    el valor por omisión y llena `aprobada_en` en las que no están `pendiente`, porque una pendiente nunca tuvo alta y
+    E15 la regresa a `pendiente`.
+  - **`id_municipios`** (opcional, llave a `municipios` con su índice y `ON DELETE RESTRICT`), decidido por delegación
+    de Arthur (C-236) al implementar: la geocodificación (`App\Direcciones\Geocodificador`) necesita el municipio del
+    catálogo para no confundir, por ejemplo, Matamoros, Coahuila, con Matamoros, Tamaulipas, y la edición lo necesita
+    para volver a geocodificar. Es la misma solución de `direcciones` (C-238). Las lavanderías de prueba no lo tienen;
+    la API lo exige en el registro. `vault/arquitectura/modelo-de-datos.md` ya lo lista.
 - **Lo que ya trae de `perfil-de-lavanderia`:** la llave `id_lavanderias`; `id_publico` (ULID, único); las foráneas
   `id_plazas` → `plazas.id_plazas` e `id_usuarios` → `usuarios.id_usuarios`, con índice y `ON DELETE RESTRICT`; el único
   `(id_lavanderias, id_plazas)` para las llaves compuestas de sus hijas; el índice GiST de `ubicacion`, y `deleted_at`.
@@ -92,6 +101,195 @@ disponibilidad (Módulo B #6) en `lavanderia_horarios`: `id_lavanderia_horarios`
 `dia_semana` (1 a 7), `hora_inicio`, `hora_fin`, con `CHECK (hora_fin > hora_inicio)`. Este diseño lee cada fila como
 una ventana de una hora, y el horario del día como la suma de sus ventanas. La regla de "exactamente una hora" (E22) la
 valida el código: el modelo no la pone como `CHECK`. Los choques que deja esa lectura están en la pregunta abierta 11.
+
+## Implementación en el servidor
+
+Lo que se decidió al implementar, por delegación de Arthur (C-236), con lo mínimo que cumple cada escenario. Ninguna
+decisión agrega una librería ni un servicio externo.
+
+- **El código vive en `servidor/app/Lavanderias/`:** `ReglasDeLaLavanderia` (las validaciones, escritas una vez),
+  `RegistroDeLavanderia`, `UbicacionDeLaLavanderia` (una geocodificación y la plaza de la zona), `ServiciosYVentanas`
+  y `FotosDeLaLavanderia`. El controlador de la app es `App\Http\Controllers\Api\LavanderiaDelSocioController`.
+- **Las rutas del socio van bajo `/api/socio/`,** con `auth:sanctum` y `autorizar:lavanderia`, aparte de las del
+  usuario (`autorizar:usuario`). La tenencia la decide `Autorizacion::lavanderiasDeLaCuenta()`: el socio solo ve y
+  toca su lavandería (ADR-0019).
+- **El estado con que nace un registro:** `pendiente`, sin `aprobada_en` (`RegistroDeLavanderia::ESTADO_AL_REGISTRARSE`),
+  la lectura de la pregunta abierta 9 mientras DD-053 siga abierta. Hoy una pendiente todavía aparece al usuario, porque
+  `Lavanderia::visiblesParaElUsuario()` solo excluye las suspendidas y las de baja (DD-083, cercanas-E09); E12 la quita
+  cuando cierre DD-053.
+- **Los servicios.** Se admiten los tipos activos del catálogo con su unidad definida en
+  `ServiciosYVentanas::UNIDAD_POR_TIPO`: hoy, `estandar` y `planchado`, por kilo (E05). Un código fuera del catálogo
+  se rechaza nombrándolo y diciendo cuáles sí hay (E06, `App\Lavanderias\ServicioAdmitido`). **El lavado en seco se
+  rechaza mientras DD-010 siga abierta**, con el mensaje de que falta decidir su unidad: aceptarlo por kilo decidiría
+  E07 en silencio. Cuando DD-010 responda, entra como una línea de ese mapa (y una fila de `unidades_medida` si es por
+  prenda). Un tipo que ya no viene en la lista queda `activo = false`, sin borrarse. El precio va en pesos, sin signo y
+  con hasta dos decimales; el piso, el techo y quién lo fija son E08 (DD-010).
+- **La edición** (`App\Lavanderias\EdicionDeLavanderia`) es la misma para la app y el panel. Cambia solo lo que viene,
+  con las reglas del registro; los servicios y las ventanas, si vienen, son la lista completa. Una lavandería ajena
+  responde 404 antes de validar (E20).
+- **Las ventanas** (E21, E22) son el mismo campo `ventanas` en el registro y en la edición: el horario completo de la
+  semana, una fila de `lavanderia_horarios` por ventana. Cada una dura exactamente una hora
+  (`App\Lavanderias\VentanaDeUnaHora`), con horas `HH:MM` en la zona horaria de la plaza; la última del día puede
+  terminar a las `24:00`, que la agenda ya lee como la medianoche siguiente. El error queda en la ventana
+  (`ventanas.N`). No se revisa si dos ventanas se enciman ni si una empieza en punto: ningún escenario lo pide, y la
+  agenda ya ofrece una sola vez la ventana repetida. Con esta lectura, las franjas largas sembradas en las lavanderías
+  de prueba (de 9:00 a 14:00) se ven en la app, pero la edición pide reemplazarlas por ventanas de una hora (pregunta
+  abierta 11).
+- **El cambio de plaza no se hace todavía** (pregunta abierta 5). Una dirección nueva que cae en una zona de otra plaza
+  se rechaza en `direccion` con el motivo `en_otra_plaza`, en la app y en el panel: las hijas de la lavandería y sus
+  pedidos van atados a su plaza por las llaves compuestas (modelo-E06), y moverla no es una edición. Si Arthur decide
+  que cambie, es una operación aparte, con su escenario.
+- **Una cuenta, una lavandería.** El modelo dice `usuarios ||--o| lavanderias`: el registro de una cuenta que ya tiene
+  la suya responde 409 y no guarda nada. La base no lo exige con un único; si DD-053 lo confirma, entra como índice.
+- **La foto.** Va al disco privado de fotos del entorno, que elige `config/fotos.php` (`FOTOS_DISCO`): `fotos_s3` en
+  producción, el bucket S3 privado de las variables de entorno (ADR-0006, ADR-0012), y `fotos_local` en los demás, un
+  disco local privado (`storage/app/private/fotos`) que sirve cada foto en `/archivos/fotos/…` solo con una URL firmada
+  que vence. Esto responde, para local, la pregunta abierta "El almacenamiento en local" de `perfil-de-lavanderia`:
+  falta anotarlo en ADR-0006. El servidor revisa el tipo (`FOTOS_TIPOS`, `jpg,jpeg,png,webp`) y el peso
+  (`FOTOS_PESO_MAXIMO_KB`, 5120 por omisión, **provisional**: lo fija Arthur, pregunta abierta 1); la URL dura
+  `FOTOS_VIGENCIA_MINUTOS` (60). La ruta del archivo nunca sale como campo de la API. La foto del registro es la
+  principal (`orden` 1); cambiarla reemplaza esa fila y borra el archivo anterior.
+- **Para producción falta una dependencia:** el driver S3 de Laravel necesita `league/flysystem-aws-s3-v3`. No se
+  instaló, porque hoy solo existe el entorno local (C-154); se propone instalarla cuando se decida el hosting (DD-070).
+
+## El panel de administración
+
+El recurso de lavanderías de Filament (ADR-0003, ADR-0011) vive en `servidor/app/Filament/Resources/Lavanderias/`.
+
+- **Quién entra:** solo el rol de administración. El panel le pregunta al componente de autorización con
+  `Usuario::canAccessPanel()`, y el recurso toma sus lavanderías de `Autorizacion::lavanderiasDelPanel()`: todas, de
+  todas las plazas, para la administración; ninguna para otra cuenta (autorizacion-E03, con su prueba en
+  `servidor/tests/Feature/Autorizacion/PanelSoloAdministracionTest.php`). No usa Policies de Filament (ADR-0019).
+- **La lista** muestra nombre, estado (Pendiente, Activa, Suspendida, Dada de baja) y plaza (E13).
+- **La edición** usa los mismos campos del registro y pasa por `ReglasDeLaLavanderia` y `EdicionDeLavanderia`, como
+  la app; cada error vuelve junto a su campo. Solo se manda lo que cambió desde que se abrió la página, como en el
+  `PATCH` de la app: así una lavandería de prueba sin municipio, o con sus franjas largas de prueba, se edita en lo
+  demás. La foto solo cambia si se sube una nueva.
+- **No hay alta ni borrado:** el alta espera DD-053 (E11) y la baja no borra (E17).
+- **Suspender y levantar la suspensión** (E14, E15) son acciones de la lista y de la página de cada lavandería, con
+  confirmación (`app/Filament/Resources/Lavanderias/Actions/AccionesDeEstado.php`). La regla vive en
+  `App\Lavanderias\EstadoDeLaLavanderia`, con la fila bloqueada: se suspende una activa o una pendiente; levantar
+  regresa a `activa` si `aprobada_en` tiene fecha y a `pendiente` si no. El efecto en la búsqueda, el perfil y los
+  pedidos nuevos sale solo de `Lavanderia::visiblesParaElUsuario()`, que ya excluía las suspendidas: no se tocó la
+  creación del pedido. Los pedidos en curso no se tocan (E16, DD-104).
+- **Dar de baja** (E17) es otra acción, con confirmación, desde cualquier estado que no sea `baja`. Pone
+  `estado = 'baja'` y deja `deleted_at` vacío: el panel la sigue listando como "Dada de baja", y sus servicios, su
+  horario, sus calificaciones y sus pedidos pasados se quedan y la siguen encontrando. Es la lectura de la pregunta
+  abierta 10; `deleted_at` queda sin uso en este cambio. Ninguna acción deshace la baja: el contrato no lo pide.
+- **`Usuario` implementa `HasName` de Filament:** el panel no podía pintar la barra de la cuenta de administración
+  porque `usuarios` no tiene `name`; muestra el nombre, o el correo mientras el nombre esté vacío (C-225).
+- **El idioma de la interfaz de Filament** sale de `APP_LOCALE`, que hoy es `en` en `.env.example`: las etiquetas de
+  este recurso están en español, pero los botones propios de Filament salen en inglés hasta que se cambie a `es`.
+  No se cambió aquí porque toca a todo el servidor.
+
+### Cómo se entra al panel en local
+
+1. Migrar la base de desarrollo, que recibe `2026_11_22_100000_completar_lavanderias_para_el_alta`, y sembrar:
+   `php artisan migrate --seed` (o `php artisan db:seed` si ya está migrada). En local, el sembrado agrega
+   `Database\Seeders\CuentasDeDesarrolloSeeder`, que solo corre con `APP_ENV=local`.
+2. `php artisan serve` y abrir `http://localhost:8000/admin` (o el `APP_URL` del `.env` más `/admin`).
+3. Entrar con las cuentas de prueba, con la contraseña de las cuentas de prueba, `contrasena-de-prueba`
+   (`UsuarioFactory::CONTRASENA`), guardada con hash:
+
+| Cuenta | Rol | Para qué |
+|---|---|---|
+| `admin@ejemplo.com` | Administración | Entra al panel: `/admin/lavanderias` |
+| `lavanderia@ejemplo.com` | Socio lavandería, sin lavandería | Entra a la app para probar el registro (`POST /api/socio/lavanderias`) |
+
+Las fotos de local quedan en `servidor/storage/app/private/fotos/` y se ven en `/archivos/fotos/…` solo con la URL
+firmada. Ninguna de estas cuentas se siembra en el entorno de prueba ni en producción.
+
+Sin la llave de Google, la geocodificación de local es la de prueba (`App\Direcciones\GeocodificadorDePrueba`,
+direcciones-E15): solo ubica direcciones del municipio de Durango (`10005`), dentro de la zona de la Plaza de prueba
+Durango; cualquier otro municipio responde `direccion_no_encontrada`. Para registrar una lavandería desde la app en
+local, la dirección va en Durango, con el catálogo del territorio ya cargado (`php artisan direcciones:cargar-catalogo`,
+con los archivos de Correos de México que no se versionan, DD-138): sin él, ningún municipio pasa la validación.
+
+## El contrato de la API
+
+Para la app (tareas 4.1 y 4.2). El mismo texto, con su detalle, está en
+`servidor/app/Http/Controllers/Api/LavanderiaDelSocioController.php`.
+
+Todas las rutas llevan `Authorization: Bearer <token>` de una cuenta con el rol de socio lavandería. Sin sesión
+responden 401; con otro rol, 403 (`{ "message": "Esta cuenta no tiene acceso." }`).
+
+**La lavandería, como sale en todas las respuestas:**
+
+```json
+{
+  "id_publico": "01jd8x6m3v2c9q4w5e7r8t0y1z",
+  "nombre": "Lavandería Ejemplo",
+  "direccion": {
+    "calle": "Calle Ejemplo",
+    "numero": "123",
+    "colonia": "Centro",
+    "codigo_postal": "34000",
+    "municipio": { "codigo": "10005", "nombre": "Durango", "estado": "Durango" }
+  },
+  "foto": { "url": "https://…/archivos/fotos/…?expires=…&signature=…", "vence_en": "2026-11-22T18:00:00Z" },
+  "servicios": [
+    { "tipo": "estandar", "nombre": "Lavado estándar", "precio": "18.50", "unidad": { "codigo": "kg", "nombre": "kilo" } }
+  ],
+  "ventanas": [
+    { "dia_semana": 4, "hora_inicio": "10:00", "hora_fin": "11:00" }
+  ]
+}
+```
+
+- `municipio` es `null` en una lavandería de prueba sin municipio; `foto` es `null` si no tiene.
+- `precio` es texto en pesos con dos decimales. `dia_semana` va del 1, el lunes, al 7, el domingo; las horas, en la
+  hora local de la plaza.
+- No sale el estado de la lavandería: lo que ve suspendida o de baja es DD-104 (E16).
+
+**`POST /api/socio/lavanderias`**: el registro (E01, E02, E05, E06, E09, E10). En `multipart/form-data`, porque lleva
+la foto:
+
+| Campo | Regla |
+|---|---|
+| `nombre` | Obligatorio, texto de hasta 255 |
+| `direccion[calle]`, `direccion[numero]`, `direccion[colonia]` | Obligatorios, texto de hasta 255 |
+| `direccion[codigo_postal]` | Obligatorio, cinco números |
+| `direccion[municipio]` | Obligatorio: el `codigo` de un municipio de `GET /api/catalogos/municipios` |
+| `foto` | Obligatoria: imagen de `FOTOS_TIPOS` y de hasta `FOTOS_PESO_MAXIMO_KB` |
+| `servicios[N][tipo]`, `servicios[N][precio]` | Al menos uno. Tipo `estandar` o `planchado`; precio en pesos por kilo, sin signo y con hasta dos decimales |
+| `ventanas[N][dia_semana]`, `ventanas[N][hora_inicio]`, `ventanas[N][hora_fin]` | Al menos una. Día del 1 al 7; horas `HH:MM`, el fin exactamente una hora después del inicio |
+
+- **201** `{ "lavanderia": { … } }`.
+- **409** `{ "message": "Esta cuenta ya tiene una lavandería registrada." }`.
+- **422** `{ "message": "…", "errors": { "<campo>": ["…"] } }`, cada error en su campo (`nombre`,
+  `direccion.calle`, `foto`, `servicios.0.precio`, `ventanas.1`…). No se consultó la geocodificación ni se subió la
+  foto.
+- **422** `{ "message": "…", "errors": { "direccion": ["…"] }, "motivo": "fuera_de_la_zona_de_servicio" }`, o con
+  `"motivo": "direccion_no_encontrada"`: la dirección queda fuera de las zonas de servicio activas, o la geocodificación
+  no la ubica (E10). No se guardó nada.
+- **503** `{ "message": "No pudimos ubicar la dirección. Inténtalo más tarde.", "motivo": "geocodificacion_no_disponible" }`:
+  el servicio de geocodificación no respondió. No se guardó nada.
+
+**`GET /api/socio/lavanderias`**: las lavanderías de la cuenta (E18, E19). **200** `{ "lavanderias": [ { … } ] }`,
+solo las suyas: hoy, a lo más una; vacía si todavía no registra la suya. Así la app sabe, al entrar, si abre el
+registro o el perfil, y con qué `id_publico`.
+
+**`GET /api/socio/lavanderias/{id_publico}`**: su lavandería, con su información y sus ventanas actuales (E19).
+**200** `{ "lavanderia": { … } }`. **404** `{ "message": "No existe la lavandería." }` si no existe, está borrada o es
+de otra cuenta: las tres responden igual (E20).
+
+**`PATCH /api/socio/lavanderias/{id_publico}`**: edita su información y sus ventanas (E18, E20, E21, E22). Los mismos
+campos del registro, con las mismas reglas; solo van los que cambian:
+
+- `nombre`;
+- `direccion`, completa (las cinco partes);
+- `foto`, que reemplaza a la anterior;
+- `servicios`, la lista completa: un tipo que no viene deja de ofrecerse;
+- `ventanas`, el horario completo de la semana: reemplaza a todas las anteriores.
+
+Sin foto va en JSON. **Con foto, en `multipart/form-data` por `POST` con el campo `_method=PATCH`**, porque PHP solo lee
+los archivos de un `POST`. La dirección nueva se geocodifica una vez; la misma que ya tiene no se vuelve a consultar.
+
+- **200** `{ "lavanderia": { … } }`, ya con los cambios.
+- **404** como en `GET`: una ajena no se edita y sus datos no cambian. La búsqueda va antes de validar.
+- **422** como en el registro; si algo se rechaza, no cambia nada. Además, `"motivo": "en_otra_plaza"` en `direccion`
+  si la dirección nueva cae en una zona de otra plaza (ver la decisión del cambio de plaza).
+- **503** como en el registro.
 
 ## Risks / Trade-offs
 

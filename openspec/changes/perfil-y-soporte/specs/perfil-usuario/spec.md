@@ -45,7 +45,6 @@ Cita: A → `NSV-2026-001-v8.pdf:17:ANEXO A, Sección A.3` (Módulo A #15, "dire
 - **DADO** un usuario con dos direcciones guardadas y otro usuario con una
 - **CUANDO** el primero abre su perfil
 - **ENTONCES** ve sus dos direcciones y no la del otro usuario
-- **Y** desde cada una abre su edición, que es la del cambio `direcciones`
 
 Criterio: SEG-3
 
@@ -127,6 +126,17 @@ Criterio: A43-6
 - **Y** no se guarda ningún reporte
 
 Criterio: SEG-3
+
+#### Scenario: perfil-usuario-E17 — El reporte de una cuenta sin plaza
+- **DADO** un usuario sin pedidos ni direcciones guardadas con plaza
+- **CUANDO** envía un reporte con una descripción
+- **ENTONCES** el reporte queda guardado con el usuario, la descripción y la fecha, sin plaza
+- **Y** la app confirma que se recibió, como con cualquier otro reporte
+- **Y** de las cuentas, solo la administración, que ve todas las plazas, lo recibe del servidor; ninguna otra, tampoco
+  la de un socio de una plaza
+
+El Módulo A #16 pide el "formulario de reporte" sin condiciones (`NSV-2026-001-v8.pdf:17:ANEXO A, Sección A.3`): un
+reporte no se rechaza por no tener de dónde tomar su plaza. A quién le llega es perfil-usuario-E14 (DD-108).
 
 #### Scenario: perfil-usuario-E14 — A quién le llega el reporte
 - **DADO** un reporte guardado

@@ -1,29 +1,31 @@
 ## 0. Servidor: la base de datos
 
-- [ ] 0.1 estados-E14: el historial de un pedido solo crece; el modelo de Eloquent `PedidoEvento` (de `resumen-y-confirmacion`) solo crea eventos, y la base rechaza editarlos o borrarlos con los triggers que puso `resumen-y-confirmacion` — test: `servidor/tests/Feature/Estados/HistorialTest.php` — tamaño S
+- [x] 0.1 estados-E14: el historial de un pedido solo crece; el modelo de Eloquent `PedidoEvento` (de `resumen-y-confirmacion`) solo crea eventos, y la base rechaza editarlos o borrarlos con los triggers que puso `resumen-y-confirmacion` — test: `servidor/tests/Feature/Estados/HistorialTest.php` — tamaño S
 
 ## 1. Servidor: el estado del pedido y su consulta
 
-- [ ] 1.1 estados-E01 y estados-E11: la api entrega el pedido recién confirmado en Confirmado, con los cinco estados en orden, y la consulta del usuario devuelve el mismo nombre que marcó la lavandería en Recolectado, En proceso y Listo — test: `servidor/tests/Feature/Estados/EstadoVisibleTest.php` — tamaño S
+- [x] 1.1 estados-E01 y estados-E11: la api entrega el pedido recién confirmado en Confirmado, con los cinco estados en orden, y la consulta del usuario devuelve el mismo nombre que marcó la lavandería en Recolectado, En proceso y Listo — test: `servidor/tests/Feature/Estados/EstadoVisibleTest.php` — tamaño S
+
+- [x] 1.2 estados-E24: cada uno de los cinco del seguimiento trae `ocurrido_en`, la hora en que el pedido llegó a él en la hora de la plaza, o `null` si no ha llegado (decisión 25 del acta del 2026-11-20, DD-135 punto 4) — test: `servidor/tests/Feature/Estados/HoraDelSeguimientoTest.php` — tamaño S
 
 ## 2. Servidor: los botones de la lavandería y el historial
 
-- [ ] 2.1 estados-E03, estados-E04, estados-E05 y estados-E14: transiciones de la lavandería en el orden del contrato, rechazo de saltos y regresos, y un evento en `pedido_eventos` por cambio, con su hora y quién lo hizo, junto con `pedidos.id_estados_pedido` en la misma transacción — test: `servidor/tests/Feature/Estados/BotonesDeLaLavanderiaTest.php` — tamaño M
+- [x] 2.1 estados-E03, estados-E04, estados-E05 y estados-E14: transiciones de la lavandería en el orden del contrato, rechazo de saltos y regresos, y un evento en `pedido_eventos` por cambio, con su hora y quién lo hizo, junto con `pedidos.id_estados_pedido` en la misma transacción — test: `servidor/tests/Feature/Estados/BotonesDeLaLavanderiaTest.php` — tamaño M. `POST /api/lavanderia/pedidos/{id_publico}/estado` con `App\Pedidos\CambioDeEstado`, que publica `EstadoDelPedidoCambiado`; siembra `en_entrega`, que el usuario ve como Listo. `EstadosDePrueba::marcarComoLaLavanderia()` ya usa la operación real, y las pruebas que movían un pedido sin aceptarlo lo aceptan primero; Entregado, del repartidor, lo hace en las pruebas `entregarComoElRepartidor()` hasta H8
 
 ## 3. Servidor: quién mueve y quién consulta
 
-- [ ] 3.1 estados-E07, estados-E08, estados-E09 y estados-E10: reglas en el componente de autorización: otra lavandería, de su plaza o de otra, el usuario y un pedido no aceptado o rechazado no se mueven; un usuario no consulta el pedido de otro — test: `servidor/tests/Feature/Estados/QuienMueveElPedidoTest.php` — tamaño S
-- [ ] 3.2 estados-E23: un pedido con `confirmado_en` vacío no se le devuelve a la lavandería ni lo puede mover (C-188) — test: `servidor/tests/Feature/Estados/SinPagoTest.php` — tamaño S
+- [x] 3.1 estados-E07, estados-E08, estados-E09 y estados-E10: reglas en el componente de autorización: otra lavandería, de su plaza o de otra, el usuario y un pedido no aceptado o rechazado no se mueven; un usuario no consulta el pedido de otro — test: `servidor/tests/Feature/Estados/QuienMueveElPedidoTest.php` — tamaño S. Otra lavandería (E07) y el usuario que no consulta el pedido de otro (E10) los decide el componente de autorización; el usuario (E08), su rol en el mismo componente. El pedido no aceptado o rechazado (E09) lo rechaza la tabla de App\Pedidos\CambioDeEstado (ADR-0021, decisión 4), porque la tenencia es la misma y lo que cambia es el estado. Las reglas nacieron con las tareas 1.2 de pedidos-de-la-lavanderia y 2.1: la prueba pasó desde su primera corrida, y su rojo se comprobó con una mutación por regla
+- [x] 3.2 estados-E23: un pedido con `confirmado_en` vacío no se le devuelve a la lavandería ni lo puede mover (C-188) — test: `servidor/tests/Feature/Estados/SinPagoTest.php` — tamaño S. La consulta es GET /api/lavanderia/pedidos/{id_publico}, que nace aquí. Que no lo mueva ya lo cumplía la regla de pedidos-de-la-lavanderia (tarea 1.2): esa prueba pasó desde su primera corrida
 
 ## 4. App: el seguimiento del usuario
 
-- [ ] 4.1 estados-E02: pantalla de seguimiento con el componente 3 del design system: estado actual con su nombre, anteriores cumplidos y siguientes pendientes, solo con los cinco nombres — test: `movil/__tests__/estados/seguimiento.test.tsx` — tamaño M
-- [ ] 4.2 estados-E15 y estados-E16: consulta cada 30 segundos solo con la pantalla visible, y consulta inmediata al volver — test: `movil/__tests__/estados/consulta-periodica.test.tsx` — tamaño S
-- [ ] 4.3 estados-E17: flujo de Maestro en Android que cronometra el cambio de Confirmado a Recolectado en 60 segundos o menos — test: `movil/.maestro/estados/cambio-en-60-segundos.yaml` — tamaño S
+- [x] 4.1 estados-E02 y estados-E24: pantalla de seguimiento con el componente 3 del design system: estado actual con su nombre, anteriores cumplidos y siguientes pendientes, solo con los cinco nombres — test: `movil/__tests__/estados/seguimiento.test.tsx` — tamaño M
+- [x] 4.2 estados-E15 y estados-E16: consulta cada 30 segundos solo con la pantalla visible, y consulta inmediata al volver — test: `movil/__tests__/estados/consulta-periodica.test.tsx` — tamaño S
+- [x] 4.3 estados-E17: flujo de Maestro en Android que cronometra el cambio de Confirmado a Recolectado en 60 segundos o menos — test: `movil/.maestro/estados/cambio-en-60-segundos.yaml` — tamaño S. Lo corren `movil/.maestro/estados/correr-cambio-en-60-segundos.ps1`, que prepara un pedido por corrida con `preparar-pedido.ps1`, y Maestro 2.12.1. Tres corridas en el emulador con Android 15 el 2026-11-22: 27.5, 27.0 y 26.8 s; evidencia en `vault/evidencias/estados/estados-e17-cambio-en-60-segundos-2026-11-22.md`. Cómo se corre: `vault/formas-de-trabajo/correr-la-app-en-local.md`, sección 5-ter. No acredita A43-3 todavía: faltan los 10 cambios en teléfonos reales, el repartidor e iPhone
 
 ## 5. App: los botones de la lavandería
 
-- [ ] 5.1 estados-E06: tarjeta de pedido de la lavandería (componente 4 del design system) con solo el botón del paso siguiente habilitado — test: `movil/__tests__/estados/botones-de-la-lavanderia.test.tsx` — tamaño M
+- [x] 5.1 estados-E06: tarjeta de pedido de la lavandería (componente 4 del design system) con solo el botón del paso siguiente habilitado — test: `movil/__tests__/estados/botones-de-la-lavanderia.test.tsx` — tamaño M
 
 ## 6. Bloqueadas: no entran al sprint mientras su fila siga abierta
 

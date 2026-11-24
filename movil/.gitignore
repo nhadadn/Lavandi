@@ -1,0 +1,48 @@
+# Archivos que no se versionan en movil/. Se repiten aquí las reglas de la raíz que tocan a la app,
+# para que sigan valiendo cuando movil/ se separe del repositorio al entregarlo (CLAUDE.md §9.7).
+
+# Dependencias
+node_modules/
+
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Entorno y secretos: solo se versiona .env.example (ADR-0012)
+.env
+.env.*
+!.env.example
+*.jks
+*.p8
+*.p12
+*.key
+*.pem
+*.keystore
+*.mobileprovision
+google-services.json
+GoogleService-Info.plist
+
+# Nativo: las carpetas ios/ y android/ las genera Expo al compilar
+/ios
+/android
+.kotlin/
+*.orig.*
+
+# Metro
+.metro-health-check*
+
+# Depuración
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# Pruebas
+coverage/
+
+# Sistema
+.DS_Store
+
+# TypeScript
+*.tsbuildinfo

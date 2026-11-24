@@ -1,7 +1,7 @@
 ---
 estado: vigente
 grado: D
-fuente: acta-2026-11-13-cierre-de-la-fase-6.md C-152; restricciones-no-negociables.md RN-05 (A); brecha-ejecutivo-tecnico.md BR-23 (B); c2-contenedores.md (B); verificaciones-fase-6.md, sección del 2026-11-12 (E); ADR-0002 y ADR-0003 (D)
+fuente: acta-2026-11-13-cierre-de-la-fase-6.md C-152; restricciones-no-negociables.md RN-05 (A); brecha-ejecutivo-tecnico.md BR-23 (B); c2-contenedores.md (B); verificaciones-fase-6.md, sección del 2026-11-12 (E); ADR-0002 y ADR-0003 (D); adenda del 2026-11-22: acta-2026-11-20-modelo-y-pasarela.md, decisión 33, por delegación de C-236 (C); NSV-2026-001-v8.pdf:21:ANEXO A, Sección A.4.4 (A)
 fecha: 2026-11-13
 dueño: Arthur Naranjo
 adr: ADR-0007
@@ -84,3 +84,25 @@ avisos no cambian.
 - **Obligaciones:** O-16 y O-17.
 - **Restricciones:** RN-05 y BR-23.
 - **ADRs relacionados:** ADR-0002, ADR-0003 y ADR-0008.
+
+## Adenda del 2026-11-22: cuánto es "en tiempo real" para los indicadores
+
+**Contexto.**
+
+- El A.4.4 pide que el panel muestre "en tiempo real los indicadores definidos en A.5"
+  (`NSV-2026-001-v8.pdf:21:ANEXO A, Sección A.4.4`). No dice con qué latencia (BR-33).
+- Este ADR fijó 30 s para la pantalla del pedido y para las tablas de pedidos activos del panel, no para los
+  indicadores. DD-116 le dejó a Arthur la cifra, con ADR.
+- El panel ya lee el intervalo de `indicadores.refresco` (`INDICADORES_REFRESCO`), que estaba vacío a la espera de esta
+  decisión.
+
+**Decisión.**
+
+- **Los widgets de indicadores se refrescan cada 30 s, la misma consulta periódica de este ADR.** El valor por omisión
+  de `indicadores.refresco` es `30s`; cada entorno lo puede cambiar sin tocar el código.
+- **Por qué 30 s.** Es la latencia que ya acepta el resto del panel. Los indicadores leen agregados de la base, no un
+  pedido, y un intervalo más corto multiplica las consultas sin que la administración note la diferencia. No se agrega
+  un websocket solo para esto: el criterio de reversión de este ADR sigue igual.
+
+**La tomó** Claude, por delegación de Arthur (C-236), en la decisión 33 de `acta-2026-11-20-modelo-y-pasarela.md`.
+Cierra DD-116 y la parte de latencia de BR-33. De BR-33 siguen abiertos los umbrales del semáforo del ranking.

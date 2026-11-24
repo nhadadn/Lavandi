@@ -32,9 +32,13 @@ pasarela vigente, es la tarea 3.3.
 
 Criterio: SEG-4
 
-SIN RESPUESTA — bloquea: pago-E02 (DD-055, DD-079). La última viñeta choca con C-198, donde Nadir dice que la tarjeta
-se captura dentro de la app. Capturarla dentro de la app, contra el checkout redirigido de ADR-0010, se decide con el
-ADR de la pasarela.
+Cita: D → adenda del 2026-11-22 de ADR-0010, asentada en la decisión 32 de `acta-2026-11-20-modelo-y-pasarela.md`
+(Claude, por delegación de Arthur, C-236): la tarjeta se escribe en el checkout de la pasarela, en la vista de navegador
+del sistema presentada dentro de la app con `expo-web-browser` (`openAuthSessionAsync` con la dirección de regreso; en
+iPhone, con `preferEphemeralSession`). Así el usuario paga dentro de la aplicación (`NSV-2026-001-v8.pdf:19:ANEXO A,
+Sección A.3`) y ninguna pantalla de la app tiene campos de tarjeta. Cierra la segunda parte de DD-055 y el punto 1 de
+DD-102. Si Nadir confirma que C-198 pide los campos de la tarjeta en la app, se pasa al formulario nativo de la pasarela,
+como dice el criterio de reversión de la adenda.
 
 #### Scenario: pago-E03 — Pago con tarjeta aprobado
 

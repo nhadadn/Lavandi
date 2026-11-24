@@ -42,6 +42,10 @@ desktop.ini
 graphify-out/*
 !graphify-out/GRAPH_REPORT.md
 
+# Los comprimidos de las maquetas: repiten las imágenes que ya están sueltas en mocks/
+mocks/*.rar
+mocks/*.zip
+
 # Código del producto (movil/ y servidor/, en este mismo repositorio desde C-169)
 servidor/vendor/
 servidor/public/build/
@@ -49,6 +53,8 @@ servidor/public/hot
 servidor/bootstrap/cache/*.php
 .phpunit.result.cache
 *.log
+# Salvo los registros de las pruebas que se guardan como evidencia: el de Maestro trae los tiempos medidos.
+!vault/evidencias/**/*.log
 movil/android/
 movil/ios/
 movil/web-build/

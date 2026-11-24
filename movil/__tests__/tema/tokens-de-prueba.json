@@ -1,0 +1,132 @@
+{
+  "$meta": {
+    "nombre": "Tokens de MarcaFicticia",
+    "version": "9.9.9",
+    "fecha": "2030-01-02",
+    "nota": "Archivo de prueba del script de tokens (ADR-0013). Los valores son inventados y distintos de los reales.",
+    "modos": ["claro", "oscuro"]
+  },
+  "accesibilidad": {
+    "contraste_minimo_texto_normal": 4.5,
+    "contraste_minimo_texto_grande": 3.0,
+    "contraste_minimo_componente": 3.0,
+    "texto_grande_desde_px": 18.66,
+    "area_tactil_minima_dp": 48,
+    "area_tactil_minima_pt_ios": 44,
+    "separacion_minima_entre_objetivos_dp": 8,
+    "fuente": "Texto de la fuente que no debe pasar al tema"
+  },
+  "color": {
+    "marca": {
+      "$comentario": "Comentario de MarcaFicticia que no debe pasar al tema",
+      "primario": {
+        "hex": "#112233",
+        "rgb": "17, 34, 51",
+        "cmjn": "0, 0, 0, 0",
+        "estado": "VIGENTE",
+        "nota": "Nota de prueba"
+      },
+      "primario_oscuro": {
+        "hex": "#445566",
+        "rgb": "68, 85, 102",
+        "cmjn": "0, 0, 0, 0",
+        "estado": "VIGENTE",
+        "nota": "Nota de prueba"
+      }
+    },
+    "neutro": {
+      "0": "#FFFFFF",
+      "50": "#F0F0F0",
+      "1000": "#000000"
+    },
+    "estado": {
+      "exito": {
+        "claro": "#0A0A01",
+        "oscuro": "#0B0B01"
+      },
+      "error": {
+        "claro": "#0A0A03",
+        "oscuro": "#0B0B03"
+      }
+    },
+    "semantico": {
+      "$comentario": "Comentario de prueba",
+      "claro": {
+        "fondo": "#FAFAFA",
+        "texto": "#101010"
+      },
+      "oscuro": {
+        "fondo": "#0C0C0C",
+        "texto": "#EFEFEF"
+      }
+    },
+    "pedido": {
+      "$comentario": "Comentario de prueba",
+      "confirmado": {
+        "claro": "#0A0A02",
+        "oscuro": "#0B0B02"
+      }
+    },
+    "marca_extendida": {
+      "$comentario": "Comentario de prueba",
+      "hueso": {
+        "hex": "#F1F2F3",
+        "uso": "Uso de prueba"
+      }
+    }
+  },
+  "tipografia": {
+    "familia": {
+      "$comentario": "Comentario de prueba",
+      "titulares": "Fuente Uno, system-ui, sans-serif",
+      "cuerpo": "'Fuente Dos', system-ui, sans-serif",
+      "estado": "VIGENTE"
+    },
+    "escala": {
+      "$comentario": "Comentario de prueba",
+      "cuerpo": 16,
+      "titulo": 24
+    },
+    "peso": {
+      "regular": 400,
+      "fuerte": 700
+    },
+    "interlineado": {
+      "normal": 1.5
+    },
+    "espaciado_letra": {
+      "normal": "0",
+      "titular": "-0.01em"
+    }
+  },
+  "espaciado": {
+    "$comentario": "Comentario de prueba",
+    "0": 0,
+    "1": 4
+  },
+  "radio": {
+    "chico": 4,
+    "pildora": 999
+  },
+  "grosor": {
+    "$comentario": "Comentario de prueba",
+    "control": 2,
+    "foco": 5
+  },
+  "alto": {
+    "$comentario": "Comentario de prueba",
+    "boton_principal": 60
+  },
+  "elevacion": {
+    "$comentario": "Comentario de prueba",
+    "0": "none",
+    "1": "0 1px 2px rgba(0,0,0,.08)"
+  },
+  "duracion": {
+    "$comentario": "Comentario de prueba",
+    "rapida": 120
+  },
+  "curva": {
+    "estandar": "cubic-bezier(.2,0,0,1)"
+  }
+}

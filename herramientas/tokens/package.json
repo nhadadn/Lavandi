@@ -1,0 +1,9 @@
+{
+  "name": "tokens",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Genera movil/src/tema/theme.ts desde vault/design-system/tokens.json (ADR-0013). Sin dependencias.",
+  "scripts": {
+    "generar": "node generar.js"
+  }
+}

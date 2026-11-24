@@ -38,6 +38,123 @@
 No hay decisión técnica nueva: el cambio aplica ADR-0002, ADR-0004, ADR-0008, ADR-0009, ADR-0010 y ADR-0012, sin
 repetirlos.
 
+**Cómo quedó implementado.** Las lecturas de abajo las tomó Claude por delegación de Arthur (C-236), con la mínima que
+cumple cada escenario; se pueden rehacer sin tocar los requisitos.
+
+- **Configuración por entorno (tarea 1.1, 2026-11-22):** lo que pide publicacion-E01 ya lo habían dejado `pago`
+  (`PASARELA` y su llave, pago-E17), `avisos` (`FCM_CREDENCIALES`, la ruta a la cuenta de servicio del proyecto de
+  Firebase del entorno), `registro-e-inicio-de-sesion`, `direcciones` e `indicadores` (`GOOGLE_CLIENTES_OAUTH`,
+  `GOOGLE_GEOCODIFICACION_LLAVE` y `GOOGLE_MAPS_PANEL_LLAVE`) y el correo de Laravel (`MAIL_*`). No hizo falta código: la
+  prueba `servidor/tests/Feature/Publicacion/ConfiguracionPorEntornoTest.php` lo fija. Simula el `.env` de cada entorno
+  poniendo las variables en el proceso y volviendo a leer la configuración: el aviso va al proyecto de Firebase del
+  entorno, la orden de pago lleva la llave del entorno, en producción no cobra la pasarela simulada, y cada credencial
+  cambia con su variable. Revisa además que ninguna llave de Google, cliente de OAuth, llave privada ni llave de Conekta
+  esté escrita en el código, y que nada fuera de `config/` lea el entorno, porque con la configuración en caché, como en
+  producción, `env()` ya no lee nada. Nació en verde; con la ruta de Firebase escrita a mano en `config/avisos.php`, dos
+  de sus pruebas fallan.
+- **La pasarela de prueba y la de producción:** Conekta llega con la sección 3 de `openspec/changes/pago/tasks.md`. Sus
+  llaves de modo de prueba y de producción entran por el mismo camino, con sus variables en el `.env` de cada entorno;
+  hasta entonces, en prueba y en producción el pago responde que no está disponible. La parte de la pasarela de
+  publicacion-E01 se termina de acreditar con esa tarea.
+- **Solo https (tarea 2.1, 2026-11-22):** el middleware global `App\Http\Middleware\SoloHttps`, que implementó la
+  tarea 3.2 de `medicion-de-la-landing` (medicion-E13) y aquí se prueba en el panel y en la API. Se enciende con
+  `app.solo_https`, verdadero en todo entorno que no sea `local` ni `testing`. Por http, una página del panel o de la
+  landing recibe una redirección 301 a la misma dirección por https, en el dominio de `APP_URL` (publicacion-E04); una
+  ruta de la API recibe 403 con solo `{"message": "La API solo atiende por https."}`, sin redirección (publicacion-E05):
+  una app que siguiera la redirección volvería a mandar por http su token o su contraseña, y el 403 hace visible el error
+  de configuración en lugar de esconderlo. En los dos casos la petición no se procesa: no abre sesión, no crea token y no
+  guarda el aviso de la pasarela. La prueba recorre la tabla del enrutador, así que una ruta nueva entra sola. Si el
+  alojamiento de DD-070 termina el https en un proxy, ese proxy se declara de confianza al desplegar (`trustProxies`);
+  `SoloHttps` va después de `TrustProxies` para respetarlo.
+
+## Decisiones de la implementación de la app
+
+Las tomó Claude por delegación de Arthur (C-236) al implementar las tareas 2.2, 3.1, 3.2, 3.3 y 4.2, el 2026-11-22, en
+la rama `feat/avisos-y-publicacion-movil`. Ninguna sale del contrato ni de la spec, y ninguna necesitó una cuenta.
+
+### 1. Cada perfil de EAS se nombra a sí mismo (tarea 2.2)
+
+- `movil/eas.json` tiene los perfiles `preview` y `production`. Cada uno deja su nombre en `PERFIL_DE_COMPILACION`, con
+  su `env`, que EAS aplica al leer `app.config.ts` en la máquina y en la nube. Es la forma que documenta Expo para las
+  variantes de una app; no depende de una variable propia de EAS.
+- Sin `PERFIL_DE_COMPILACION`, la compilación es la de la máquina: el APK local (`herramientas/apk-local/compilar.ps1`) y
+  Expo Go siguen como estaban. Un nombre que no es de `eas.json` detiene la configuración.
+
+### 2. Solo https en `preview` y `production` (tarea 2.2, publicacion-E06)
+
+- **La API:** con perfil, `EXPO_PUBLIC_API_URL` tiene que ser https o la configuración se detiene y lo dice. La
+  dirección no va en `eas.json`: es la variable del entorno de EAS de cada perfil (punto 3).
+- **Android:** `usesCleartextTraffic` en `false`, con `expo-build-properties`. Sin perfil no se toca: el APK local lo
+  pone en `true` para hablar con el servidor de la máquina, como antes.
+- **iPhone:** `NSAppTransportSecurity` sin cargas arbitrarias ni a la red local. Hacía falta: la plantilla de Expo
+  deja `NSAllowsArbitraryLoads` en `true` y una excepción para la máquina local, y con eso una compilación de las tiendas
+  habría permitido el tráfico sin cifrar.
+
+### 3. Las variables de cada entorno de EAS (tarea 3.1, publicacion-E07)
+
+`preview` toma las variables del entorno `preview` de EAS, y `production` las del entorno `production` (el campo
+`environment` de cada perfil). `eas.json` no trae ninguna: ni la API, ni el identificador, ni el archivo de Firebase, ni
+la llave de mapas (`movil/__tests__/publicacion/perfiles-de-compilacion.test.ts`). Se dan de alta con `eas env:create`
+en la cuenta de cada entorno (ADR-0012): la de prueba puede ser la de EL PRESTADOR; la de producción es la del cliente.
+
+| Variable | Tipo | Visibilidad en EAS | Qué lleva |
+|---|---|---|---|
+| `EXPO_PUBLIC_NOMBRE_APP` | texto | texto plano | El nombre del producto; hoy `{{MARCA}}` (DD-023) |
+| `EXPO_PUBLIC_API_URL` | texto | texto plano | La API del entorno, por https (publicacion-E06); el entorno de prueba espera DD-070 |
+| `APP_IDENTIFIER` | texto | texto plano | El identificador de la app; el definitivo espera DD-088 (publicacion-E08) |
+| `GOOGLE_SERVICES_JSON` | archivo | secreta | El `google-services.json` del proyecto de Firebase del entorno (ADR-0008; DD-072) |
+| `GOOGLE_MAPS_ANDROID_API_KEY` | texto | secreta | La llave de Google Maps de Android del entorno, restringida a la app (ADR-0009) |
+| `EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID`, `EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID` | texto | texto plano | Los clientes OAuth de Google del entorno (ADR-0005; DD-072) |
+| `EXPO_PUBLIC_AVISO_DE_PRIVACIDAD_URL`, `EXPO_PUBLIC_TERMINOS_URL` | texto | texto plano | Las páginas legales del servidor del entorno (DD-080) |
+
+- **Las `EXPO_PUBLIC_*` no son secretas:** van dentro de la app y cualquiera las puede leer de ella.
+- **Una variable secreta no se lee en la máquina** al preparar la compilación, solo en el servidor de EAS (grado E,
+  `SIN VERIFICAR`, documentación de variables de entorno de EAS, consultada de memoria el 2026-11-22). Por eso
+  `app.config.ts` no se detiene si falta el archivo de Firebase o la llave de mapas: en la máquina faltan, y en la nube
+  están.
+- **`preview` es la compilación interna** (`distribution: internal`) y en Android sale un APK que se instala sin tienda,
+  como pide ADR-0012. TestFlight, en iPhone, llega con la tarea 3.4 (DD-017, DD-084).
+- **Pendiente, sin cuenta todavía:** el identificador del proyecto de EAS (`extra.eas.projectId`) y su dueño (`owner`),
+  que da `eas init` cuando exista la cuenta de Expo de cada entorno. Como cambian de una cuenta a otra, irán también
+  desde el entorno.
+
+### 4. El marcador detiene la compilación de producción (tarea 3.2, publicacion-E08)
+
+- El identificador sigue saliendo de `APP_IDENTIFIER`, el mismo en iPhone y Android (base-E05).
+- Con `production`, si `APP_IDENTIFIER` trae el marcador `{{MARCA}}`, en cualquier forma de escribirlo, la
+  configuración se detiene con "Falta el identificador de la app", antes de que EAS suba nada.
+- **Recomendación:** que el entorno `production` de EAS lleve `APP_IDENTIFIER={{MARCA}}` hasta que DD-088 dé el
+  definitivo. Así ninguna compilación de producción sale con un identificador provisional.
+- En `preview` y en local no se revisa: ahí el identificador es uno neutro de desarrollo, como el de `.env.example`.
+  Que producción no lleve uno de esos neutros no lo pide el escenario, y queda en manos de quien llene su entorno.
+
+### 5. La compilación de producción de Android (tarea 3.3, publicacion-E09)
+
+- **Para Google Play, un paquete de aplicación** (`buildType: app-bundle`), firmado con la llave de subida que guarda
+  EAS (`credentialsSource: remote`). La llave nunca entra al repositorio: `.gitignore` ya excluye `*.jks` y
+  `*.keystore`, y `herramientas/ci/verificar_secretos.py` lo revisa.
+- **La versión sube sola:** EAS lleva el número de cada compilación (`cli.appVersionSource: remote`) y `production` lo
+  sube en cada una (`autoIncrement`). `app.config.ts` no fija `android.versionCode` ni `ios.buildNumber`; la versión que
+  ve la persona sigue siendo `version`.
+- **Sin minificar en `preview` y `production`.** El APK local ya lo apaga porque con R8 el release se cierra al abrir:
+  desaparece la base interna de WorkManager, que llega con las dependencias de la ubicación
+  (`herramientas/apk-local/compilar.ps1`, C-236). Con el mismo ajuste en `expo-build-properties`, la compilación de las
+  tiendas sale como el APK que ya se probó. Cuesta un paquete más grande. Volver a minificar con las reglas de
+  conservación de WorkManager es una mejora para después, que necesita su prueba en un teléfono.
+- **Lo que no se comprobó:** el registro de una compilación real de EAS, que espera la cuenta de Expo del entorno
+  (ADR-0012) y, para `production`, el identificador definitivo (DD-088, punto 4).
+
+### 6. El envío de Android queda en borrador (tarea 4.2, publicacion-E12)
+
+- El perfil de envío `production` de EAS Submit, con el mismo nombre que el de la compilación, manda la compilación a la
+  pista de producción de Google Play Console con `releaseStatus: draft`: no se publica sola, y se libera a mano el mismo
+  día que en App Store, cuando las dos revisiones estén aprobadas.
+- La llave de la cuenta de servicio de Google Play no va en `eas.json` (`serviceAccountKeyPath`): se sube a las
+  credenciales de EAS de la cuenta del cliente cuando exista.
+- **Puede cambiar con DD-017:** si la cuenta de Google Play es personal, la primera publicación pide antes la prueba
+  cerrada de 14 días con 12 personas (R-029, grado E), y el primer envío iría a esa pista. El borrador se queda igual.
+- El envío de iPhone no se configura: es publicacion-E11, bloqueado.
+
 ## Tablas y migración
 
 No crea tablas: ninguna tabla de `vault/arquitectura/modelo-de-datos.md` nace aquí (ADR-0016). En prueba y en producción

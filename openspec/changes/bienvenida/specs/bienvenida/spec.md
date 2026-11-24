@@ -5,7 +5,7 @@
 La app DEBE (MUST) mostrar una pantalla de bienvenida con el nombre del producto tomado de la configuración y con el
 contenido que le toca en el archivo de contenido.
 
-Cita: A → `NSV-2026-001-v8.pdf:16:ANEXO A, Sección A.3` (Módulo A #1)
+Cita: A → `NSV-2026-001-v8.pdf:16:ANEXO A, Sección A.3` (Módulo A #1) · C → C-225 (bienvenida-E02)
 
 #### Scenario: bienvenida-E01 — La primera apertura, sin sesión, empieza en la bienvenida
 
@@ -19,11 +19,10 @@ Criterio: A43-6 (en parte: F-A01)
 
 #### Scenario: bienvenida-E02 — Las aperturas siguientes y con la sesión abierta
 
-- **DADO** que la persona ya vio la bienvenida, o que tiene la sesión abierta
-- **CUANDO** vuelve a abrir la app
-- **ENTONCES** no está definido si ve otra vez la bienvenida y las informativas o si entra directo
-
-SIN RESPUESTA — bloquea: bienvenida-E02 (DD-092)
+- **DADO** que la persona ya vio la bienvenida y las tres informativas
+- **CUANDO** vuelve a abrir la app sin sesión
+- **ENTONCES** llega directo a registrarse o iniciar sesión, sin la bienvenida
+- **Y** si tiene la sesión abierta, entra directo, sin la bienvenida ni el inicio de sesión
 
 ### Requirement: Tres pantallas informativas sobre el servicio
 
@@ -46,6 +45,9 @@ Criterio: A43-6 (en parte: F-A01)
 - **DADO** la tercera pantalla informativa
 - **CUANDO** la persona avanza
 - **ENTONCES** la app le ofrece registrarse o iniciar sesión
+
+La oferta es la pantalla de inicio de sesión, con su enlace a registrarse, como en el mock; no hay una pantalla de
+entrada aparte (C-237).
 
 ### Requirement: Contenido de EL CLIENTE fuera del código
 
