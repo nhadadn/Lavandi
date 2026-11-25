@@ -22,8 +22,9 @@ toca: evidencias/auditoria/, meta/indice.md
 [[auditoria-segmento-2-arquitectura-y-calidad-de-codigo-2026-11-25]] (segmento 2) y
 [[auditoria-segmento-3-base-de-datos-y-escalabilidad-2026-11-25]] (segmento 3) y
 [[auditoria-segmento-4-seguridad-y-autorizacion-2026-11-25]] (segmento 4) y
-[[auditoria-segmento-5-api-endpoints-e-integraciones-2026-11-25]] (segmento 5). El tablero de los segmentos 0 a 5 está
+[[auditoria-segmento-5-api-endpoints-e-integraciones-2026-11-25]] (segmento 5) y
+[[auditoria-segmento-6-flujos-programados-2026-11-25]] (segmento 6, que corrige S1-01 (e) en el informe del segmento 1). El tablero de los segmentos 0 a 6 está
 publicado como artefacto privado (https://claude.ai/artifact/J7cbBSYGFZSRTtHn8PxReg), con su fuente en
-`evidencias/auditoria/tablero/auditoria-pr-4.html`. Faltan los segmentos 6 a 9 y el consolidado. El PR de la auditoría es nhadadn/Lavandi#5.
+`evidencias/auditoria/tablero/auditoria-pr-4.html`. Faltan los segmentos 7 a 9 y el consolidado. El PR de la auditoría es nhadadn/Lavandi#5.
 
 **Al terminar.** `situacion: terminada`, con el enlace al pull request. En las sesiones de Nadir, el push lo hace el cierre (CLAUDE.md §0-bis).
