@@ -162,6 +162,10 @@ Empieza por `CLAUDE.md` en la raíz del repo y por [[convenciones]].
 - Comunicaciones enviadas: [[2026-09-20-respuesta-al-feedback-del-manual]] (**2026-09-20 13:00, WhatsApp, literal**: devuelve el manual 1.1, pregunta el fondo hueso, deja el calzado como Orden de Cambio y propone que esta ronda cuente como la primera) · [[2026-09-07-lista-de-nombres-para-el-cliente]] y [[2026-09-08-lista-de-nombres-de-categoria]] (ambas enviadas, C-43)
 - Sin enviar: [[2026-09-30-confirmacion-de-la-llamada]] (**la que sigue, hoy, por WhatsApp**: pone por escrito lo que se acordó en la llamada y manda el manual 1.2) · [[2026-09-30-respuesta-a-la-segunda-revision]] (superada por la llamada; se conserva como guion de lo que quedó abierto) · [[2026-09-19-acuerdo-de-apoyo-con-contenido]] (la cortesía con principio, final y límites) · [[2026-09-12-alcance-para-el-cliente]] (qué recibe, qué necesita hacer él, qué se cotiza aparte) · [[2026-09-09-aviso-de-retraso-branding]] (**vencido, DD-036**) · [[2026-09-11-requerimiento-de-insumos-de-producto]] (seis decisiones de operación) · [[2026-09-09-lista-de-nombres-globales]] (archivada por C-46, ya no se manda)
 
+## Auditorías
+
+- [[auditoria-segmento-0-inventario-y-proceso-2026-11-24]] — auditoría de EL PRESTADOR al PR #4 (`9d24977`), segmento 0: PRs, commits, CI y stack real. **Listo con reservas**: el flujo de revisión de C-158 no se sigue y `main` no está protegida
+
 ## Plantillas
 
 - adr · acta-de-sesion · hipotesis · riesgo · supuesto · spec-openspec · nota-de-decision-de-marca · reporte-semanal-cliente · nota-ejecutiva-cliente · notificacion-de-entrega · requerimiento-escrito · aviso-de-retraso · orden-de-cambio (estas cuatro, en borrador hasta DD-074) · sprint · deuda-de-decision · tarea-en-curso
