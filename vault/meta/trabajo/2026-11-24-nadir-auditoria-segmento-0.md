@@ -18,6 +18,7 @@ toca: evidencias/auditoria/, meta/indice.md
 `legal/`.
 
 **Produjo.** [[auditoria-segmento-0-inventario-y-proceso-2026-11-24]] y
-[[auditoria-segmento-1-avance-contra-el-contrato-2026-11-24]] (segmento 1, mismo SHA, sin correr las suites).
+[[auditoria-segmento-1-avance-contra-el-contrato-2026-11-24]] (segmento 1, mismo SHA, sin correr las suites) y
+[[auditoria-segmento-2-arquitectura-y-calidad-de-codigo-2026-11-25]] (segmento 2).
 
 **Al terminar.** `situacion: terminada`, con el enlace al pull request. Sin push hasta que Nadir lo pida.
