@@ -171,7 +171,8 @@ Empieza por `CLAUDE.md` en la raíz del repo y por [[convenciones]].
 - [[auditoria-segmento-4-seguridad-y-autorizacion-2026-11-25]] — segmento 4: matriz de roles, aislamiento por tenencia y plaza, autenticación, OWASP y MASVS. **Listo con reservas**: sin fugas entre socios; tokens que no vencen, casi sin límites de peticiones y panel sin 2FA
 - [[auditoria-segmento-5-api-endpoints-e-integraciones-2026-11-25]] — segmento 5: tabla de 62 endpoints, cruce de la app con el servidor e integraciones. **No está listo**: API coherente y sin llamadas huérfanas; producción sin los paquetes de S3 ni Resend, y de las integraciones del contrato solo los mapas están completos
 - [[auditoria-segmento-6-flujos-programados-2026-11-25]] — segmento 6: registro e inicio de sesión, pedido de punta a punta, estados y pago, reconstruidos desde código en Mermaid. **No está listo**: ningún código de producción crea el cobro (pagar responde 409), el rechazo deja al usuario sin aviso ni reembolso y ninguna prueba recorre el flujo completo; corrige S1-01 (e)
-- Tablero publicado de los segmentos 0 a 6 (artefacto privado de Nadir, https://claude.ai/artifact/J7cbBSYGFZSRTtHn8PxReg); su fuente es `evidencias/auditoria/tablero/auditoria-pr-4.html` y no sustituye a los informes de arriba
+- [[auditoria-segmento-7-landing-y-panel-2026-11-25]] — segmento 7: las 12 secciones de la landing contra el código, criterios de A.4.2, medición y panel de indicadores. **No está listo**: ningún criterio de A.4.2 se acredita a cinco días del cierre de la semana 12, diez textos de la portada están fijos en el código y el aviso de derechos de autor se omite en producción
+- Tablero publicado de los segmentos 0 a 7 (artefacto privado de Nadir, https://claude.ai/artifact/J7cbBSYGFZSRTtHn8PxReg); su fuente es `evidencias/auditoria/tablero/auditoria-pr-4.html` y no sustituye a los informes de arriba
 
 ## Plantillas
 
