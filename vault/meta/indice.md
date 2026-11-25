@@ -165,6 +165,7 @@ Empieza por `CLAUDE.md` en la raíz del repo y por [[convenciones]].
 ## Auditorías
 
 - [[auditoria-segmento-0-inventario-y-proceso-2026-11-24]] — auditoría de EL PRESTADOR al PR #4 (`9d24977`), segmento 0: PRs, commits, CI y stack real. **Listo con reservas**: el flujo de revisión de C-158 no se sigue y `main` no está protegida
+- [[auditoria-segmento-1-avance-contra-el-contrato-2026-11-24]] — segmento 1: las 76 funciones, los 19 criterios del A.4 y las 39 restricciones contra el código del PR #4. **No está listo**: 43 codificadas, 30 parciales, 3 sin iniciar, 0 probadas; ningún criterio del A.4 se cumple todavía
 
 ## Plantillas
 
