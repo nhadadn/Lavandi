@@ -27,7 +27,9 @@
 
 ## Decisions
 
-No hay decisión técnica nueva. Se aplican los ADR vigentes:
+No hay decisión técnica nueva con ADR propio; la única clave de configuración nueva, la zona horaria de lo que no
+tiene plaza, la decidió el concilio del 2026-11-24 (pregunta 8, C-245; `acta-2026-11-20-modelo-y-pasarela.md`,
+decisión 60). Se aplican los ADR vigentes:
 
 - **Widgets:** barras, dona y línea con las gráficas que trae Filament; el indicador destacado con su widget de
   estadísticas; las tablas comparativas como tablas de Filament (ADR-0003).
@@ -35,17 +37,20 @@ No hay decisión técnica nueva. Se aplican los ADR vigentes:
   proveedor (ADR-0009). Las zonas y el punto de cada pedido se cruzan con PostGIS (ADR-0004).
 - **Colonia:** sale del campo de la dirección; no hay geocodificación inversa (ADR-0009, `presupuesto-de-mapas.md`,
   decisión 4).
-- **Horas:** cada fecha se presenta en la zona horaria de la plaza del pedido (`modelo-multi-plaza.md`).
+- **Horas:** cada fecha se presenta en la zona horaria de la plaza del pedido (`modelo-multi-plaza.md`); lo que no
+  tiene plaza, en la zona horaria de referencia de la configuración (pregunta 8, indicadores-E24).
 
-**Lecturas del contrato que hizo el especificador.** Arthur las confirma al aprobar:
+**Lecturas del contrato que hizo el especificador.** Confirmadas por el concilio del 2026-11-24, por delegación de
+Arthur (C-245; `acta-2026-11-20-modelo-y-pasarela.md`, decisión 59), salvo la 2:
 
 1. **Pedido** es todo pedido que llegó a Confirmado (`NSV-2026-001-v8.pdf:17:ANEXO A, Sección A.3`, Módulo A #12).
    Cuenta en los totales, en los estados y en la retención, aunque después se cancele. Con C-188, un pedido llega a
    Confirmado solo cuando la pasarela confirma su pago (`pedidos.confirmado_en`); el que nunca se paga no cuenta.
 2. **Usuarios activos** son personas distintas con cuenta de usuario. Lavanderías y repartidores se miden aparte, en
-   la categoría Socios. Va en DD-111.
+   la categoría Socios. Sigue en DD-111: Arthur propone y EL CLIENTE confirma.
 3. **Retención:** de los usuarios de un mes de registro que hicieron su primer pedido, qué porcentaje volvió a pedir,
-   hasta hoy. Es una cifra por mes, no una matriz de meses.
+   hasta hoy. Es una cifra por mes, no una matriz de meses, como dice el A.5: "agrupados según el mes en que se
+   registraron" (`NSV-2026-001-v8.pdf:22:ANEXO A, Sección A.5`).
 4. **"Con tendencia":** el monto promedio contra el del periodo anterior de la misma duración.
 5. **"Tabla comparativa":** cada periodo junto al anterior; en los repartidores, uno al lado del otro.
 
@@ -65,7 +70,8 @@ Una sola migración, hacia adelante (ADR-0016, regla 9), en la tarea 0.1. Pasa l
 - Sin `id_plazas`, por diseño: está en la lista de tablas sin plaza de `servidor/config/modelo.php`.
 - Sin `created_at` ni `updated_at`, como propuesta: no tiene llave propia (ver Open Questions, 9).
 - Qué la escribe, y por eso qué cuenta como "usar la aplicación", es DD-111 (E07). Mientras, el test de E06 siembra
-  sus filas.
+  sus filas. Cuando DD-111 diga qué la escribe, su `fecha` será el día en la zona horaria de referencia de lo que no
+  tiene plaza, la misma clave `app.zona_horaria_sin_plaza` (pregunta 8, indicadores-E24).
 - Su modelo de Eloquent sigue lo que decida `registro-e-inicio-de-sesion` para `rol_usuario`, la primera tabla con llave
   compuesta: Eloquent espera una llave de una sola columna.
 
@@ -90,7 +96,7 @@ cambios, sin escribirlas; si una consulta resulta lenta, se agrega una vista mat
 
 - [Las cohortes y el mapa de calor son las consultas más pesadas] → con el volumen de arranque se calculan en vivo.
   Si el panel tarda, se cachean o se precalculan, con ADR (BR-33).
-- [8 de los 23 escenarios esperan una respuesta] → el panel puede salir con los demás, pero A44-1 pide los 11
+- [7 de los 24 escenarios esperan una respuesta] → el panel puede salir con los demás, pero A44-1 pide los 11
   indicadores: no se acredita hasta que todos tengan su escenario en verde.
 - [A43-7 pide datos reales] → hace falta una lavandería real (DD-021). La lavandería propia del cliente podría
   servir (DD-066, sin confirmar).
@@ -98,24 +104,149 @@ cambios, sin escribirlas; si una consulta resulta lenta, se agrega una vista mat
   capture `direcciones`.
 - [El plugin de mapas de Filament está en beta] → componente propio (ADR-0009).
 
+## Implementación en el servidor
+
+Lo que decidió el implementador dentro de esta spec y de los ADR, sin decisión técnica nueva:
+
+- **La página** es un segundo tablero de Filament, `App\Filament\Pages\Indicadores`, en `/admin/indicadores`; el
+  tablero de inicio no cambia. Sus widgets viven en `app/Filament/Widgets/Indicadores/`: Filament los registra como
+  componentes de Livewire, pero no los pone en el tablero de inicio. Se dibujan al abrir la página, sin carga diferida.
+- **La autorización** es `Autorizacion::puedeVerLosIndicadores()`, en el componente único (ADR-0019): la página y cada
+  widget le preguntan, y un widget montado por otra cuenta responde 403.
+- **Una consulta por indicador** en `app/Indicadores/`, que la gráfica, la tabla y después `exportacion` leen.
+- **El rango se ajusta a periodos completos:** por semana, del lunes de la semana del primer día al domingo de la del
+  último; por mes, del día 1 al último día. Así cada periodo se compara entero con el anterior. Sin filtros, es el mes
+  en curso hasta hoy, por día.
+- **"Hoy"** (el rango sin filtros) se lee en la zona horaria de referencia de lo que no tiene plaza
+  (`app.zona_horaria_sin_plaza`), porque el panel no tiene plaza; es la misma pregunta 8 (indicadores-E24).
+- **La dona** cuenta los pedidos confirmados en el rango por su estado actual: activos son `confirmado`, `aceptado`,
+  `recolectado`, `en_proceso`, `listo` y `en_entrega` (ADR-0021 y su adenda); completados, `entregado`. Un pedido
+  `rechazado` no es activo ni completado, y la dona no lo muestra mientras E05 espera DD-016.
+- **Los usuarios activos** cuentan todas las filas de `actividad_usuarios`, sin filtrar por rol: quien escriba la tabla
+  (E07, DD-111) decide quién cuenta, como dice "Tablas y migración". Hasta entonces nada la escribe, y en producción la
+  línea da 0.
+- **La retención** pone una fila por cada mes del rango, aunque ese mes nadie se haya registrado. El mes de registro se
+  lee en la zona horaria de referencia de lo que no tiene plaza (`app.zona_horaria_sin_plaza`; pregunta 8,
+  indicadores-E24). Cuentan también las cuentas borradas después, porque su
+  registro y sus pedidos son historial. El porcentaje lleva un decimal.
+- **El ranking** promedia todas las calificaciones de cada lavandería, sin el rango de la página, con un decimal, como
+  su perfil. Entran todas las lavanderías no borradas, de todas las plazas; con el mismo promedio, van por nombre.
+- **El semáforo** lee sus dos cortes de `config/indicadores.php` (`INDICADORES_SEMAFORO_CORTE_ALTO` y `_BAJO`): verde
+  desde el corte alto, amarillo desde el bajo y por debajo del alto, rojo por debajo del bajo. Un promedio igual a un
+  corte alcanza el color de ese corte, y el color se toma del promedio con un decimal, el que se ve. Cada color va en
+  una insignia con su texto (Verde, Amarillo, Rojo). Mientras DD-114 no dé los valores, los cortes van vacíos y la
+  columna dice "Sin cortes configurados"; unos cortes fuera de 1 a 5, o con el bajo arriba del alto, cuentan como
+  vacíos.
+- **El monto promedio** (tarea 2.4, E09) es un indicador destacado, `MontoPromedioIndicador`, que lee
+  `App\Indicadores\MontoPromedio`:
+  - **El periodo** es el rango de la página, ya ajustado a periodos completos; **el anterior** son los mismos días justo
+    antes (`Rango::anteriorDeLaMismaDuracion()`, lectura 4). Pedido del periodo es el confirmado en él, en el día de su
+    plaza, como en los pedidos totales.
+  - **Qué monto cuenta** espera DD-012 (E10, bloqueado). Mientras, la consulta usa la misma lectura que la ficha del
+    usuario en el panel (`administracion`): el final si ya se pesó y, si no, el estimado
+    (`coalesce(monto_final, monto_estimado)`, `servidor/app/Indicadores/MontoPromedio.php:24`). Es una lectura
+    provisional, no una respuesta: indicadores-E10 sigue `SIN RESPUESTA`, y la puede cambiar **DD-012**, que fija el
+    modelo de cobro. Cuando responda, cambia esa sola línea de `MontoPromedio`; la prueba de E09 no la afirma (cada
+    pedido de prueba lleva el mismo monto en los dos campos). Hoy nada escribe esos montos, así que en producción el
+    indicador dice "Sin monto".
+  - Un pedido sin ningún monto no entra al promedio. El promedio va con dos decimales, en pesos, como texto.
+  - **La tendencia** va con su texto, su flecha y su color: "Subió $50.00 frente al periodo anterior ($200.00)", "Bajó
+    …" o "Igual que en el periodo anterior (…)". Sin pedidos con monto en el periodo anterior, dice que no hay con qué
+    comparar.
+- **Las entregas por repartidor** (tarea 3.5, E15) son una tabla, `EntregasPorRepartidorTabla`, que lee
+  `App\Indicadores\EntregasPorRepartidor`:
+  - **Una entrega es del repartidor que marcó Entregado:** el evento de `pedido_eventos` con su cuenta, la regla de
+    `repartidor` (su `design.md`, lectura 5). Cuenta cada pedido una vez, si el pedido llegó a Confirmado.
+  - **Su día** es el del paso a Entregado en la hora de la plaza del pedido, como en las estadísticas del repartidor.
+  - **"Lado a lado"** (lectura 5) es una fila por repartidor, de más a menos entregas y, con las mismas, por nombre, con
+    su plaza.
+  - **Quién sale:** los repartidores dados de alta que no se dieron de baja, también con 0; uno pendiente o de baja,
+    solo si tiene entregas en el rango, porque sus entregas se conservan (repartidor-E07).
+- **Los ingresos brutos** (tarea 4.1, E16) son una gráfica de barras, `IngresosBrutosGrafica`, después de los
+  indicadores de socios y antes del mapa, el orden del A.5:
+  - **La misma consulta del reporte financiero:** lee `App\Finanzas\Ingresos::porPeriodo()`, la que da la tabla de
+    ingresos por periodo de `/admin/ingresos` (`administracion`, administracion-E17). Cada barra es, por construcción, la
+    cifra de ese reporte para su periodo; la prueba lo compara mes por mes.
+  - **Qué cuenta:** los pagos que la pasarela confirmó por su aviso (`pagos.estado = 'pagado'`), por el día de la
+    confirmación en la hora de la plaza, sin descontar reembolsos ni comisiones (administracion-E18 y E19, bloqueados).
+    No salen de los montos del pedido, así que no dependen de DD-012 (ver el `design.md` de `administracion`).
+  - **Las barras:** una sola serie, una barra por periodo del rango, sin leyenda. El A.5 pide barras agrupadas; por qué
+    se agrupan espera a EL CLIENTE (E17, BR-31, DD-115). Cuando lo diga, cada grupo es otra serie de la misma gráfica.
+  - Los montos llegan a la gráfica como números solo para dibujarla; la cifra exacta, con dos decimales, va en el texto
+    alterno de la gráfica, en el reporte y en la descarga.
+  - Se refresca como los demás widgets de la página (E21 y E22).
+- **El mapa de calor** (tareas 5.1 y 5.2, E19 y E20) es el widget `MapaDeCalor`, con su vista
+  `resources/views/filament/widgets/indicadores/mapa-de-calor.blade.php`:
+  - **Por colonia** (E19) lee `App\Indicadores\PedidosPorColonia`: la colonia de la **dirección de recolección** del
+    pedido (pregunta 4, resuelta por el concilio del 2026-11-24, C-245; `acta-2026-11-20-modelo-y-pasarela.md`,
+    decisión 59), como se capturó en `pedido_direcciones`, sin espacios a los lados, en su municipio y su plaza. El
+    punto de cada colonia es el centro de las recolecciones de sus pedidos (`ST_Centroid` de PostGIS); no hay
+    geocodificación inversa ni ninguna petición a Google desde el servidor.
+  - **Por zona de servicio** (E20) lee `App\Indicadores\PedidosPorZona`: un pedido cuenta en la zona de su plaza que
+    cubre el punto de su recolección (`ST_Covers` de PostGIS, con el borde dentro, como la zona de servicio de las
+    direcciones), no en la de su entrega. Salen las zonas activas, también con 0, y una inactiva solo si tuvo pedidos
+    en el rango. Cada zona lleva su polígono simplificado (`INDICADORES_MAPA_SIMPLIFICACION`, 0.0005 grados, como la
+    cobertura de la portada) para pintarla. La administración cambia entre colonia y zona con el selector "Ver por"
+    del widget.
+  - **La intensidad** es el número de pedidos frente al de la colonia (o zona) con más, de 0 a 1 con dos decimales.
+    El color sale de una rampa secuencial de un solo tono, el azul de la paleta validada de las gráficas, de claro a
+    oscuro (`App\Indicadores\Intensidad`); el punto crece con la intensidad. Cada figura dice su nombre y su número al
+    elegirla, y una tabla debajo trae las mismas cifras: la intensidad nunca va solo con el color.
+  - **El mapa** es Google Maps JavaScript (ADR-0009, decisión 3), con círculos y polígonos propios, sin la capa de
+    calor del proveedor. Se monta **una vez** en un contenedor que Livewire no toca (`wire:ignore`); el refresco y los
+    filtros solo cambian el atributo `data-mapa-datos`, y el script redibuja las figuras sobre el mismo mapa. Así una
+    página abierta cuenta como una carga de mapa, aunque sondee (`presupuesto-de-mapas.md`).
+  - **La llave** es de navegador y sale de la configuración: `GOOGLE_MAPS_PANEL_LLAVE`, en
+    `services.google_maps_panel.llave`, de cada entorno (ADR-0012). Sin ella, el widget no monta el mapa ni carga el
+    script, y dice "El mapa no está disponible porque falta la llave de Google Maps del panel", como la app sin la llave
+    de Android; la tabla se ve igual. La llave de producción va a nombre de EL CLIENTE (RN-20) y espera DD-072.
+  - El dibujo del mapa en el navegador no tiene prueba automática: las pruebas revisan los datos que le llegan, la
+    llave y el aviso. Se revisa a mano con una llave de prueba.
+- **El refresco** es el sondeo de Livewire de cada widget (`wire:poll`), la consulta periódica de ADR-0007: la gráfica
+  llama a `updateChartData` y la tabla se vuelve a dibujar, sin recargar la página. El intervalo es
+  `INDICADORES_REFRESCO` en `config/indicadores.php`, como "30s" o "1500ms". **Por omisión son 30 s** (tarea 6.2,
+  E22), como fija la adenda del 2026-11-22 de ADR-0007, que cierra DD-116; un valor vacío en el entorno también toma
+  los 30 s, y cada entorno lo cambia sin tocar el código. Con un valor que no sirve, ningún widget sondea (también se
+  quitan los 5 s que trae la gráfica de Filament) y la página dice que las cifras se actualizan al abrir o recargar.
+  Con intervalo, la página dice cada cuánto.
+
 ## Open Questions
 
 1. **Cuánto es "en tiempo real" para los indicadores.** El ADR-0007 fija 30 s para los pedidos activos, no para los
-   indicadores. Necesita ADR, o ampliar el ADR-0007. Recomendación de Claude: los mismos 30 s. DD-116.
+   indicadores. Necesita ADR, o ampliar el ADR-0007. Recomendación de Claude: los mismos 30 s. DD-116. **Resuelta** por
+   la adenda del 2026-11-22 de ADR-0007 (decisión 33, C-236): 30 s; cierra DD-116.
 2. **Qué fecha cuenta para un pedido:** la de su confirmación, que es la que usan los escenarios, o la de su
-   creación. Arthur la confirma al aprobar. Con C-188 la diferencia importa: el pedido se crea al aceptar el resumen y
-   se confirma cuando se paga.
-3. **La semana va de lunes a domingo** (ISO 8601). Arthur la confirma.
+   creación. Con C-188 la diferencia importa: el pedido se crea al aceptar el resumen y se confirma cuando se paga.
+   **Resuelta** por el concilio del 2026-11-24, por delegación de Arthur (C-245;
+   `acta-2026-11-20-modelo-y-pasarela.md`, decisión 59): cuenta la fecha de confirmación, `confirmado_en`.
+3. **La semana va de lunes a domingo** (ISO 8601). **Resuelta** por el concilio del 2026-11-24, por delegación de
+   Arthur (C-245; `acta-2026-11-20-modelo-y-pasarela.md`, decisión 59): de lunes a domingo, ISO 8601 (grado E,
+   `SIN VERIFICAR`: la semana ISO va del lunes 1 al domingo 7, `en.wikipedia.org/wiki/ISO_week_date` y
+   `timeanddate.com/date/weeknumber-help.html`, consultadas el 2026-11-24).
 4. **Qué dirección del pedido cuenta en el mapa de calor:** la de recolección, que es la recomendación, o la de
-   entrega.
+   entrega. **Resuelta** por el concilio del 2026-11-24, por delegación de Arthur (C-245;
+   `acta-2026-11-20-modelo-y-pasarela.md`, decisión 59): la dirección de recolección.
 5. **La colonia: texto libre normalizado o catálogo.** Se decide en `direcciones`. Si es catálogo, necesita ADR.
 6. **Consultas en vivo o precalculadas** (BR-33). Necesita ADR solo si las consultas en vivo no alcanzan.
 7. **El mes de registro (E08): resuelta.** Es `usuarios.created_at`: todas las tablas del negocio con llave propia
    llevan `created_at` y `updated_at` en `timestamptz`.
 8. **El día de `actividad_usuarios`.** La persona no tiene plaza, así que su `fecha` no tiene zona horaria propia. Si
    las plazas del territorio inicial comparten zona horaria (`SIN VERIFICAR`; sale de las filas semilla de DD-093), hoy
-   no cambia nada; con plazas en zonas distintas, hay que decidir cuál vale.
-9. **`actividad_usuarios` y las fechas de creación.** La regla deja fuera de `created_at` y `updated_at` a las "tablas
-   de enlace sin llave propia". `actividad_usuarios` no tiene llave propia, pero tampoco enlaza dos entidades. La
-   propuesta es que no las lleve, porque su `fecha` ya dice el día y la fila no se edita. Lo confirma quien escriba la
-   regla en `modelo-de-datos`.
+   no cambia nada; con plazas en zonas distintas, hay que decidir cuál vale. **Resuelta** por el concilio del
+   2026-11-24, por delegación de Arthur (C-245; `acta-2026-11-20-modelo-y-pasarela.md`, decisión 60): un dato de
+   configuración con la zona horaria de referencia de lo que no tiene plaza, una sola clave para los indicadores y las
+   finanzas, `app.zona_horaria_sin_plaza` (`ZONA_HORARIA_SIN_PLAZA`). Se descartaron seguir en UTC y cambiar
+   `app.timezone`. Por omisión es la de las plazas sembradas Plaza de prueba 1 y Plaza de prueba Durango,
+   `America/Mexico_City` (la Plaza de prueba 2 está en `America/Tijuana`). Es UTC-6 todo el año (grado E,
+   `SIN VERIFICAR`: la Ciudad de México está en el horario del centro todo el año y su último cambio de hora fue el 30
+   de octubre de 2022,
+   `timeanddate.com/time/change/mexico/mexico-city`, consultada el 2026-11-24). Nunca `America/Matamoros`, que es
+   Matamoros, Tamaulipas. La leen el "hoy" del panel (`Rango::hoy`), el mes de registro
+   (`RetencionPorMesDeRegistro`) y el día de un movimiento sin pedido de la conciliación
+   (`ConciliacionConLaPasarela::zonaSinPlaza`); `actividad_usuarios.fecha` usará la misma clave cuando DD-111 diga qué
+   la escribe. `app.timezone` sigue en UTC. No adelanta DD-093: si las plazas quedan en zonas distintas, sigue bastando
+   un valor. Lo fija indicadores-E24.
+9. **`actividad_usuarios` y las fechas de creación: resuelta.** No las lleva: `modelo-de-datos.md` dice "No los llevan
+   `rol_usuario` ni `actividad_usuarios`, que no tienen llave propia y no se editan" (`vault/arquitectura/
+   modelo-de-datos.md:90`), y `config/modelo.php` la pone en la lista de tablas de enlace. La migración de la tarea 0.1
+   lo sigue.

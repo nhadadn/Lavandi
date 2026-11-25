@@ -1,0 +1,42 @@
+# Deja la app abierta con la sesión del usuario de prueba, desde cero: borra los datos de la app, pasa la bienvenida y
+# sus tres informativas (bienvenida-E03 y E04) e inicia sesión con correo y contraseña (registro-E07). Así cada corrida
+# empieza igual, sin depender de la sesión que tenía el teléfono.
+#
+# La ubicación se concede al abrir, para que el inicio, que busca las lavanderías cercanas, no detenga el flujo con el
+# diálogo del permiso (cercanas-E03); el flujo no depende de ella.
+#
+# Variables: APP_ID, USUARIO_CORREO y USUARIO_CONTRASENA.
+appId: ${APP_ID}
+---
+- launchApp:
+    appId: ${APP_ID}
+    clearState: true
+    stopApp: true
+    permissions:
+      location: allow
+- extendedWaitUntil:
+    visible: Comenzar
+    timeout: 30000
+- tapOn: Comenzar
+- tapOn: Siguiente
+- tapOn: Siguiente
+- tapOn: Siguiente
+- extendedWaitUntil:
+    visible: Hola de nuevo
+    timeout: 15000
+# El centro de cada campo cae en su entrada de texto, debajo de la etiqueta.
+- tapOn:
+    id: campo-correo
+- inputText: ${USUARIO_CORREO}
+- tapOn:
+    id: campo-password
+- inputText: ${USUARIO_CONTRASENA}
+- hideKeyboard
+# El botón, no el título del encabezado, que dice lo mismo.
+- tapOn:
+    text: Iniciar sesión
+    below:
+      id: campo-password
+- extendedWaitUntil:
+    visible: Lavanderías cerca de ti
+    timeout: 30000

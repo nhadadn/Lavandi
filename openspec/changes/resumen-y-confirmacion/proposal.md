@@ -10,8 +10,9 @@ su pago. Cierra el hito H3.
 ## What Changes
 
 - La app muestra el resumen con el componente 6 del design system: servicio, fecha y ventana, y direcciones de recogida
-  y de entrega. Los renglones de precio estimado, envío y política de cancelación quedan reservados hasta que respondan
-  sus filas.
+  y de entrega. Los renglones de precio estimado y política de cancelación quedan reservados hasta que respondan sus
+  filas. El envío no lleva renglón: el Módulo A #9 no lo enumera, y si es un cargo aparte es DD-019 y DD-025
+  (confirmacion-E03).
 - Al aceptar el resumen, el servidor crea el pedido en un estado interno previo al pago (su nombre lo fija DD-123), con
   la plaza de su lavandería y la copia del precio y de las direcciones. Antes vuelve a validar la ventana (cambio
   `agenda-de-recoleccion`) y las direcciones (cambio `direcciones`); si alguna dejó de valer, no crea el pedido.

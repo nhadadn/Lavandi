@@ -230,7 +230,9 @@ Criterio: A44-1
 - **CUANDO** se fija cuánto es "en tiempo real" para los indicadores
 - **ENTONCES** el panel refresca con ese intervalo
 
-SIN RESPUESTA — bloquea: indicadores-E22 (BR-33; DD-116; necesita ADR)
+Cita: D → `ADR-0007`, adenda del 2026-11-22: los widgets de indicadores se refrescan cada 30 s, con `indicadores.refresco` en `30s` por omisión (decisión 33 de `acta-2026-11-20-modelo-y-pasarela.md`; cierra DD-116)
+
+Criterio: A44-1
 
 #### Scenario: indicadores-E23 — Cifras de la base, no de ejemplo
 
@@ -242,3 +244,19 @@ SIN RESPUESTA — bloquea: indicadores-E22 (BR-33; DD-116; necesita ADR)
 Criterio: A43-7, A44-1
 
 Acreditar A43-7 en el entorno de prueba o en producción necesita lavanderías reales (DD-021). El test no lo espera.
+
+### Requirement: El día de lo que no tiene plaza
+
+Lo que no tiene plaza, como el hoy del panel, el mes de registro de una cuenta, el día de `actividad_usuarios` y el día de un movimiento de la pasarela sin pedido, DEBE (MUST) leerse en la zona horaria de referencia de la configuración, nunca en UTC.
+
+Cita: A → `NSV-2026-001-v8.pdf:22:ANEXO A, Sección A.5` (por día, por semana y por mes); A → `NSV-2026-001-v8.pdf:46:ANEXO D, Sección D.5`; C → C-245 (`acta-2026-11-20-modelo-y-pasarela.md`, decisión 60, concilio del 2026-11-24); `design.md`, pregunta 8
+
+#### Scenario: indicadores-E24 — Lo que no tiene plaza se lee en la zona de referencia
+
+- **DADO** la zona horaria de referencia de la configuración en UTC-6 y una cuenta registrada a las 19:00 del 31 de marzo en esa zona (01:00 del 1 de abril en UTC) que hizo su primer pedido
+- **CUANDO** la administración abre la retención por mes de registro
+- **ENTONCES** la cuenta cuenta en marzo
+- **Y** a las 19:00 del 31 de marzo en esa zona, el hoy del panel y el rango por omisión son de marzo
+- **Y** un movimiento de la pasarela sin pedido a esa hora cuenta, en la conciliación, en el 31 de marzo
+
+Criterio: A44-1

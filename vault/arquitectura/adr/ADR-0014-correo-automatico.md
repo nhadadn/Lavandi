@@ -1,7 +1,7 @@
 ---
-estado: borrador
+estado: vigente
 grado: D
-fuente: brecha-ejecutivo-tecnico.md BR-21 (B); inventario-funcional.md F-T13 (B); verificaciones-fase-6.md, secciones del 2026-11-12 y 2026-11-13 (E); ADR-0003 (D)
+fuente: brecha-ejecutivo-tecnico.md BR-21 (B); inventario-funcional.md F-T13 (B); verificaciones-fase-6.md, secciones del 2026-11-12 y 2026-11-13 (E); ADR-0003 (D); acta-2026-11-20-modelo-y-pasarela.md, decisión 37, por delegación de C-236 (C)
 fecha: 2026-11-13
 dueño: Arthur Naranjo
 adr: ADR-0014
@@ -33,14 +33,16 @@ Los de la matriz `vigente` (C-142). Datos grado E del 2026-11-12 y del 2026-11-1
 **A gana por velocidad:** se configura en minutos y no espera la salida del sandbox. **B** es más barato a escala,
 pero suma una cuenta de AWS a nombre del cliente y un trámite.
 
-## Decisión (propuesta)
+## Decisión
 
 - **El correo automático sale por Resend,** con el transporte oficial de Laravel, desde el dominio del cliente, con
   SPF y DKIM configurados.
 - **Una cuenta por entorno de envío real:** prueba y producción (`ADR-0012`). En local, el correo se captura sin
   enviarse.
 
-**Pendiente:** Arthur lo dejó pendiente el 2026-11-13 (`acta-2026-11-13-cierre-de-la-fase-6.md`, C-151; DD-071). La recomendación sigue siendo Resend.
+Arthur lo dejó pendiente el 2026-11-13 (`acta-2026-11-13-cierre-de-la-fase-6.md`, C-151; DD-071). Lo aprobó Claude,
+por delegación de Arthur (C-236), el 2026-11-22, en la decisión 37 de `acta-2026-11-20-modelo-y-pasarela.md`, con la
+recomendación de siempre. El envío real espera el alojamiento (DD-070) y el dominio con su DNS (DD-023).
 
 ## Consecuencias
 

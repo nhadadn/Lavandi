@@ -12,7 +12,7 @@ El Módulo C, "en su versión operativa mínima", pide registro, pedidos asignad
 - Al marcar Entregado puede tomar una foto como evidencia de entrega, que se guarda privada (`:20:A.3`, ADR-0006).
 - Ve sus entregas completadas y cuántas lleva en el día y en la semana (F-C04 y F-C05).
 - El componente de autorización único suma las reglas del rol repartidor (`CLAUDE.md` §9.5): solo ve lo suyo y solo en su plaza.
-- Quedan bloqueados: quién asigna (DD-014), cómo entra cada rol (DD-053), el aviso con la app cerrada (DD-054), cómo se ven sus estados en la app del usuario (DD-022 y DD-011), cuánto gana (DD-019 y DD-013), su calificación recibida (DD-052) y cuándo es obligatoria la evidencia (BR-29, DD-110).
+- Quedan bloqueados: quién asigna (DD-014), cómo entra cada rol (DD-053), el aviso con la app cerrada (DD-054), cómo se ven sus estados en la app del usuario (DD-022 y DD-140), cuánto gana (DD-019 y DD-013), su calificación recibida (DD-052) y cuándo es obligatoria la evidencia (BR-29, DD-110).
 
 **Qué NO cambia**
 

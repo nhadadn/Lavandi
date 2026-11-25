@@ -47,6 +47,9 @@ No hay decisión técnica nueva en este cambio. Lo sostienen:
   un solo componente", grado D, sin ADR propio) y lo manda `CLAUDE.md` §9.5. Aquí nace solo con el rol. La tenencia y
   la plaza llegan con `autorizacion-por-rol` (hito H5), junto con la prueba contra fugas.
 - **ADR-0016:** las tablas y sus nombres (sección siguiente).
+- **ADR-0017:** la app navega con expo-router; las pantallas viven en `movil/app/` (C-222).
+- **ADR-0018:** el token en el almacenamiento cifrado del teléfono, la regla de la contraseña, el límite de intentos
+  y la recuperación en una página web del servidor (C-223).
 
 ## Tablas y migración
 
@@ -57,17 +60,21 @@ Este cambio crea las cuatro primeras tablas del negocio, tal como las fija `vaul
 | Tabla | Columnas | Llaves, únicos y `CHECK` |
 |---|---|---|
 | `roles` | `id_roles`, `codigo`, `nombre` | Llave `id_roles`. `codigo` único. Semilla: `usuario`, `lavanderia`, `repartidor`, `administracion` |
-| `usuarios` | `id_usuarios`, `id_publico`, `nombre`, `correo`, `password`, `telefono`, `foto_ruta`, `estado`, `bloqueado_en`, `terminos_aceptados_en`, `deleted_at` | Llave `id_usuarios`. `id_publico` ULID único. `correo` único sin distinguir mayúsculas (índice único sobre `lower(correo)`). `password` opcional, porque quien entra con Google o con Apple no tiene; si existe, va con hash. `CHECK (estado IN ('activo', 'bloqueado'))`. Borrado suave con `deleted_at`. Sin `id_plazas` |
+| `usuarios` | `id_usuarios`, `id_publico`, `nombre`, `correo`, `password`, `telefono`, `foto_ruta`, `estado`, `bloqueado_en`, `deleted_at` | Llave `id_usuarios`. `id_publico` ULID único. `correo` único sin distinguir mayúsculas (índice único sobre `lower(correo)`). `password` opcional, porque quien entra con Google o con Apple no tiene; si existe, va con hash. `CHECK (estado IN ('activo', 'bloqueado'))`. Borrado suave con `deleted_at`. Sin `id_plazas` |
 | `rol_usuario` | `id_usuarios`, `id_roles` | Llave compuesta `(id_usuarios, id_roles)`. Llaves foráneas a `usuarios` y a `roles`, con `ON DELETE RESTRICT`; la de `id_roles` lleva su propio índice, porque la llave compuesta solo cubre `id_usuarios` |
 | `cuentas_externas` | `id_cuentas_externas`, `id_usuarios`, `proveedor`, `sujeto`, `correo` | Llave `id_cuentas_externas`. Llave foránea `id_usuarios` a `usuarios`, con índice. Único `(proveedor, sujeto)`. `CHECK (proveedor IN ('google', 'apple'))` |
 
-- **Tipos:** `bloqueado_en`, `terminos_aceptados_en` y `deleted_at` son `timestamptz` (ADR-0016, regla 7).
+- **Tipos:** `bloqueado_en` y `deleted_at` son `timestamptz` (ADR-0016, regla 7).
+- **`terminos_aceptados_en` ya no existe.** Nació en esta migración para la constancia de aceptación; la migración
+  `2026_11_26_300000_quitar_del_esquema_lo_que_no_tiene_respaldo` la quitó, hacia adelante: los consentimientos son de EL CLIENTE
+  (`NSV-2026-001-v8.pdf:10:Cláusula X`), `textos-legales` los deja fuera y nada la llenaba. Si DD-080 pide la
+  constancia (registro-E29), entra con su propia migración.
 - **Lo que llena este cambio:** `id_publico`, `correo`, `password` con hash y `estado = 'activo'`; la fila de
   `rol_usuario` con el rol `usuario` (registro-E01); la fila de `cuentas_externas` de Google (registro-E16) y, cuando
   DD-069 se cierre, la de Apple (registro-E21). La misma cuenta de Google vuelve a entrar por su `(proveedor, sujeto)`.
 - **Lo que queda vacío, para su cambio:** `nombre`, hasta que se responda la pregunta 7; `telefono` y `foto_ruta`,
-  para `perfil-y-soporte` (F-A15); `estado = 'bloqueado'` y `bloqueado_en`, para `administracion` (F-D03);
-  `terminos_aceptados_en`, solo si DD-080 pide la constancia (registro-E29).
+  para `perfil-y-soporte` (F-A15); `estado = 'bloqueado'` y `bloqueado_en`, para `administracion` (F-D03). La
+  constancia de aceptación no tiene columna mientras DD-080 no la pida (registro-E29).
 - **Un rol por cuenta en la v1** lo impone el código, no la tabla (DD-053): un segundo rol sería otra fila de
   `rol_usuario`.
 - **Tablas del framework que usa,** con su nombre de siempre y fuera de la prueba de esquema: `personal_access_tokens`
@@ -98,6 +105,16 @@ Este cambio crea las cuatro primeras tablas del negocio, tal como las fija `vaul
   otra fila, no un rediseño (ADR-0016). Se revisa cuando DD-053 se cierre.
 
 ## Open Questions
+
+**Resueltas el 2026-11-20:**
+
+- 1, 2, 4, 5 y 6: ADR-0018 (C-223). La 5 agrega registro-E30 y E31.
+- 3: se liga si Google verificó el correo; si no, se rechaza (C-224, DD-091 cerrada). Es registro-E18.
+- 7, 8 y 9 (C-225): el registro no pide el nombre, que va en el perfil; al entrar, la persona llega a un inicio
+  provisional que tiene "Cerrar sesión", hasta que existan el mapa (H2) y el perfil (H7).
+- 10: el script de tokens de ADR-0013 lo hace la app antes de la tarea 2.1.
+
+Las preguntas, como se plantearon:
 
 **Necesitan ADR.** Caben en uno solo, corto, de sesión y recuperación, o como adenda de ADR-0005. ADR-0005 decide el
 mecanismo, no estos detalles:

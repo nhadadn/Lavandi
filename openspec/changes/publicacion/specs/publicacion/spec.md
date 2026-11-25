@@ -6,7 +6,9 @@ Además del local, la plataforma DEBE (MUST) tener un entorno de prueba y uno de
 servidor, su base y sus credenciales: prueba con el modo de prueba de la pasarela y el Firebase de prueba; producción
 con los de producción, en cuentas a nombre de EL CLIENTE.
 
-Cita: A → `NSV-2026-001-v8.pdf:7:Cláusula IV` y `NSV-2026-001-v8.pdf:34:ANEXO B, Sección B.11`; D → ADR-0012
+Cita: A → `NSV-2026-001-v8.pdf:7:Cláusula IV`, `NSV-2026-001-v8.pdf:34:ANEXO B, Sección B.11` y
+`NSV-2026-001-v8.pdf:29:ANEXO B, Sección B.4` (Copias de seguridad: respaldos periódicos de la base de datos);
+D → ADR-0012
 
 #### Scenario: publicacion-E01 — Cada entorno con sus credenciales
 
@@ -32,6 +34,8 @@ SIN RESPUESTA — bloquea: publicacion-E02 (DD-070)
 - **ENTONCES** el hosting, Firebase, Google Cloud, la pasarela, la organización de Expo y el correo de producción están a
   nombre de EL CLIENTE
 - **Y** el mapa de cuentas, con fecha, queda en `vault/evidencias/publicacion/`
+- **Y** las copias de seguridad de la base de datos, contratadas por EL CLIENTE con el alojamiento que fije DD-070, están
+  activas en producción y son un renglón del mapa de cuentas
 
 SIN RESPUESTA — bloquea: publicacion-E03 (DD-070, DD-084)
 

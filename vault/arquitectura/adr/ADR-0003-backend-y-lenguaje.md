@@ -1,7 +1,7 @@
 ---
 estado: vigente
 grado: D
-fuente: acta-2026-11-12-traspaso-del-proyecto.md C-145 y C-147; matriz-de-criterios-stack.md (pesos C-142); verificaciones-fase-6.md, sección del 2026-11-12 (E)
+fuente: acta-2026-11-12-traspaso-del-proyecto.md C-145 y C-147; matriz-de-criterios-stack.md (pesos C-142); verificaciones-fase-6.md, sección del 2026-11-12 (E); nota del 2026-11-24: acta-2026-11-20-modelo-y-pasarela.md, decisión 56, del concilio del 2026-11-24, por delegación de Arthur (C-245) (C)
 fecha: 2026-11-12
 dueño: Arthur Naranjo
 adr: ADR-0003
@@ -71,7 +71,9 @@ Los cuatro candidatos caben en el costo del contrato.
 - La versión estable al 2026-11-10 es la 13.42.0 (E).
 - La app usa la API con tokens de Sanctum.
 - El panel web del Módulo D se hace con **Filament**.
-- La vista reducida de administración en la app (C-140) usa la misma API.
+- La vista reducida de administración en la app (C-140) usa la misma API. (Nota del 2026-11-24: la decisión 56 de
+  `acta-2026-11-20-modelo-y-pasarela.md`, C-245, lo acota: la vista no tiene sesión con la API y solo abre el panel
+  web dentro de la app, administracion-E25.)
 
 **Dónde corre se decide después** (C-147, DD-070). Las opciones son Laravel Cloud o Forge con DigitalOcean. Las dos
 caben en el costo del contrato.

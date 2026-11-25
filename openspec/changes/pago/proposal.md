@@ -22,9 +22,9 @@ que cambiarla no toque la base ni la API. Es el hito H4 del plan de sprints.
 - Guardar de cada pago la pasarela, la referencia de su orden, el monto, el método, la fecha, el pedido y su plaza, para
   la conciliación del Módulo D. Nunca un dato de tarjeta.
 - Tomar las llaves de la pasarela de la configuración de cada entorno (ADR-0012).
-- En `movil/`, la pantalla de pago abre el checkout y muestra "Procesando pago" hasta que el servidor confirma. Si la
-  tarjeta se captura dentro de la app (C-198) o en el checkout redirigido de ADR-0010, queda `SIN RESPUESTA` en pago-E02
-  (DD-055, DD-079).
+- En `movil/`, la pantalla de pago abre el checkout y muestra "Procesando pago" hasta que el servidor confirma. La
+  tarjeta se escribe en el checkout de la pasarela, en la vista de navegador del sistema dentro de la app (decisión 32 y
+  adenda del 2026-11-22 de ADR-0010, que cierran la segunda parte de DD-055).
 - La integración con Conekta, la pasarela vigente, detrás de la interfaz neutral: su orden y su checkout reales, la
   autenticidad y la traducción de sus avisos, y la prueba contra su sandbox con la cuenta de prueba de Arthur (C-170).
   No la bloquea DD-079. Si el cliente firma el cambio, la elegida se agrega con su ADR. No se construye nada de Stripe ni
@@ -80,8 +80,8 @@ Ninguna.
   pasarela en el componente `cobro` (`c3-api.md`), con su versión simulada para las pruebas y su implementación para
   Conekta; la configuración por entorno. La dependencia de Conekta para PHP que nombra ADR-0010 vive solo dentro de esa
   implementación.
-- `movil/`: la pantalla de pago (F-A10) y la espera "Procesando pago"; el módulo de Expo que abre el navegador del
-  sistema, por precisar (ver `design.md`). La pantalla espera pago-E02 (DD-055, DD-079).
+- `movil/`: la pantalla de pago (F-A10) y la espera "Procesando pago"; el checkout se abre con `expo-web-browser`
+  (decisión 32; ver `design.md`).
 - Base de datos: `pagos`, `reembolsos` y `eventos_pasarela`, con el trigger `impedir_cambio()` en `pagos` y
   `reembolsos` (ADR-0016).
 - Servicios externos: el sandbox de Conekta, con la cuenta de prueba de Arthur (C-170), y el túnel para recibir sus

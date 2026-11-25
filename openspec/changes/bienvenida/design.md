@@ -21,7 +21,8 @@
 
 ## Decisions
 
-No hay decisión técnica no trivial. Lo sostienen ADR-0002 (la app) y ADR-0013 (los tokens del design system). El
+No hay decisión técnica no trivial. Lo sostienen ADR-0002 (la app), ADR-0013 (los tokens del design system) y ADR-0017 (la navegación con
+expo-router). El
 nombre del producto sale de la configuración que deja `base`. Ninguno de los seis componentes del design system cubre
 estas pantallas (`vault/contrato/inventario-funcional.md`, sección 8): se arman con los tokens.
 
@@ -40,6 +41,15 @@ No crea ni usa tablas: todo vive en `movil/` y el servidor no cambia. No hay mig
   desde el servidor sería construir de más.
 
 ## Open Questions
+
+**Resueltas el 2026-11-20 (C-225, "apegado al contrato"):**
+
+- 1: solo la primera vez; con la sesión abierta, se entra directo (DD-092 cerrada). Es bienvenida-E02.
+- 2: "Saltar" y "Ya tengo cuenta" no entran: no tienen cita.
+- 3: la estructura del mock: lema e ilustración en la bienvenida; título, texto e ilustración en cada informativa.
+- 4: una pantalla propia, no la de arranque nativa.
+
+Las preguntas, como se plantearon:
 
 1. **Cuándo se muestran la bienvenida y las informativas:** solo la primera vez, en cada apertura sin sesión o también
    con la sesión abierta. Bloquea bienvenida-E02. Pregunta de pantalla para Arthur (DD-092).

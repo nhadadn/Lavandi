@@ -1,0 +1,121 @@
+/*
+ * ARCHIVO GENERADO: no se edita a mano.
+ * Sale de vault/design-system/tokens.json (versión 0.2.0, 2026-11-21) con
+ * herramientas/tokens/generar.js (ADR-0013). Para cambiar un valor se cambia tokens.json y se corre el script.
+ * Solo modo claro (C-141). Los componentes usan --ds-color-semantico-*, nunca --ds-color-marca-* directo
+ * (design-system.md, Decisión 3). Las medidas van en px, y los tamaños de letra en rem sobre 16 px.
+ */
+
+:root {
+    --ds-color-marca-primario: #2E86AB;
+    --ds-color-marca-primario-oscuro: #297899;
+    --ds-color-marca-acento: #E8C547;
+    --ds-color-marca-claro: #A8D5E2;
+    --ds-color-neutro-0: #FFFFFF;
+    --ds-color-neutro-50: #F7F8F9;
+    --ds-color-neutro-100: #EDEFF2;
+    --ds-color-neutro-200: #DCE0E5;
+    --ds-color-neutro-300: #C0C6CE;
+    --ds-color-neutro-400: #98A1AC;
+    --ds-color-neutro-500: #6B7681;
+    --ds-color-neutro-600: #515A64;
+    --ds-color-neutro-700: #3B424A;
+    --ds-color-neutro-800: #262C33;
+    --ds-color-neutro-900: #171C21;
+    --ds-color-neutro-1000: #0E1216;
+    --ds-color-estado-exito: #1E6F45;
+    --ds-color-estado-atencion: #8A5A00;
+    --ds-color-estado-error: #A32222;
+    --ds-color-estado-informacion: #1F5C8C;
+    --ds-color-semantico-fondo: #F7F4EF;
+    --ds-color-semantico-superficie: #FFFFFF;
+    --ds-color-semantico-superficie-elevada: #FFFFFF;
+    --ds-color-semantico-superficie-hundida: #EDE9E2;
+    --ds-color-semantico-texto: #171C21;
+    --ds-color-semantico-texto-suave: #515A64;
+    --ds-color-semantico-texto-inverso: #FFFFFF;
+    --ds-color-semantico-texto-deshabilitado: #6B7681;
+    --ds-color-semantico-borde: #DCE0E5;
+    --ds-color-semantico-borde-fuerte: #6B7681;
+    --ds-color-semantico-accion: #297899;
+    --ds-color-semantico-accion-hover: #1F5A73;
+    --ds-color-semantico-accion-texto: #FFFFFF;
+    --ds-color-semantico-foco: #297899;
+    --ds-color-pedido-confirmado: #1F5C8C;
+    --ds-color-pedido-recolectado: #5A4B8A;
+    --ds-color-pedido-en-proceso: #8A5A00;
+    --ds-color-pedido-listo: #1E6F45;
+    --ds-color-pedido-entregado: #515A64;
+    --ds-color-marca-extendida-agua-claro: #308CB3;
+    --ds-color-marca-extendida-limon-profundo: #B39116;
+    --ds-color-marca-extendida-hueso: #F7F4EF;
+    --ds-tipografia-familia-titulares: Nunito, system-ui, sans-serif;
+    --ds-tipografia-familia-cuerpo: 'Source Sans 3', system-ui, sans-serif;
+    --ds-tipografia-familia-principal: Nunito, system-ui, sans-serif;
+    --ds-tipografia-familia-apoyo: 'Source Sans 3', system-ui, sans-serif;
+    --ds-tipografia-familia-monoespaciada: ui-monospace, 'Cascadia Code', Consolas, monospace;
+    --ds-tipografia-escala-micro: 0.75rem;
+    --ds-tipografia-escala-menor: 0.875rem;
+    --ds-tipografia-escala-cuerpo: 1rem;
+    --ds-tipografia-escala-cuerpo-grande: 1.125rem;
+    --ds-tipografia-escala-titulo-menor: 1.25rem;
+    --ds-tipografia-escala-titulo: 1.5rem;
+    --ds-tipografia-escala-titulo-mayor: 1.875rem;
+    --ds-tipografia-escala-despliegue: 2.25rem;
+    --ds-tipografia-peso-regular: 400;
+    --ds-tipografia-peso-medio: 500;
+    --ds-tipografia-peso-semifuerte: 600;
+    --ds-tipografia-peso-fuerte: 700;
+    --ds-tipografia-interlineado-apretado: 1.2;
+    --ds-tipografia-interlineado-normal: 1.5;
+    --ds-tipografia-interlineado-suelto: 1.7;
+    --ds-tipografia-espaciado-letra-normal: 0;
+    --ds-tipografia-espaciado-letra-titular: -0.01em;
+    --ds-tipografia-espaciado-letra-versalita: 0.04em;
+    --ds-espaciado-0: 0;
+    --ds-espaciado-1: 4px;
+    --ds-espaciado-2: 8px;
+    --ds-espaciado-3: 12px;
+    --ds-espaciado-4: 16px;
+    --ds-espaciado-5: 24px;
+    --ds-espaciado-6: 32px;
+    --ds-espaciado-7: 48px;
+    --ds-espaciado-8: 64px;
+    --ds-radio-nulo: 0;
+    --ds-radio-chico: 4px;
+    --ds-radio-medio: 8px;
+    --ds-radio-grande: 12px;
+    --ds-radio-mayor: 16px;
+    --ds-radio-pildora: 999px;
+    --ds-grosor-control: 1px;
+    --ds-grosor-foco: 3px;
+    --ds-alto-boton-principal: 52px;
+    --ds-elevacion-0: none;
+    --ds-elevacion-1: 0 1px 2px rgba(14,18,22,.08);
+    --ds-elevacion-2: 0 2px 8px rgba(14,18,22,.10);
+    --ds-elevacion-3: 0 8px 24px rgba(14,18,22,.14);
+    --ds-duracion-instantanea: 0ms;
+    --ds-duracion-rapida: 120ms;
+    --ds-duracion-base: 200ms;
+    --ds-duracion-lenta: 320ms;
+    --ds-curva-estandar: cubic-bezier(.2,0,0,1);
+    --ds-curva-entrada: cubic-bezier(0,0,0,1);
+    --ds-curva-salida: cubic-bezier(.3,0,1,1);
+    --ds-accesibilidad-contraste-minimo-texto-normal: 4.5;
+    --ds-accesibilidad-contraste-minimo-texto-grande: 3;
+    --ds-accesibilidad-contraste-minimo-componente: 3;
+    --ds-accesibilidad-texto-grande-desde-px: 18.66px;
+    --ds-accesibilidad-area-tactil-minima-dp: 48px;
+    --ds-accesibilidad-area-tactil-minima-pt-ios: 44px;
+    --ds-accesibilidad-separacion-minima-entre-objetivos-dp: 8px;
+}
+
+/* Movimiento reducido: todas las duraciones valen 0 (componentes.md, reglas transversales). */
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --ds-duracion-instantanea: 0ms;
+        --ds-duracion-rapida: 0ms;
+        --ds-duracion-base: 0ms;
+        --ds-duracion-lenta: 0ms;
+    }
+}

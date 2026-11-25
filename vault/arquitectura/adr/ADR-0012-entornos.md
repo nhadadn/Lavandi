@@ -1,7 +1,7 @@
 ---
 estado: vigente
 grado: D
-fuente: acta-2026-11-13-cierre-de-la-fase-6.md C-152; brecha-ejecutivo-tecnico.md BR-06, BR-08 y BR-38 (B); calendario-contractual.md, trámites B.10 (A); verificaciones-fase-6.md, sección del 2026-11-12 (E); ADR-0002, ADR-0003, ADR-0008 y ADR-0010 (D); DD-017, DD-069 y DD-070 (B)
+fuente: acta-2026-11-13-cierre-de-la-fase-6.md C-152; brecha-ejecutivo-tecnico.md BR-06, BR-08 y BR-38 (B); calendario-contractual.md, trámites B.10 (A); verificaciones-fase-6.md, sección del 2026-11-12 (E); ADR-0002, ADR-0003, ADR-0008 y ADR-0010 (D); DD-017, DD-069, DD-070 y DD-134 (B); adenda del 2026-11-24: acta-2026-11-20-modelo-y-pasarela.md, decisión 65, del concilio del 2026-11-24, por delegación de C-236 y C-245 (C); NSV-2026-001-v8.pdf:14:ANEXO A, Sección A.2 (A); servidor/lighthouserc.json (B)
 fecha: 2026-11-13
 dueño: Arthur Naranjo
 adr: ADR-0012
@@ -104,3 +104,39 @@ Bajo: es configuración, no código.
 - **Restricciones:** BR-08, BR-38 y los trámites B.10.
 - **Pendientes:** DD-017, DD-069 y DD-070.
 - **ADRs relacionados:** ADR-0002, ADR-0003, ADR-0006, ADR-0008, ADR-0009 y ADR-0010.
+
+## Adenda del 2026-11-24: solo producción se deja indexar
+
+**Contexto.**
+
+- El A.2 quiere el sitio "optimizado para conversión (descarga de la app) y posicionamiento orgánico en buscadores"
+  (`NSV-2026-001-v8.pdf:14:ANEXO A, Sección A.2`). Lo que se posiciona es el sitio publicado, el de producción.
+- La tabla de entornos de este ADR (líneas 46 a 50) tiene tres: local, prueba y producción. El de prueba estará en
+  internet cuando exista (DD-070), y un buscador que lo indexe lo pone a competir con producción.
+- El archivo de robots de la landing lo sirve una ruta del servidor, no un archivo fijo (medicion-E08,
+  `openspec/changes/medicion-de-la-landing/design.md`), así que puede responder distinto en cada entorno.
+
+**Decisión.**
+
+- **En todo entorno cuyo `APP_ENV` no sea `production`, el archivo de robots responde `User-agent: *` y
+  `Disallow: /`.** Ningún buscador que respete el archivo de robots rastrea local, prueba ni otro entorno que llegue.
+- **Producción conserva el archivo de medicion-E08:** no le cierra el sitio a ningún buscador y declara la dirección
+  del mapa del sitio.
+- **Por qué "solo producción indexa" y no "prueba no indexa".** La tabla tiene tres entornos y el nombre del de prueba
+  todavía no existe (DD-070): la regla por `APP_ENV` cubre a todos sin nombrar ninguno.
+
+**Consecuencias.**
+
+- La regla se prueba sin el entorno real: `servidor/tests/Feature/Medicion/BuscadoresTest.php` cambia el entorno de la
+  aplicación (medicion-E15).
+- La comprobación en el entorno de prueba en internet espera a que exista (DD-070).
+- El entorno de prueba no lleva `APP_ENV=production`: con ese valor quedaría abierto a los buscadores sin que falle
+  ninguna prueba. Su nombre se fija con DD-070 (DD-134, punto 6).
+- Lighthouse CI solo exige rendimiento (`servidor/lighthouserc.json`: la única aserción es `categories:performance`),
+  así que no lo afecta.
+
+Cierra la pregunta 3 de `openspec/changes/medicion-de-la-landing/design.md` y la 5 de
+`openspec/changes/publicacion/design.md`.
+
+La asentó el concilio del 2026-11-24 por delegación de Arthur Naranjo (C-236, C-245), en la decisión 65 de
+`acta-2026-11-20-modelo-y-pasarela.md`.

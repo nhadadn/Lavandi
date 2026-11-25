@@ -1,0 +1,1281 @@
+[ {
+  "command" : {
+    "defineVariablesCommand" : {
+      "env" : {
+        "APP_ID" : "mx.ejemplo.desarrollo",
+        "API_URL" : "http://127.0.0.1:8000/api",
+        "PEDIDO" : "01m82n3zmz9nqwpnna6bxnjrv3",
+        "USUARIO_CORREO" : "usuario.de.prueba@ejemplo.com",
+        "USUARIO_CONTRASENA" : "contrasena-de-prueba",
+        "LAVANDERIA_CORREO" : "lavanderia.centro@ejemplo.com",
+        "LAVANDERIA_CONTRASENA" : "lavanderia-de-prueba",
+        "MAESTRO_CLI_NO_ANALYTICS" : "1",
+        "MAESTRO_CLI_ANALYSIS_NOTIFICATION_DISABLED" : "true",
+        "MAESTRO_FILENAME" : "cambio-en-60-segundos",
+        "MAESTRO_DEVICE_UDID" : "emulator-5554",
+        "MAESTRO_SHARD_ID" : "1",
+        "MAESTRO_SHARD_INDEX" : "0"
+      },
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1795385604295,
+    "duration" : 9,
+    "sequenceNumber" : 0,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "defineVariablesCommand" : {
+        "env" : {
+          "APP_ID" : "mx.ejemplo.desarrollo",
+          "API_URL" : "http://127.0.0.1:8000/api",
+          "PEDIDO" : "01m82n3zmz9nqwpnna6bxnjrv3",
+          "USUARIO_CORREO" : "usuario.de.prueba@ejemplo.com",
+          "USUARIO_CONTRASENA" : "contrasena-de-prueba",
+          "LAVANDERIA_CORREO" : "lavanderia.centro@ejemplo.com",
+          "LAVANDERIA_CONTRASENA" : "lavanderia-de-prueba",
+          "MAESTRO_CLI_NO_ANALYTICS" : "1",
+          "MAESTRO_CLI_ANALYSIS_NOTIFICATION_DISABLED" : "true",
+          "MAESTRO_FILENAME" : "cambio-en-60-segundos",
+          "MAESTRO_DEVICE_UDID" : "emulator-5554",
+          "MAESTRO_SHARD_ID" : "1",
+          "MAESTRO_SHARD_INDEX" : "0"
+        },
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "applyConfigurationCommand" : {
+      "config" : {
+        "appId" : "${APP_ID}",
+        "name" : "estados-E17-cambio-en-60-segundos",
+        "tags" : [ "estados", "A43-3" ],
+        "onFlowComplete" : {
+          "commands" : [ {
+            "runScriptCommand" : {
+              "script" : "// Al terminar el flujo, pase o falle, cierra la sesión que abrió marcar-recolectado.js (DELETE /api/sesion), para no\n// dejar tokens vivos de la lavandería de prueba. Corre dentro de Maestro (onFlowComplete de cambio-en-60-segundos.yaml).\n/* global http, output, API_URL */\nif (output.tokenDeLaLavanderia) {\n  const respuesta = http.request(API_URL + '/sesion', {\n    method: 'DELETE',\n    headers: { Accept: 'application/json', Authorization: 'Bearer ' + output.tokenDeLaLavanderia },\n  });\n  console.log('Sesión de la lavandería cerrada: ' + respuesta.status);\n  output.tokenDeLaLavanderia = null;\n}\n",
+              "sourceDescription" : "pasos/cerrar-sesion-de-la-lavanderia.js",
+              "optional" : false,
+              "scriptDir" : "C:\\np\\Lavandi\\.claude\\worktrees\\agent-ac4b58ad09d5675e3\\movil\\.maestro\\estados\\pasos"
+            }
+          } ]
+        }
+      },
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1795385605306,
+    "duration" : 20,
+    "sequenceNumber" : 1,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "applyConfigurationCommand" : {
+        "config" : {
+          "appId" : "mx.ejemplo.desarrollo",
+          "name" : "estados-E17-cambio-en-60-segundos",
+          "tags" : [ "estados", "A43-3" ],
+          "onFlowComplete" : {
+            "commands" : [ {
+              "runScriptCommand" : {
+                "script" : "// Al terminar el flujo, pase o falle, cierra la sesión que abrió marcar-recolectado.js (DELETE /api/sesion), para no\n// dejar tokens vivos de la lavandería de prueba. Corre dentro de Maestro (onFlowComplete de cambio-en-60-segundos.yaml).\n/* global http, output, API_URL */\nif (output.tokenDeLaLavanderia) {\n  const respuesta = http.request(API_URL + '/sesion', {\n    method: 'DELETE',\n    headers: { Accept: 'application/json', Authorization: 'Bearer ' + output.tokenDeLaLavanderia },\n  });\n  console.log('Sesión de la lavandería cerrada: ' + respuesta.status);\n  output.tokenDeLaLavanderia = null;\n}\n",
+                "sourceDescription" : "pasos/cerrar-sesion-de-la-lavanderia.js",
+                "optional" : false,
+                "scriptDir" : "C:\\np\\Lavandi\\.claude\\worktrees\\agent-ac4b58ad09d5675e3\\movil\\.maestro\\estados\\pasos"
+              }
+            } ]
+          }
+        },
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "runFlowCommand" : {
+      "commands" : [ {
+        "applyConfigurationCommand" : {
+          "config" : {
+            "appId" : "${APP_ID}"
+          },
+          "optional" : false
+        }
+      }, {
+        "launchAppCommand" : {
+          "appId" : "${APP_ID}",
+          "clearState" : true,
+          "stopApp" : true,
+          "permissions" : {
+            "location" : "allow"
+          },
+          "optional" : false
+        }
+      }, {
+        "assertConditionCommand" : {
+          "condition" : {
+            "visible" : {
+              "textRegex" : "Comenzar",
+              "optional" : false
+            }
+          },
+          "timeout" : "30000",
+          "optional" : false
+        }
+      }, {
+        "tapOnElement" : {
+          "selector" : {
+            "textRegex" : "Comenzar",
+            "optional" : false
+          },
+          "retryIfNoChange" : false,
+          "waitUntilVisible" : false,
+          "longPress" : false,
+          "optional" : false
+        }
+      }, {
+        "tapOnElement" : {
+          "selector" : {
+            "textRegex" : "Siguiente",
+            "optional" : false
+          },
+          "retryIfNoChange" : false,
+          "waitUntilVisible" : false,
+          "longPress" : false,
+          "optional" : false
+        }
+      }, {
+        "tapOnElement" : {
+          "selector" : {
+            "textRegex" : "Siguiente",
+            "optional" : false
+          },
+          "retryIfNoChange" : false,
+          "waitUntilVisible" : false,
+          "longPress" : false,
+          "optional" : false
+        }
+      }, {
+        "tapOnElement" : {
+          "selector" : {
+            "textRegex" : "Siguiente",
+            "optional" : false
+          },
+          "retryIfNoChange" : false,
+          "waitUntilVisible" : false,
+          "longPress" : false,
+          "optional" : false
+        }
+      }, {
+        "assertConditionCommand" : {
+          "condition" : {
+            "visible" : {
+              "textRegex" : "Hola de nuevo",
+              "optional" : false
+            }
+          },
+          "timeout" : "15000",
+          "optional" : false
+        }
+      }, {
+        "tapOnElement" : {
+          "selector" : {
+            "idRegex" : "campo-correo",
+            "optional" : false
+          },
+          "retryIfNoChange" : false,
+          "waitUntilVisible" : false,
+          "longPress" : false,
+          "optional" : false
+        }
+      }, {
+        "inputTextCommand" : {
+          "text" : "${USUARIO_CORREO}",
+          "optional" : false
+        }
+      }, {
+        "tapOnElement" : {
+          "selector" : {
+            "idRegex" : "campo-password",
+            "optional" : false
+          },
+          "retryIfNoChange" : false,
+          "waitUntilVisible" : false,
+          "longPress" : false,
+          "optional" : false
+        }
+      }, {
+        "inputTextCommand" : {
+          "text" : "${USUARIO_CONTRASENA}",
+          "optional" : false
+        }
+      }, {
+        "hideKeyboardCommand" : {
+          "optional" : false
+        }
+      }, {
+        "tapOnElement" : {
+          "selector" : {
+            "textRegex" : "Iniciar sesión",
+            "below" : {
+              "idRegex" : "campo-password",
+              "optional" : false
+            },
+            "optional" : false
+          },
+          "retryIfNoChange" : false,
+          "waitUntilVisible" : false,
+          "longPress" : false,
+          "optional" : false
+        }
+      }, {
+        "assertConditionCommand" : {
+          "condition" : {
+            "visible" : {
+              "textRegex" : "Lavanderías cerca de ti",
+              "optional" : false
+            }
+          },
+          "timeout" : "30000",
+          "optional" : false
+        }
+      } ],
+      "sourceDescription" : "pasos/entrar-como-usuario.yaml",
+      "config" : {
+        "appId" : "${APP_ID}"
+      },
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1795385605327,
+    "duration" : 46002,
+    "sequenceNumber" : 2,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "runFlowCommand" : {
+        "commands" : [ {
+          "applyConfigurationCommand" : {
+            "config" : {
+              "appId" : "${APP_ID}"
+            },
+            "optional" : false
+          }
+        }, {
+          "launchAppCommand" : {
+            "appId" : "${APP_ID}",
+            "clearState" : true,
+            "stopApp" : true,
+            "permissions" : {
+              "location" : "allow"
+            },
+            "optional" : false
+          }
+        }, {
+          "assertConditionCommand" : {
+            "condition" : {
+              "visible" : {
+                "textRegex" : "Comenzar",
+                "optional" : false
+              }
+            },
+            "timeout" : "30000",
+            "optional" : false
+          }
+        }, {
+          "tapOnElement" : {
+            "selector" : {
+              "textRegex" : "Comenzar",
+              "optional" : false
+            },
+            "retryIfNoChange" : false,
+            "waitUntilVisible" : false,
+            "longPress" : false,
+            "optional" : false
+          }
+        }, {
+          "tapOnElement" : {
+            "selector" : {
+              "textRegex" : "Siguiente",
+              "optional" : false
+            },
+            "retryIfNoChange" : false,
+            "waitUntilVisible" : false,
+            "longPress" : false,
+            "optional" : false
+          }
+        }, {
+          "tapOnElement" : {
+            "selector" : {
+              "textRegex" : "Siguiente",
+              "optional" : false
+            },
+            "retryIfNoChange" : false,
+            "waitUntilVisible" : false,
+            "longPress" : false,
+            "optional" : false
+          }
+        }, {
+          "tapOnElement" : {
+            "selector" : {
+              "textRegex" : "Siguiente",
+              "optional" : false
+            },
+            "retryIfNoChange" : false,
+            "waitUntilVisible" : false,
+            "longPress" : false,
+            "optional" : false
+          }
+        }, {
+          "assertConditionCommand" : {
+            "condition" : {
+              "visible" : {
+                "textRegex" : "Hola de nuevo",
+                "optional" : false
+              }
+            },
+            "timeout" : "15000",
+            "optional" : false
+          }
+        }, {
+          "tapOnElement" : {
+            "selector" : {
+              "idRegex" : "campo-correo",
+              "optional" : false
+            },
+            "retryIfNoChange" : false,
+            "waitUntilVisible" : false,
+            "longPress" : false,
+            "optional" : false
+          }
+        }, {
+          "inputTextCommand" : {
+            "text" : "${USUARIO_CORREO}",
+            "optional" : false
+          }
+        }, {
+          "tapOnElement" : {
+            "selector" : {
+              "idRegex" : "campo-password",
+              "optional" : false
+            },
+            "retryIfNoChange" : false,
+            "waitUntilVisible" : false,
+            "longPress" : false,
+            "optional" : false
+          }
+        }, {
+          "inputTextCommand" : {
+            "text" : "${USUARIO_CONTRASENA}",
+            "optional" : false
+          }
+        }, {
+          "hideKeyboardCommand" : {
+            "optional" : false
+          }
+        }, {
+          "tapOnElement" : {
+            "selector" : {
+              "textRegex" : "Iniciar sesión",
+              "below" : {
+                "idRegex" : "campo-password",
+                "optional" : false
+              },
+              "optional" : false
+            },
+            "retryIfNoChange" : false,
+            "waitUntilVisible" : false,
+            "longPress" : false,
+            "optional" : false
+          }
+        }, {
+          "assertConditionCommand" : {
+            "condition" : {
+              "visible" : {
+                "textRegex" : "Lavanderías cerca de ti",
+                "optional" : false
+              }
+            },
+            "timeout" : "30000",
+            "optional" : false
+          }
+        } ],
+        "sourceDescription" : "pasos/entrar-como-usuario.yaml",
+        "config" : {
+          "appId" : "mx.ejemplo.desarrollo"
+        },
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "applyConfigurationCommand" : {
+      "config" : {
+        "appId" : "${APP_ID}"
+      },
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1795385605361,
+    "duration" : 3,
+    "sequenceNumber" : 3,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "applyConfigurationCommand" : {
+        "config" : {
+          "appId" : "mx.ejemplo.desarrollo"
+        },
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "launchAppCommand" : {
+      "appId" : "${APP_ID}",
+      "clearState" : true,
+      "stopApp" : true,
+      "permissions" : {
+        "location" : "allow"
+      },
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1795385605365,
+    "duration" : 2047,
+    "sequenceNumber" : 4,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "launchAppCommand" : {
+        "appId" : "mx.ejemplo.desarrollo",
+        "clearState" : true,
+        "stopApp" : true,
+        "permissions" : {
+          "location" : "allow"
+        },
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "textRegex" : "Comenzar",
+          "optional" : false
+        }
+      },
+      "timeout" : "30000",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1795385607414,
+    "duration" : 4918,
+    "sequenceNumber" : 5,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "textRegex" : "Comenzar",
+            "optional" : false
+          }
+        },
+        "timeout" : "30000",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "textRegex" : "Comenzar",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1795385612333,
+    "duration" : 2739,
+    "sequenceNumber" : 6,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "textRegex" : "Comenzar",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "textRegex" : "Siguiente",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1795385615073,
+    "duration" : 2578,
+    "sequenceNumber" : 7,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "textRegex" : "Siguiente",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "textRegex" : "Siguiente",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1795385617651,
+    "duration" : 2604,
+    "sequenceNumber" : 8,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "textRegex" : "Siguiente",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "textRegex" : "Siguiente",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1795385620256,
+    "duration" : 3120,
+    "sequenceNumber" : 9,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "textRegex" : "Siguiente",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "textRegex" : "Hola de nuevo",
+          "optional" : false
+        }
+      },
+      "timeout" : "15000",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1795385623376,
+    "duration" : 147,
+    "sequenceNumber" : 10,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "textRegex" : "Hola de nuevo",
+            "optional" : false
+          }
+        },
+        "timeout" : "15000",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "idRegex" : "campo-correo",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1795385623524,
+    "duration" : 3972,
+    "sequenceNumber" : 11,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "idRegex" : "campo-correo",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "inputTextCommand" : {
+      "text" : "${USUARIO_CORREO}",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1795385627497,
+    "duration" : 7366,
+    "sequenceNumber" : 12,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "inputTextCommand" : {
+        "text" : "usuario.de.prueba@ejemplo.com",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "idRegex" : "campo-password",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1795385634864,
+    "duration" : 4761,
+    "sequenceNumber" : 13,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "idRegex" : "campo-password",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "inputTextCommand" : {
+      "text" : "${USUARIO_CONTRASENA}",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1795385639626,
+    "duration" : 5129,
+    "sequenceNumber" : 14,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "inputTextCommand" : {
+        "text" : "contrasena-de-prueba",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "hideKeyboardCommand" : {
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1795385644756,
+    "duration" : 1423,
+    "sequenceNumber" : 15,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "hideKeyboardCommand" : {
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "textRegex" : "Iniciar sesión",
+        "below" : {
+          "idRegex" : "campo-password",
+          "optional" : false
+        },
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1795385646180,
+    "duration" : 3138,
+    "sequenceNumber" : 16,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "textRegex" : "Iniciar sesión",
+          "below" : {
+            "idRegex" : "campo-password",
+            "optional" : false
+          },
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "textRegex" : "Lavanderías cerca de ti",
+          "optional" : false
+        }
+      },
+      "timeout" : "30000",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1795385649319,
+    "duration" : 2009,
+    "sequenceNumber" : 17,
+    "depth" : 1,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "textRegex" : "Lavanderías cerca de ti",
+            "optional" : false
+          }
+        },
+        "timeout" : "30000",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "openLinkCommand" : {
+      "link" : "${APP_ID}://pedido/seguimiento/${PEDIDO}",
+      "autoVerify" : false,
+      "browser" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1795385651330,
+    "duration" : 1690,
+    "sequenceNumber" : 18,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "openLinkCommand" : {
+        "link" : "mx.ejemplo.desarrollo://pedido/seguimiento/01m82n3zmz9nqwpnna6bxnjrv3",
+        "autoVerify" : false,
+        "browser" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "textRegex" : "Confirmado, estado actual.*",
+          "idRegex" : "paso-confirmado",
+          "optional" : false
+        }
+      },
+      "timeout" : "30000",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1795385653021,
+    "duration" : 123,
+    "sequenceNumber" : 19,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "textRegex" : "Confirmado, estado actual.*",
+            "idRegex" : "paso-confirmado",
+            "optional" : false
+          }
+        },
+        "timeout" : "30000",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "textRegex" : "Confirmado",
+          "above" : {
+            "idRegex" : "paso-confirmado",
+            "optional" : false
+          },
+          "optional" : false
+        }
+      },
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1795385653145,
+    "duration" : 375,
+    "sequenceNumber" : 20,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "textRegex" : "Confirmado",
+            "above" : {
+              "idRegex" : "paso-confirmado",
+              "optional" : false
+            },
+            "optional" : false
+          }
+        },
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "textRegex" : "Recolectado, pendiente",
+          "idRegex" : "paso-recolectado",
+          "optional" : false
+        }
+      },
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1795385653520,
+    "duration" : 126,
+    "sequenceNumber" : 21,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "textRegex" : "Recolectado, pendiente",
+            "idRegex" : "paso-recolectado",
+            "optional" : false
+          }
+        },
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "takeScreenshotCommand" : {
+      "path" : "1-seguimiento-en-confirmado",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1795385653647,
+    "duration" : 551,
+    "sequenceNumber" : 22,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "takeScreenshotCommand" : {
+        "path" : "1-seguimiento-en-confirmado",
+        "optional" : false
+      }
+    },
+    "artifacts" : [ {
+      "type" : "TAKE_SCREENSHOT",
+      "path" : "takeScreenshot/1-seguimiento-en-confirmado.png"
+    } ]
+  }
+}, {
+  "command" : {
+    "startRecordingCommand" : {
+      "path" : "cambio-de-confirmado-a-recolectado",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1795385654198,
+    "duration" : 321,
+    "sequenceNumber" : 23,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "startRecordingCommand" : {
+        "path" : "cambio-de-confirmado-a-recolectado",
+        "optional" : false
+      }
+    },
+    "artifacts" : [ {
+      "type" : "START_SCREEN_RECORDING",
+      "path" : "startRecording/cambio-de-confirmado-a-recolectado.mp4"
+    } ]
+  }
+}, {
+  "command" : {
+    "runScriptCommand" : {
+      "script" : "// estados-E17: la lavandería marca Recolectado por la API, con su token, y se anota la hora (cambio-en-60-segundos.yaml).\n// Corre dentro de Maestro (runScript): http, json y output son de Maestro, y API_URL, PEDIDO, LAVANDERIA_CORREO y\n// LAVANDERIA_CONTRASENA llegan como variables del flujo.\n//\n// Primero abre la sesión de la lavandería, para que el inicio de sesión no cuente en el tiempo. Luego anota la hora\n// justo antes de mandar el botón (POST /api/lavanderia/pedidos/{id_publico}/estado, estados-E03): se cuenta desde que\n// sale la petición, así que el tiempo medido incluye lo que tarda el servidor en guardar el cambio y nunca se queda\n// corto. El cuerpo va en un bloque para que sus nombres no choquen con los de otro script del flujo.\n/* global http, json, output, API_URL, PEDIDO, LAVANDERIA_CORREO, LAVANDERIA_CONTRASENA */\n{\n  const sesion = http.post(API_URL + '/sesion', {\n    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },\n    body: JSON.stringify({ correo: LAVANDERIA_CORREO, password: LAVANDERIA_CONTRASENA }),\n  });\n  if (sesion.status !== 200) {\n    throw new Error('La lavandería no pudo iniciar sesión: ' + sesion.status + ' ' + sesion.body);\n  }\n  output.tokenDeLaLavanderia = json(sesion.body).token;\n\n  const marcadoEn = Date.now();\n  const respuesta = http.post(API_URL + '/lavanderia/pedidos/' + PEDIDO + '/estado', {\n    headers: {\n      Accept: 'application/json',\n      'Content-Type': 'application/json',\n      Authorization: 'Bearer ' + output.tokenDeLaLavanderia,\n    },\n    body: JSON.stringify({ estado: 'recolectado' }),\n  });\n  const respondioEn = Date.now();\n\n  if (respuesta.status !== 200) {\n    throw new Error('La API no guardó Recolectado: ' + respuesta.status + ' ' + respuesta.body);\n  }\n  const estado = json(respuesta.body).pedido.estado.codigo;\n  if (estado !== 'recolectado') {\n    throw new Error('La API dejó el pedido en ' + estado + ', no en recolectado.');\n  }\n\n  output.marcadoEn = marcadoEn;\n  console.log(\n    'CRONOMETRO marcado pedido=' +\n      PEDIDO +\n      ' marcado_en=' +\n      new Date(marcadoEn).toISOString() +\n      ' respuesta_ms=' +\n      (respondioEn - marcadoEn),\n  );\n}\n",
+      "sourceDescription" : "pasos/marcar-recolectado.js",
+      "optional" : false,
+      "scriptDir" : "C:\\np\\Lavandi\\.claude\\worktrees\\agent-ac4b58ad09d5675e3\\movil\\.maestro\\estados\\pasos"
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1795385654521,
+    "duration" : 1305,
+    "sequenceNumber" : 24,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "runScriptCommand" : {
+        "script" : "// estados-E17: la lavandería marca Recolectado por la API, con su token, y se anota la hora (cambio-en-60-segundos.yaml).\n// Corre dentro de Maestro (runScript): http, json y output son de Maestro, y API_URL, PEDIDO, LAVANDERIA_CORREO y\n// LAVANDERIA_CONTRASENA llegan como variables del flujo.\n//\n// Primero abre la sesión de la lavandería, para que el inicio de sesión no cuente en el tiempo. Luego anota la hora\n// justo antes de mandar el botón (POST /api/lavanderia/pedidos/{id_publico}/estado, estados-E03): se cuenta desde que\n// sale la petición, así que el tiempo medido incluye lo que tarda el servidor en guardar el cambio y nunca se queda\n// corto. El cuerpo va en un bloque para que sus nombres no choquen con los de otro script del flujo.\n/* global http, json, output, API_URL, PEDIDO, LAVANDERIA_CORREO, LAVANDERIA_CONTRASENA */\n{\n  const sesion = http.post(API_URL + '/sesion', {\n    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },\n    body: JSON.stringify({ correo: LAVANDERIA_CORREO, password: LAVANDERIA_CONTRASENA }),\n  });\n  if (sesion.status !== 200) {\n    throw new Error('La lavandería no pudo iniciar sesión: ' + sesion.status + ' ' + sesion.body);\n  }\n  output.tokenDeLaLavanderia = json(sesion.body).token;\n\n  const marcadoEn = Date.now();\n  const respuesta = http.post(API_URL + '/lavanderia/pedidos/' + PEDIDO + '/estado', {\n    headers: {\n      Accept: 'application/json',\n      'Content-Type': 'application/json',\n      Authorization: 'Bearer ' + output.tokenDeLaLavanderia,\n    },\n    body: JSON.stringify({ estado: 'recolectado' }),\n  });\n  const respondioEn = Date.now();\n\n  if (respuesta.status !== 200) {\n    throw new Error('La API no guardó Recolectado: ' + respuesta.status + ' ' + respuesta.body);\n  }\n  const estado = json(respuesta.body).pedido.estado.codigo;\n  if (estado !== 'recolectado') {\n    throw new Error('La API dejó el pedido en ' + estado + ', no en recolectado.');\n  }\n\n  output.marcadoEn = marcadoEn;\n  console.log(\n    'CRONOMETRO marcado pedido=' +\n      PEDIDO +\n      ' marcado_en=' +\n      new Date(marcadoEn).toISOString() +\n      ' respuesta_ms=' +\n      (respondioEn - marcadoEn),\n  );\n}\n",
+        "sourceDescription" : "pasos/marcar-recolectado.js",
+        "optional" : false,
+        "scriptDir" : "C:\\np\\Lavandi\\.claude\\worktrees\\agent-ac4b58ad09d5675e3\\movil\\.maestro\\estados\\pasos"
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "textRegex" : "Recolectado, estado actual.*",
+          "idRegex" : "paso-recolectado",
+          "optional" : false
+        }
+      },
+      "timeout" : "60000",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1795385655827,
+    "duration" : 26940,
+    "sequenceNumber" : 25,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "textRegex" : "Recolectado, estado actual.*",
+            "idRegex" : "paso-recolectado",
+            "optional" : false
+          }
+        },
+        "timeout" : "60000",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "runScriptCommand" : {
+      "script" : "// estados-E17: cuánto tardó \"Recolectado\" en verse en el seguimiento desde que la lavandería lo marcó\n// (cambio-en-60-segundos.yaml; NSV-2026-001-v8.pdf:21:ANEXO A, Sección A.4.3). Corre dentro de Maestro (runScript),\n// justo después de que la pantalla lo mostró: output.marcadoEn lo dejó marcar-recolectado.js.\n//\n// El tiempo incluye lo que tarda Maestro en leer la pantalla, así que puede pasarse un poco del real, nunca quedarse\n// corto. Si pasa de 60 segundos, la prueba falla. El cuerpo va en un bloque para que sus nombres no choquen con los de\n// otro script del flujo.\n/* global output */\n{\n  const LIMITE_MS = 60000;\n\n  const vistoEn = Date.now();\n  const tardo = vistoEn - output.marcadoEn;\n  output.segundos = (tardo / 1000).toFixed(1);\n\n  console.log(\n    'CRONOMETRO visto marcado_en=' +\n      new Date(output.marcadoEn).toISOString() +\n      ' visto_en=' +\n      new Date(vistoEn).toISOString() +\n      ' tardo_ms=' +\n      tardo,\n  );\n\n  if (tardo > LIMITE_MS) {\n    throw new Error('Recolectado tardó ' + output.segundos + ' s en verse: el contrato pide 60 s o menos.');\n  }\n}\n",
+      "sourceDescription" : "pasos/cronometrar.js",
+      "optional" : false,
+      "scriptDir" : "C:\\np\\Lavandi\\.claude\\worktrees\\agent-ac4b58ad09d5675e3\\movil\\.maestro\\estados\\pasos"
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1795385682768,
+    "duration" : 13,
+    "sequenceNumber" : 26,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "runScriptCommand" : {
+        "script" : "// estados-E17: cuánto tardó \"Recolectado\" en verse en el seguimiento desde que la lavandería lo marcó\n// (cambio-en-60-segundos.yaml; NSV-2026-001-v8.pdf:21:ANEXO A, Sección A.4.3). Corre dentro de Maestro (runScript),\n// justo después de que la pantalla lo mostró: output.marcadoEn lo dejó marcar-recolectado.js.\n//\n// El tiempo incluye lo que tarda Maestro en leer la pantalla, así que puede pasarse un poco del real, nunca quedarse\n// corto. Si pasa de 60 segundos, la prueba falla. El cuerpo va en un bloque para que sus nombres no choquen con los de\n// otro script del flujo.\n/* global output */\n{\n  const LIMITE_MS = 60000;\n\n  const vistoEn = Date.now();\n  const tardo = vistoEn - output.marcadoEn;\n  output.segundos = (tardo / 1000).toFixed(1);\n\n  console.log(\n    'CRONOMETRO visto marcado_en=' +\n      new Date(output.marcadoEn).toISOString() +\n      ' visto_en=' +\n      new Date(vistoEn).toISOString() +\n      ' tardo_ms=' +\n      tardo,\n  );\n\n  if (tardo > LIMITE_MS) {\n    throw new Error('Recolectado tardó ' + output.segundos + ' s en verse: el contrato pide 60 s o menos.');\n  }\n}\n",
+        "sourceDescription" : "pasos/cronometrar.js",
+        "optional" : false,
+        "scriptDir" : "C:\\np\\Lavandi\\.claude\\worktrees\\agent-ac4b58ad09d5675e3\\movil\\.maestro\\estados\\pasos"
+      }
+    }
+  }
+}, {
+  "command" : {
+    "stopRecordingCommand" : {
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1795385682782,
+    "duration" : 3450,
+    "sequenceNumber" : 27,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "stopRecordingCommand" : {
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "textRegex" : "Recolectado",
+          "above" : {
+            "idRegex" : "paso-confirmado",
+            "optional" : false
+          },
+          "optional" : false
+        }
+      },
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1795385686233,
+    "duration" : 145,
+    "sequenceNumber" : 28,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "textRegex" : "Recolectado",
+            "above" : {
+              "idRegex" : "paso-confirmado",
+              "optional" : false
+            },
+            "optional" : false
+          }
+        },
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "takeScreenshotCommand" : {
+      "path" : "2-seguimiento-en-recolectado",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1795385686380,
+    "duration" : 190,
+    "sequenceNumber" : 29,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "takeScreenshotCommand" : {
+        "path" : "2-seguimiento-en-recolectado",
+        "optional" : false
+      }
+    },
+    "artifacts" : [ {
+      "type" : "TAKE_SCREENSHOT",
+      "path" : "takeScreenshot/2-seguimiento-en-recolectado.png"
+    } ]
+  }
+}, {
+  "command" : {
+    "tapOnElement" : {
+      "selector" : {
+        "idRegex" : "regresar",
+        "optional" : false
+      },
+      "retryIfNoChange" : false,
+      "waitUntilVisible" : false,
+      "longPress" : false,
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1795385686571,
+    "duration" : 2999,
+    "sequenceNumber" : 30,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "tapOnElement" : {
+        "selector" : {
+          "idRegex" : "regresar",
+          "optional" : false
+        },
+        "retryIfNoChange" : false,
+        "waitUntilVisible" : false,
+        "longPress" : false,
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "assertConditionCommand" : {
+      "condition" : {
+        "visible" : {
+          "textRegex" : "Lavanderías cerca de ti",
+          "optional" : false
+        }
+      },
+      "timeout" : "15000",
+      "optional" : false
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1795385689571,
+    "duration" : 109,
+    "sequenceNumber" : 31,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "assertConditionCommand" : {
+        "condition" : {
+          "visible" : {
+            "textRegex" : "Lavanderías cerca de ti",
+            "optional" : false
+          }
+        },
+        "timeout" : "15000",
+        "optional" : false
+      }
+    }
+  }
+}, {
+  "command" : {
+    "runScriptCommand" : {
+      "script" : "// Al terminar el flujo, pase o falle, cierra la sesión que abrió marcar-recolectado.js (DELETE /api/sesion), para no\n// dejar tokens vivos de la lavandería de prueba. Corre dentro de Maestro (onFlowComplete de cambio-en-60-segundos.yaml).\n/* global http, output, API_URL */\nif (output.tokenDeLaLavanderia) {\n  const respuesta = http.request(API_URL + '/sesion', {\n    method: 'DELETE',\n    headers: { Accept: 'application/json', Authorization: 'Bearer ' + output.tokenDeLaLavanderia },\n  });\n  console.log('Sesión de la lavandería cerrada: ' + respuesta.status);\n  output.tokenDeLaLavanderia = null;\n}\n",
+      "sourceDescription" : "pasos/cerrar-sesion-de-la-lavanderia.js",
+      "optional" : false,
+      "scriptDir" : "C:\\np\\Lavandi\\.claude\\worktrees\\agent-ac4b58ad09d5675e3\\movil\\.maestro\\estados\\pasos"
+    }
+  },
+  "metadata" : {
+    "status" : "COMPLETED",
+    "timestamp" : 1795385692750,
+    "duration" : 389,
+    "sequenceNumber" : 32,
+    "depth" : 0,
+    "evaluatedCommand" : {
+      "runScriptCommand" : {
+        "script" : "// Al terminar el flujo, pase o falle, cierra la sesión que abrió marcar-recolectado.js (DELETE /api/sesion), para no\n// dejar tokens vivos de la lavandería de prueba. Corre dentro de Maestro (onFlowComplete de cambio-en-60-segundos.yaml).\n/* global http, output, API_URL */\nif (output.tokenDeLaLavanderia) {\n  const respuesta = http.request(API_URL + '/sesion', {\n    method: 'DELETE',\n    headers: { Accept: 'application/json', Authorization: 'Bearer ' + output.tokenDeLaLavanderia },\n  });\n  console.log('Sesión de la lavandería cerrada: ' + respuesta.status);\n  output.tokenDeLaLavanderia = null;\n}\n",
+        "sourceDescription" : "pasos/cerrar-sesion-de-la-lavanderia.js",
+        "optional" : false,
+        "scriptDir" : "C:\\np\\Lavandi\\.claude\\worktrees\\agent-ac4b58ad09d5675e3\\movil\\.maestro\\estados\\pasos"
+      }
+    }
+  }
+} ]

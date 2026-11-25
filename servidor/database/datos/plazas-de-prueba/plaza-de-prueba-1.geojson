@@ -1,0 +1,48 @@
+{
+  "type": "FeatureCollection",
+  "plaza": {
+    "nombre": "Plaza de prueba 1",
+    "zona_horaria": "America/Mexico_City",
+    "activa": true
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Zona de prueba 1 Centro",
+        "activa": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-120.0, 10.0],
+            [-119.0, 10.0],
+            [-119.0, 11.0],
+            [-120.0, 11.0],
+            [-120.0, 10.0]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Zona de prueba 1 Oriente",
+        "activa": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-119.0, 10.0],
+            [-118.0, 10.0],
+            [-118.0, 11.0],
+            [-119.0, 11.0],
+            [-119.0, 10.0]
+          ]
+        ]
+      }
+    }
+  ]
+}

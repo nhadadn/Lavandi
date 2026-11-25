@@ -31,9 +31,10 @@ Ninguna.
 
 - **`servidor/`:** un exportador de Filament por reporte, que lee la misma consulta que el panel; el formulario de rango; la escritura segura del CSV y del XLSX; la cola y el aviso de archivo listo. Tests en `servidor/tests/Feature/Exportacion/`.
 - **`movil/`:** nada.
-- **Base de datos:** no crea tablas del negocio. Lee lo que leen `indicadores` y `administracion`. Usa las tablas del framework que pide la exportación de Filament (`exports` y `job_batches`) y las notificaciones del panel (`notifications`); `exports` y `notifications` todavía no están en la lista de excepciones de la prueba de esquema de `modelo-de-datos` (ver `design.md`, sección "Tablas y migración").
-- **Almacenamiento:** los archivos generados, mientras se descargan. En qué disco viven es una pregunta abierta de
-  `design.md`; el ADR-0006 es para fotos y evidencias.
+- **Base de datos:** no crea tablas del negocio. Lee lo que leen `indicadores` y `administracion`. Usa las tablas del framework que pide la exportación de Filament (`exports` y `job_batches`) y las notificaciones del panel (`notifications`); al implementar, `exports` y `notifications` ya estaban en la lista de tablas del framework de la prueba de esquema de `modelo-de-datos` (`servidor/config/modelo.php`), y `exports` lleva la cuenta en `id_usuarios`, hacia `usuarios.id_usuarios` (ver `design.md`, secciones "Tablas y migración" e "Implementación en el servidor").
+- **Almacenamiento:** los archivos generados, mientras se descargan. En qué disco viven quedó decidido por
+  delegación de Arthur (C-236): el disco privado local de Laravel, 7 días (`design.md`, pregunta 2); el ADR-0006 es
+  para fotos y evidencias.
 - **Hosting:** hace falta un proceso de colas corriendo en el entorno de prueba y en el de producción (DD-070).
 - **Dependencias:** ninguna fuera de los ADR: la exportación de Filament, con CSV y XLSX (ADR-0003).
 - **Cambios de los que depende:** `indicadores` y `administracion`.

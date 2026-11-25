@@ -1,0 +1,763 @@
+/*
+ * Los estilos de las páginas públicas: la portada de la landing (ADR-0011; openspec/changes/landing/).
+ *
+ * - Los valores salen de tokens.css, que genera el adaptador de tokens desde tokens.json (ADR-0013). Aquí no hay
+ *   colores ni medidas sueltas: los componentes usan --ds-color-semantico-*, y --ds-color-marca-* solo en ilustración
+ *   que no es texto (design-system.md, Decisión 3).
+ * - Solo modo claro (C-141).
+ * - Reglas transversales de componentes.md: el color nunca solo, el foco visible de 3 px y el movimiento reducido.
+ * - Las letras de la marca, Nunito y Source Sans 3 (decision-visual.md), van servidas desde aquí, en woff2 y con su
+ *   licencia SIL Open Font License junto a los archivos (resources/fuentes/): ninguna petición a otro servidor.
+ */
+@import 'tailwindcss';
+@import './tokens.css';
+
+@font-face {
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 400 800;
+    font-display: swap;
+    src: url('../fuentes/nunito-latin.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Source Sans 3';
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: url('../fuentes/source-sans-3-latin.woff2') format('woff2');
+}
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        html {
+            scroll-behavior: auto;
+        }
+    }
+
+    body.publico {
+        margin: 0;
+        background-color: var(--ds-color-semantico-fondo);
+        color: var(--ds-color-semantico-texto);
+        font-family: var(--ds-tipografia-familia-cuerpo);
+        font-size: var(--ds-tipografia-escala-cuerpo);
+        line-height: var(--ds-tipografia-interlineado-normal);
+        overflow-wrap: break-word;
+    }
+
+    .publico h1,
+    .publico h2,
+    .publico h3 {
+        font-family: var(--ds-tipografia-familia-titulares);
+        font-weight: var(--ds-tipografia-peso-fuerte);
+        line-height: var(--ds-tipografia-interlineado-apretado);
+        letter-spacing: var(--ds-tipografia-espaciado-letra-titular);
+    }
+
+    .publico a {
+        color: var(--ds-color-semantico-accion);
+        text-underline-offset: var(--ds-espaciado-1);
+    }
+
+    .publico a:hover {
+        color: var(--ds-color-semantico-accion-hover);
+    }
+
+    /* Foco visible siempre: contorno de 3 px con el token foco (componentes.md). */
+    .publico :focus-visible {
+        outline: var(--ds-grosor-foco) solid var(--ds-color-semantico-foco);
+        outline-offset: var(--ds-espaciado-1);
+    }
+
+    .publico img,
+    .publico svg {
+        max-width: 100%;
+    }
+}
+
+@layer components {
+    .contenedor {
+        box-sizing: border-box;
+        width: 100%;
+        max-width: var(--container-6xl);
+        margin-inline: auto;
+        padding-inline: var(--ds-espaciado-4);
+    }
+
+    .saltar-al-contenido {
+        position: absolute;
+        top: var(--ds-espaciado-2);
+        left: var(--ds-espaciado-2);
+        z-index: 10;
+        padding: var(--ds-espaciado-2) var(--ds-espaciado-4);
+        border-radius: var(--ds-radio-medio);
+        background-color: var(--ds-color-semantico-superficie);
+        transform: translateY(calc(-100% - var(--ds-espaciado-4)));
+    }
+
+    .saltar-al-contenido:focus {
+        transform: none;
+    }
+
+    #contenido:focus {
+        outline: none;
+    }
+
+    /* --- Secciones --- */
+
+    .seccion {
+        padding-block: var(--ds-espaciado-7);
+
+        @variant md {
+            padding-block: var(--ds-espaciado-8);
+        }
+    }
+
+    .seccion--superficie {
+        background-color: var(--ds-color-semantico-superficie);
+    }
+
+    .seccion__titulo {
+        margin: 0 0 var(--ds-espaciado-5);
+        font-size: var(--ds-tipografia-escala-titulo-mayor);
+        text-align: center;
+
+        @variant md {
+            font-size: var(--ds-tipografia-escala-despliegue);
+        }
+    }
+
+    .seccion__entrada {
+        max-width: var(--container-2xl);
+        margin: 0 auto var(--ds-espaciado-6);
+        color: var(--ds-color-semantico-texto-suave);
+        font-size: var(--ds-tipografia-escala-cuerpo-grande);
+        text-align: center;
+    }
+
+    /* Sin margen propio: toma el del lugar que ocupa, como .seccion__entrada. */
+    .de-prueba {
+        padding: var(--ds-espaciado-2) var(--ds-espaciado-3);
+        border: var(--ds-grosor-control) dashed var(--ds-color-semantico-borde-fuerte);
+        border-radius: var(--ds-radio-medio);
+        color: var(--ds-color-semantico-texto-suave);
+        font-size: var(--ds-tipografia-escala-menor);
+    }
+
+    /* --- Encabezado --- */
+
+    .encabezado {
+        position: relative;
+        overflow: hidden;
+        padding-block: var(--ds-espaciado-6) var(--ds-espaciado-7);
+        background-color: var(--ds-color-semantico-fondo);
+
+        @variant md {
+            padding-block: var(--ds-espaciado-7) var(--ds-espaciado-8);
+        }
+    }
+
+    /* Ilustración: una franja de Cielo detrás de la imagen. No lleva texto encima. */
+    .encabezado::before {
+        content: '';
+        position: absolute;
+        inset: auto 0 0 0;
+        height: 40%;
+        background-color: var(--ds-color-marca-claro);
+        border-radius: var(--ds-radio-mayor) var(--ds-radio-mayor) 0 0;
+        opacity: 0.45;
+        pointer-events: none;
+    }
+
+    .encabezado__rejilla {
+        position: relative;
+        display: grid;
+        gap: var(--ds-espaciado-6);
+        align-items: center;
+
+        @variant md {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    .encabezado__marca {
+        display: flex;
+        align-items: center;
+        gap: var(--ds-espaciado-3);
+        margin: 0 0 var(--ds-espaciado-5);
+        font-size: var(--ds-tipografia-escala-titulo);
+    }
+
+    .encabezado__logo {
+        width: var(--ds-espaciado-8);
+        height: var(--ds-espaciado-8);
+        object-fit: contain;
+    }
+
+    .encabezado__tagline {
+        margin: 0 0 var(--ds-espaciado-6);
+        font-family: var(--ds-tipografia-familia-titulares);
+        font-size: var(--ds-tipografia-escala-titulo-mayor);
+        font-weight: var(--ds-tipografia-peso-fuerte);
+        line-height: var(--ds-tipografia-interlineado-apretado);
+
+        @variant md {
+            font-size: var(--ds-tipografia-escala-despliegue);
+        }
+    }
+
+    .encabezado__imagen {
+        display: block;
+        width: 100%;
+        max-height: calc(var(--ds-espaciado-8) * 7);
+        margin: 0;
+        object-fit: contain;
+    }
+
+    .imagen-de-prueba {
+        display: grid;
+        place-items: center;
+        min-height: calc(var(--ds-espaciado-8) * 4);
+        padding: var(--ds-espaciado-5);
+        border: var(--ds-grosor-control) dashed var(--ds-color-semantico-borde-fuerte);
+        border-radius: var(--ds-radio-mayor);
+        background-color: var(--ds-color-semantico-superficie);
+        color: var(--ds-color-semantico-texto-suave);
+        font-size: var(--ds-tipografia-escala-menor);
+        text-align: center;
+    }
+
+    /* --- Botones --- */
+
+    .boton {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--ds-espaciado-2);
+        box-sizing: border-box;
+        min-height: var(--ds-alto-boton-principal);
+        padding: var(--ds-espaciado-3) var(--ds-espaciado-5);
+        border: var(--ds-grosor-control) solid transparent;
+        border-radius: var(--ds-radio-pildora);
+        font-family: var(--ds-tipografia-familia-titulares);
+        font-size: var(--ds-tipografia-escala-cuerpo-grande);
+        font-weight: var(--ds-tipografia-peso-fuerte);
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-color var(--ds-duracion-rapida) var(--ds-curva-estandar);
+    }
+
+    .publico .boton--principal {
+        background-color: var(--ds-color-semantico-accion);
+        color: var(--ds-color-semantico-accion-texto);
+    }
+
+    .publico .boton--principal:hover {
+        background-color: var(--ds-color-semantico-accion-hover);
+        color: var(--ds-color-semantico-accion-texto);
+    }
+
+    .publico .boton--secundario {
+        border-color: var(--ds-color-semantico-borde-fuerte);
+        background-color: var(--ds-color-semantico-superficie);
+        color: var(--ds-color-semantico-texto);
+    }
+
+    /* Una tienda sin enlace: se ve, no se toca, y su texto dice por qué (el color nunca solo). */
+    .boton--sin-enlace {
+        border-style: dashed;
+        border-color: var(--ds-color-semantico-borde-fuerte);
+        background-color: var(--ds-color-semantico-superficie-hundida);
+        color: var(--ds-color-semantico-texto-suave);
+        cursor: default;
+    }
+
+    .boton__icono {
+        width: var(--ds-espaciado-5);
+        height: var(--ds-espaciado-5);
+        flex: none;
+    }
+
+    /* --- Tarjetas: pasos, pilares y testimonios --- */
+
+    .rejilla {
+        display: grid;
+        gap: var(--ds-espaciado-5);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        @variant md {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+    }
+
+    .rejilla--cuatro {
+        @variant sm {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        @variant lg {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+    }
+
+    .tarjeta {
+        box-sizing: border-box;
+        padding: var(--ds-espaciado-5);
+        border: var(--ds-grosor-control) solid var(--ds-color-semantico-borde);
+        border-radius: var(--ds-radio-mayor);
+        background-color: var(--ds-color-semantico-superficie);
+        box-shadow: var(--ds-elevacion-1);
+    }
+
+    .seccion--superficie .tarjeta {
+        background-color: var(--ds-color-semantico-fondo);
+    }
+
+    .tarjeta__titulo {
+        margin: var(--ds-espaciado-3) 0 var(--ds-espaciado-2);
+        font-size: var(--ds-tipografia-escala-titulo-menor);
+    }
+
+    .tarjeta__texto {
+        margin: 0;
+        color: var(--ds-color-semantico-texto-suave);
+    }
+
+    .paso__numero {
+        display: inline-grid;
+        place-items: center;
+        width: var(--ds-espaciado-6);
+        height: var(--ds-espaciado-6);
+        border-radius: var(--ds-radio-pildora);
+        /* Limón como fondo, con Tinta encima: 10.22:1 (tokens.json, advertencia de marca). */
+        background-color: var(--ds-color-marca-acento);
+        color: var(--ds-color-semantico-texto);
+        font-family: var(--ds-tipografia-familia-titulares);
+        font-weight: var(--ds-tipografia-peso-fuerte);
+    }
+
+    .icono {
+        display: block;
+        width: var(--ds-espaciado-7);
+        height: var(--ds-espaciado-7);
+        color: var(--ds-color-semantico-accion);
+    }
+
+    /* Iconos animados (A.2, sección 3): flotan despacio; con movimiento reducido, quietos (landing-E07). */
+    @keyframes icono-flota {
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(calc(var(--ds-espaciado-1) * -1));
+        }
+    }
+
+    .icono--animado {
+        animation: icono-flota calc(var(--ds-duracion-lenta) * 10) var(--ds-curva-estandar) infinite;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .icono--animado {
+            animation: none;
+        }
+    }
+
+    /* --- Descarga --- */
+
+    .descarga__rejilla {
+        display: grid;
+        gap: var(--ds-espaciado-6);
+        align-items: center;
+
+        @variant md {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    .tiendas {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--ds-espaciado-3);
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    /* --- Formularios --- */
+
+    .formulario {
+        display: grid;
+        gap: var(--ds-espaciado-4);
+        box-sizing: border-box;
+        width: 100%;
+        max-width: var(--container-xl);
+        margin-inline: auto;
+        padding: var(--ds-espaciado-5);
+        border: var(--ds-grosor-control) solid var(--ds-color-semantico-borde);
+        border-radius: var(--ds-radio-mayor);
+        background-color: var(--ds-color-semantico-superficie);
+        box-shadow: var(--ds-elevacion-2);
+    }
+
+    .formulario__titulo {
+        margin: 0;
+        font-size: var(--ds-tipografia-escala-titulo-menor);
+    }
+
+    .campo {
+        display: grid;
+        gap: var(--ds-espaciado-1);
+    }
+
+    .campo__etiqueta {
+        font-weight: var(--ds-tipografia-peso-semifuerte);
+    }
+
+    .campo__control {
+        box-sizing: border-box;
+        width: 100%;
+        min-height: var(--ds-accesibilidad-area-tactil-minima-dp);
+        padding: var(--ds-espaciado-2) var(--ds-espaciado-3);
+        border: var(--ds-grosor-control) solid var(--ds-color-semantico-borde-fuerte);
+        border-radius: var(--ds-radio-medio);
+        background-color: var(--ds-color-semantico-superficie);
+        color: var(--ds-color-semantico-texto);
+        font: inherit;
+    }
+
+    .campo__control[aria-invalid='true'] {
+        border-color: var(--ds-color-estado-error);
+        border-width: var(--ds-grosor-foco);
+    }
+
+    /* El error se dice con texto, no solo con color (componentes.md). */
+    .campo__error {
+        margin: 0;
+        color: var(--ds-color-estado-error);
+        font-size: var(--ds-tipografia-escala-menor);
+        font-weight: var(--ds-tipografia-peso-semifuerte);
+    }
+
+    .aviso {
+        margin: 0;
+        padding: var(--ds-espaciado-3) var(--ds-espaciado-4);
+        border-left: var(--ds-grosor-foco) solid var(--ds-color-estado-informacion);
+        border-radius: var(--ds-radio-chico);
+        background-color: var(--ds-color-semantico-superficie-hundida);
+    }
+
+    /* --- Cobertura --- */
+
+    .mapa {
+        position: relative;
+        overflow: hidden;
+        border: var(--ds-grosor-control) solid var(--ds-color-semantico-borde);
+        border-radius: var(--ds-radio-mayor);
+        background-color: var(--ds-color-semantico-superficie-hundida);
+    }
+
+    .mapa__lienzo {
+        display: block;
+        width: 100%;
+        height: auto;
+        max-height: calc(var(--ds-espaciado-8) * 8);
+    }
+
+    /* Acercado, el mapa se mueve arrastrándolo; con el territorio completo, el dedo desplaza la página. */
+    .mapa--acercado .mapa__lienzo {
+        touch-action: none;
+        cursor: grab;
+    }
+
+    .mapa__zona {
+        /* Agua como relleno de ilustración, con borde de acción: 3:1 o más contra el fondo hundido. */
+        fill: var(--ds-color-marca-primario);
+        fill-opacity: 0.35;
+        stroke: var(--ds-color-semantico-accion);
+        stroke-width: var(--ds-grosor-control);
+        vector-effect: non-scaling-stroke;
+        cursor: pointer;
+        transition: fill-opacity var(--ds-duracion-rapida) var(--ds-curva-estandar);
+    }
+
+    .mapa__zona:hover,
+    .mapa__zona:focus,
+    .mapa__zona--elegida {
+        fill-opacity: 0.7;
+        stroke-width: var(--ds-grosor-foco);
+        outline: none;
+    }
+
+    .mapa__controles {
+        position: absolute;
+        top: var(--ds-espaciado-3);
+        right: var(--ds-espaciado-3);
+        display: grid;
+        gap: var(--ds-espaciado-2);
+    }
+
+    .mapa__boton {
+        display: grid;
+        place-items: center;
+        width: var(--ds-accesibilidad-area-tactil-minima-dp);
+        height: var(--ds-accesibilidad-area-tactil-minima-dp);
+        padding: 0;
+        border: var(--ds-grosor-control) solid var(--ds-color-semantico-borde-fuerte);
+        border-radius: var(--ds-radio-medio);
+        background-color: var(--ds-color-semantico-superficie);
+        color: var(--ds-color-semantico-texto);
+        cursor: pointer;
+    }
+
+    .mapa__nombre {
+        margin: var(--ds-espaciado-3) 0 0;
+        min-height: calc(var(--ds-tipografia-escala-cuerpo) * var(--ds-tipografia-interlineado-normal));
+        font-weight: var(--ds-tipografia-peso-semifuerte);
+        text-align: center;
+    }
+
+    /* --- Testimonios y prensa --- */
+
+    .testimonio__texto {
+        margin: 0 0 var(--ds-espaciado-4);
+        font-size: var(--ds-tipografia-escala-cuerpo-grande);
+    }
+
+    .testimonio__autor {
+        margin: 0;
+        color: var(--ds-color-semantico-texto-suave);
+        font-weight: var(--ds-tipografia-peso-semifuerte);
+    }
+
+    /*
+     * Los logos de prensa, en una fila que se acomoda al ancho; cada uno a la misma altura, sin salirse. Cada logo ocupa
+     * una caja fija, de tres veces su alto, y se ajusta dentro sin deformarse: así la fila no se reacomoda al cargar las
+     * imágenes, que no traen su ancho (desplazamiento de diseño; PageSpeed de 70 o más, A.4.2).
+     */
+    .prensa__logos {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--ds-espaciado-6);
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .prensa__logo {
+        width: calc(var(--ds-espaciado-7) * 3);
+        max-width: 100%;
+        height: var(--ds-espaciado-7);
+        object-fit: contain;
+    }
+
+    /* --- Preguntas frecuentes --- */
+
+    .acordeon {
+        display: grid;
+        gap: var(--ds-espaciado-3);
+        max-width: var(--container-3xl);
+        margin-inline: auto;
+    }
+
+    .acordeon__pregunta {
+        border: var(--ds-grosor-control) solid var(--ds-color-semantico-borde);
+        border-radius: var(--ds-radio-grande);
+        background-color: var(--ds-color-semantico-fondo);
+    }
+
+    .acordeon__titulo {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--ds-espaciado-3);
+        min-height: var(--ds-accesibilidad-area-tactil-minima-dp);
+        padding: var(--ds-espaciado-3) var(--ds-espaciado-4);
+        border-radius: var(--ds-radio-grande);
+        font-family: var(--ds-tipografia-familia-titulares);
+        font-weight: var(--ds-tipografia-peso-semifuerte);
+        cursor: pointer;
+        list-style: none;
+    }
+
+    .acordeon__titulo::-webkit-details-marker {
+        display: none;
+    }
+
+    .acordeon__titulo::after {
+        content: '+';
+        flex: none;
+        font-size: var(--ds-tipografia-escala-titulo);
+        line-height: 1;
+    }
+
+    .acordeon__pregunta[open] .acordeon__titulo::after {
+        content: '−';
+    }
+
+    .acordeon__respuesta {
+        margin: 0;
+        padding: 0 var(--ds-espaciado-4) var(--ds-espaciado-4);
+        color: var(--ds-color-semantico-texto-suave);
+    }
+
+    /* --- Contacto --- */
+
+    .contacto__rejilla {
+        display: grid;
+        gap: var(--ds-espaciado-6);
+        align-items: start;
+
+        @variant md {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    .contacto__medios {
+        display: grid;
+        gap: var(--ds-espaciado-3);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .contacto__medio {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--ds-espaciado-2);
+        min-height: var(--ds-accesibilidad-area-tactil-minima-dp);
+        font-weight: var(--ds-tipografia-peso-semifuerte);
+    }
+
+    /* --- Documentos legales: el aviso de privacidad y los términos (textos-legales) --- */
+
+    .encabezado-legal {
+        padding-block: var(--ds-espaciado-4);
+        border-bottom: var(--ds-grosor-control) solid var(--ds-color-semantico-borde);
+    }
+
+    .publico .encabezado-legal__marca {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--ds-espaciado-3);
+        min-height: var(--ds-accesibilidad-area-tactil-minima-dp);
+        color: var(--ds-color-semantico-texto);
+        font-family: var(--ds-tipografia-familia-titulares);
+        font-size: var(--ds-tipografia-escala-titulo);
+        font-weight: var(--ds-tipografia-peso-fuerte);
+        text-decoration: none;
+    }
+
+    .encabezado-legal__logo {
+        width: var(--ds-espaciado-7);
+        height: var(--ds-espaciado-7);
+    }
+
+    .documento-legal {
+        max-width: var(--container-3xl);
+    }
+
+    .documento-legal__titulo {
+        margin: 0 0 var(--ds-espaciado-5);
+        font-size: var(--ds-tipografia-escala-titulo-mayor);
+
+        @variant md {
+            font-size: var(--ds-tipografia-escala-despliegue);
+        }
+    }
+
+    /* El texto tal como se cargó: con sus saltos de línea y sus espacios, sin salirse del ancho. */
+    .documento-legal__texto {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+    }
+
+    .documento-legal__no-disponible {
+        margin: 0;
+        color: var(--ds-color-semantico-texto-suave);
+        font-size: var(--ds-tipografia-escala-cuerpo-grande);
+    }
+
+    /* --- La página para pedir el borrado de la cuenta (textos-legales-E06) --- */
+
+    .borrado-de-cuenta__seccion + .borrado-de-cuenta__seccion {
+        margin-top: var(--ds-espaciado-6);
+    }
+
+    .borrado-de-cuenta__subtitulo {
+        margin: 0 0 var(--ds-espaciado-3);
+        font-size: var(--ds-tipografia-escala-titulo);
+    }
+
+    .borrado-de-cuenta__seccion > p {
+        margin: 0 0 var(--ds-espaciado-3);
+    }
+
+    .borrado-de-cuenta__pasos {
+        display: grid;
+        gap: var(--ds-espaciado-2);
+        margin: 0;
+        padding-inline-start: var(--ds-espaciado-5);
+        list-style: decimal;
+    }
+
+    /* --- Pie legal --- */
+
+    .pie-legal {
+        padding-block: var(--ds-espaciado-6);
+        border-top: var(--ds-grosor-control) solid var(--ds-color-semantico-borde);
+        background-color: var(--ds-color-semantico-superficie-hundida);
+        font-size: var(--ds-tipografia-escala-menor);
+    }
+
+    .pie-legal__rejilla {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--ds-espaciado-4);
+    }
+
+    .pie-legal__enlaces {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--ds-espaciado-2) var(--ds-espaciado-5);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .pie-legal__enlaces a {
+        display: inline-flex;
+        align-items: center;
+        min-height: var(--ds-accesibilidad-area-tactil-minima-dp);
+    }
+
+    .pie-legal__derechos {
+        margin: 0;
+        color: var(--ds-color-semantico-texto-suave);
+    }
+
+    .solo-lectores {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+        border: 0;
+    }
+}
