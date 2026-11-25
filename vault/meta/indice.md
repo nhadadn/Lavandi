@@ -169,7 +169,8 @@ Empieza por `CLAUDE.md` en la raíz del repo y por [[convenciones]].
 - [[auditoria-segmento-2-arquitectura-y-calidad-de-codigo-2026-11-25]] — segmento 2: el patrón real contra los ADR, la calidad del código y CLAUDE.md §5 y §9. **Listo con reservas**: PHPStan nunca corre, el checkout llama a Conekta dentro de una transacción y la app no trata el 401
 - [[auditoria-segmento-3-base-de-datos-y-escalabilidad-2026-11-25]] — segmento 3: el motor, las 34 migraciones, el diagrama E-R, las llaves y la plaza, y los riesgos de crecimiento. **Listo con reservas**: integridad fuerte; los indicadores se recalculan cada 30 s sin índice ni caché y hay listados sin paginación
 - [[auditoria-segmento-4-seguridad-y-autorizacion-2026-11-25]] — segmento 4: matriz de roles, aislamiento por tenencia y plaza, autenticación, OWASP y MASVS. **Listo con reservas**: sin fugas entre socios; tokens que no vencen, casi sin límites de peticiones y panel sin 2FA
-- Tablero publicado de los segmentos 0 a 4 (artefacto privado de Nadir, https://claude.ai/artifact/J7cbBSYGFZSRTtHn8PxReg); su fuente es `evidencias/auditoria/tablero/auditoria-pr-4.html` y no sustituye a los informes de arriba
+- [[auditoria-segmento-5-api-endpoints-e-integraciones-2026-11-25]] — segmento 5: tabla de 62 endpoints, cruce de la app con el servidor e integraciones. **No está listo**: API coherente y sin llamadas huérfanas; producción sin los paquetes de S3 ni Resend, y de las integraciones del contrato solo los mapas están completos
+- Tablero publicado de los segmentos 0 a 5 (artefacto privado de Nadir, https://claude.ai/artifact/J7cbBSYGFZSRTtHn8PxReg); su fuente es `evidencias/auditoria/tablero/auditoria-pr-4.html` y no sustituye a los informes de arriba
 
 ## Plantillas
 
