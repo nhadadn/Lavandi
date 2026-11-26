@@ -1,0 +1,438 @@
+<title>Auditoría del PR #4 de Lavandi</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: expediente de auditoría. Encabezado con el objeto auditado, una franja de veredictos por segmento,
+   los conteos que importan, y un registro de hallazgos filtrable por segmento y severidad. */
+:root {
+  --bg: #f6f7f9;
+  --panel: #ffffff;
+  --ink: #18202b;
+  --ink-2: #4a5566;
+  --ink-3: #7a8597;
+  --line: #dfe3ea;
+  --accent: #1f5f8b;
+  --accent-soft: #e4eef6;
+  --sev-critica: #b4232c;
+  --sev-alta: #c2560c;
+  --sev-media: #9a6a00;
+  --sev-baja: #3d6b8f;
+  --sev-info: #6b7585;
+  --ok: #2f7d4f;
+  --chip-critica: #fbe3e4;
+  --chip-alta: #fde9da;
+  --chip-media: #fbf0d0;
+  --chip-baja: #e2edf6;
+  --chip-info: #eceff3;
+  --chip-ok: #dff1e6;
+  --f-display: "Archivo", "Segoe UI", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #11161d; --panel: #18202a; --ink: #e7ecf3; --ink-2: #b4bfcd; --ink-3: #8592a4; --line: #2a3442;
+    --accent: #7db7e3; --accent-soft: #1b2d3d;
+    --sev-critica: #ff8b8f; --sev-alta: #ffa86b; --sev-media: #e8c35a; --sev-baja: #8fbfe6; --sev-info: #a3adbb; --ok: #7fd3a0;
+    --chip-critica: #3a1c20; --chip-alta: #3a2617; --chip-media: #362d14; --chip-baja: #1b2b3a; --chip-info: #232b36; --chip-ok: #17301f;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #11161d; --panel: #18202a; --ink: #e7ecf3; --ink-2: #b4bfcd; --ink-3: #8592a4; --line: #2a3442;
+  --accent: #7db7e3; --accent-soft: #1b2d3d;
+  --sev-critica: #ff8b8f; --sev-alta: #ffa86b; --sev-media: #e8c35a; --sev-baja: #8fbfe6; --sev-info: #a3adbb; --ok: #7fd3a0;
+  --chip-critica: #3a1c20; --chip-alta: #3a2617; --chip-media: #362d14; --chip-baja: #1b2b3a; --chip-info: #232b36; --chip-ok: #17301f;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.55; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-block: 32px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 36px; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
+h1 { font-size: clamp(1.7rem, 3.2vw, 2.4rem); font-weight: 800; }
+h2 { font-size: 1.35rem; font-weight: 700; }
+h3 { font-size: 1.05rem; font-weight: 600; }
+p { margin: 0; max-width: 70ch; }
+.mono, code { font-family: var(--f-mono); font-size: 0.86em; }
+.eyebrow { font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.09em; color: var(--ink-3); font-weight: 600; }
+header { display: grid; gap: 14px; }
+.objeto { display: flex; flex-wrap: wrap; gap: 8px 22px; color: var(--ink-2); font-size: 0.9rem; }
+.objeto span b { color: var(--ink); font-weight: 600; }
+.nota { color: var(--ink-2); font-size: 0.92rem; }
+
+/* Franja de veredictos */
+.franja { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; }
+.seg { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 14px 14px 12px;
+  display: grid; gap: 8px; align-content: start; text-decoration: none; color: inherit; border-top-width: 4px; }
+.seg:hover, .seg:focus-visible { border-color: var(--accent); outline: none; }
+.seg .num { font-family: var(--f-mono); font-size: 0.78rem; color: var(--ink-3); }
+.seg h3 { font-size: 0.98rem; }
+.seg.v-no { border-top-color: var(--sev-critica); }
+.seg.v-res { border-top-color: var(--sev-media); }
+.seg.v-pend { border-top-color: var(--line); border-top-style: dashed; }
+.veredicto { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+.v-no .veredicto { color: var(--sev-critica); }
+.v-res .veredicto { color: var(--sev-media); }
+.v-pend .veredicto { color: var(--ink-3); }
+.mini { display: flex; flex-wrap: wrap; gap: 4px; }
+
+/* Cifras */
+.cifras { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.cifra { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 16px; display: grid; gap: 10px; }
+.cifra .titulo { font-weight: 600; }
+.barra { display: flex; height: 12px; border-radius: 3px; overflow: hidden; background: var(--chip-info); }
+.barra i { display: block; height: 100%; }
+.leyenda { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 0.84rem; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.leyenda b { color: var(--ink); }
+.punto { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 5px; vertical-align: 0; }
+
+/* Píldoras */
+.pill { display: inline-flex; align-items: center; gap: 4px; font-size: 0.72rem; font-weight: 600; padding: 2px 7px;
+  border-radius: 999px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.s-critica { background: var(--chip-critica); color: var(--sev-critica); }
+.s-alta { background: var(--chip-alta); color: var(--sev-alta); }
+.s-media { background: var(--chip-media); color: var(--sev-media); }
+.s-baja { background: var(--chip-baja); color: var(--sev-baja); }
+.s-info { background: var(--chip-info); color: var(--sev-info); }
+
+/* Registro */
+.controles { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; }
+.grupo { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.grupo .eyebrow { margin-right: 4px; }
+.filtro { font: inherit; font-size: 0.84rem; border: 1px solid var(--line); background: var(--panel); color: var(--ink-2);
+  border-radius: 999px; padding: 4px 11px; cursor: pointer; }
+.filtro[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--panel); }
+.filtro:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+input[type="search"] { font: inherit; font-size: 0.9rem; border: 1px solid var(--line); background: var(--panel); color: var(--ink);
+  border-radius: 6px; padding: 6px 10px; min-width: 0; width: min(320px, 100%); }
+.cuenta { color: var(--ink-3); font-size: 0.85rem; font-variant-numeric: tabular-nums; }
+
+.bloque { display: grid; gap: 12px; scroll-margin-top: 16px; }
+.bloque-cab { display: grid; gap: 6px; }
+.bloque-cab .linea { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: baseline; }
+.tabla { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+table { border-collapse: collapse; width: 100%; min-width: 760px; font-size: 0.9rem; }
+th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+th { font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--ink-3); font-weight: 600; background: var(--panel); }
+tr:last-child td { border-bottom: 0; }
+td.id { font-family: var(--f-mono); font-size: 0.82rem; white-space: nowrap; color: var(--ink-2); }
+td.ev { font-family: var(--f-mono); font-size: 0.78rem; color: var(--ink-2); word-break: break-word; max-width: 260px; }
+td.hal { min-width: 280px; }
+td.hal b { font-weight: 600; }
+td.rec { color: var(--ink-2); min-width: 200px; }
+.vacio { padding: 18px; color: var(--ink-3); }
+
+/* Decisiones */
+.decisiones { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+.lista { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 16px; display: grid; gap: 10px; align-content: start; }
+.lista ol { margin: 0; padding-left: 1.2em; display: grid; gap: 7px; }
+.lista li { color: var(--ink-2); }
+.lista li b { color: var(--ink); font-weight: 600; }
+footer { color: var(--ink-3); font-size: 0.85rem; display: grid; gap: 6px; border-top: 1px solid var(--line); padding-top: 18px; }
+@media (prefers-reduced-motion: no-preference) { .seg { transition: border-color .15s; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Auditoría técnica para EL PRESTADOR · solo lectura</div>
+    <h1>Auditoría del PR #4 de Lavandi</h1>
+    <div class="objeto">
+      <span>Rama <b class="mono">arthur/feat/h3-concilio</b></span>
+      <span>SHA <b class="mono">9d24977</b></span>
+      <span>Contra <b class="mono">origin/main 7956604</b></span>
+      <span>Corte <b>24 nov 2026 · semana 12 de 16</b></span>
+    </div>
+    <p class="nota">Cada hallazgo lleva su evidencia en el SHA auditado. No se corrieron las suites de pruebas ni pruebas de carga: ninguna función cuenta como probada y nada aquí dice cuántos usuarios aguanta el sistema. El detalle completo de cada segmento vive en el vault, en <span class="mono">vault/evidencias/auditoria/</span>. Falta el consolidado.</p>
+  </header>
+
+  <section aria-labelledby="t-veredictos" class="bloque">
+    <h2 id="t-veredictos">Veredicto por segmento</h2>
+    <div class="franja" id="franja"></div>
+  </section>
+
+  <section aria-labelledby="t-cifras" class="bloque">
+    <h2 id="t-cifras">Dónde está el producto</h2>
+    <div class="cifras">
+      <div class="cifra">
+        <div class="titulo">Funciones del inventario (76)</div>
+        <div class="barra" role="img" aria-label="43 codificadas, 30 parciales, 3 sin iniciar, 0 probadas">
+          <i style="width:56.58%;background:var(--accent)"></i><i style="width:39.47%;background:var(--sev-media)"></i><i style="width:3.95%;background:var(--sev-critica)"></i>
+        </div>
+        <div class="leyenda">
+          <span><span class="punto" style="background:var(--accent)"></span><b>43</b> codificadas</span>
+          <span><span class="punto" style="background:var(--sev-media)"></span><b>30</b> parciales</span>
+          <span><span class="punto" style="background:var(--sev-critica)"></span><b>3</b> sin iniciar</span>
+          <span><b>0</b> probadas</span>
+        </div>
+      </div>
+      <div class="cifra">
+        <div class="titulo">Criterios de aceptación del A.4 (19)</div>
+        <div class="barra" role="img" aria-label="0 se cumplen, 9 parciales, 10 en no">
+          <i style="width:47.37%;background:var(--sev-media)"></i><i style="width:52.63%;background:var(--sev-critica)"></i>
+        </div>
+        <div class="leyenda">
+          <span><b>0</b> se cumplen</span>
+          <span><span class="punto" style="background:var(--sev-media)"></span><b>9</b> parciales</span>
+          <span><span class="punto" style="background:var(--sev-critica)"></span><b>10</b> en no</span>
+        </div>
+      </div>
+      <div class="cifra">
+        <div class="titulo">Especificación y pruebas</div>
+        <div class="barra" role="img" aria-label="387 de 498 escenarios con test que lleva su ID">
+          <i style="width:77.71%;background:var(--accent)"></i>
+        </div>
+        <div class="leyenda">
+          <span><b>27</b> specs · <b>498</b> escenarios</span>
+          <span><b>387</b> con test que lleva su ID</span>
+          <span>suites sin correr</span>
+        </div>
+      </div>
+      <div class="cifra">
+        <div class="titulo">El PR por dentro</div>
+        <div class="leyenda" style="display:grid;gap:6px">
+          <span><b>573</b> commits (470 sin merge) en 5 días</span>
+          <span><b>1 232</b> archivos · <b>+171 533</b> líneas</span>
+          <span>CI del PR en verde: <b>9 de 9</b> checks</span>
+          <span>Envío a tiendas previsto: <b>semana 14 (7–13 dic)</b></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="t-registro" class="bloque">
+    <h2 id="t-registro">Registro de hallazgos</h2>
+    <div class="controles">
+      <div class="grupo" id="f-seg" role="group" aria-label="Filtrar por segmento"><span class="eyebrow">Segmento</span></div>
+      <div class="grupo" id="f-sev" role="group" aria-label="Filtrar por severidad"><span class="eyebrow">Severidad</span></div>
+      <label class="grupo" for="buscar"><span class="eyebrow">Buscar</span><input type="search" id="buscar" placeholder="Conekta, plaza, 401…"></label>
+      <span class="cuenta" id="cuenta" aria-live="polite"></span>
+    </div>
+    <div id="registro" style="display:grid;gap:28px"></div>
+  </section>
+
+  <section aria-labelledby="t-decisiones" class="bloque">
+    <h2 id="t-decisiones">Lo que espera una decisión</h2>
+    <div class="decisiones">
+      <div class="lista">
+        <h3>Nadir</h3>
+        <ol>
+          <li><b>Comunicaciones con EL CLIENTE.</b> ¿Se envió el aviso de retraso, algún reporte semanal o la notificación del branding? El vault no tiene constancia.</li>
+          <li><b>Calendario.</b> Arrancar el B.10 (D-U-N-S, cuentas de Apple y Google, alta en Conekta) y decidir el hosting (DD-084, DD-070). Abrir la Orden de Cambio de calendario (DD-068).</li>
+          <li><b>Decisión 69 (C-247).</b> ¿Se sostiene llevar todo el Módulo D a la app, con este calendario?</li>
+          <li><b>Pasarela.</b> Confirmar por escrito con Conekta si genera fichas de OXXO (DD-056) y firmar o descartar la Orden de Cambio (DD-079).</li>
+          <li><b>Repositorio.</b> Proteger <span class="mono">main</span> con PR obligatorio y checks requeridos; exigir que el análisis estático corra.</li>
+          <li><b>Revisión.</b> Revisar el PR #3 y luego solo la diferencia del #4, o cerrar el #3.</li>
+          <li><b>Panel.</b> ¿Exigir 2FA en el panel como medida conforme al estado de la técnica (Cláusula X)?</li>
+        </ol>
+      </div>
+      <div class="lista">
+        <h3>Arthur</h3>
+        <ol>
+          <li><b>Flujo de C-158.</b> PR internos en el fork y uno por sprint, o corregir la nota para que diga el flujo real.</li>
+          <li><b>Confirmar las 48 decisiones</b> que tomaron agentes por delegación, empezando por las de seguridad, datos y cobro.</li>
+          <li><b>Checkout de Conekta</b> fuera de la transacción y con llave de idempotencia.</li>
+          <li><b>PHPStan</b> con <span class="mono">phpstan.neon</span>; manejo central del 401 en la app.</li>
+          <li><b>Quién escribe <span class="mono">actividad_usuarios</span></b>; qué pasa con un pedido rechazado.</li>
+          <li><b>Actualizar</b> la trazabilidad, el plan de sprints, ADR-0003 y el ADR de la decisión 69.</li>
+          <li><b>Seguridad:</b> tarea 6.2 (Google sin token para la administración), expiración de tokens, throttle, cabeceras y plantilla de producción.</li>
+        </ol>
+      </div>
+      <div class="lista">
+        <h3>EL CLIENTE, vía Nadir</h3>
+        <ol>
+          <li><b>Modelo de cobro</b> (DD-012) y del dinero (DD-013, DD-020).</li>
+          <li><b>Quién asigna al repartidor</b> (DD-014) y <b>quién marca Entregado</b> (DD-022).</li>
+          <li><b>Cancelación</b> (DD-016) y <b>los cinco momentos de aviso</b> (DD-011).</li>
+          <li><b>Cómo entra cada socio</b> a su módulo (DD-053).</li>
+          <li><b>Contenido y textos legales</b> (DD-081, DD-117, DD-080) y <b>zonas del territorio</b> (DD-093, DD-094).</li>
+          <li><b>Retención de datos</b> de una cuenta borrada (DD-109) y <b>qué ve el repartidor</b> antes de aceptar.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Fuente: los informes del vault <span class="mono">vault/evidencias/auditoria/auditoria-segmento-0…4-*.md</span>, rama <span class="mono">auditoria/pr-4</span>.</span>
+    <span>Severidad: Crítica rompe el contrato, la seguridad o los datos · Alta bloquea un criterio de aceptación o una fecha · Media es deuda que encarece · Baja es estilo · Info es contexto.</span>
+  </footer>
+</div>
+
+<script>
+const SEGMENTOS = [
+  { n: 0, nombre: "Inventario y proceso", v: "res", texto: "Listo con reservas", resumen: "Commits en formato y CI en verde; el flujo de revisión documentado no se sigue y main no está protegida." },
+  { n: 1, nombre: "Avance contra el contrato", v: "no", texto: "No está listo", resumen: "43 de 76 funciones codificadas; ningún criterio del A.4 se cumple; el envío de la semana 14 no está listo." },
+  { n: 2, nombre: "Arquitectura y calidad", v: "res", texto: "Listo con reservas", resumen: "El código sigue los ADR y cumple marca, secretos y autorización; PHPStan nunca corre." },
+  { n: 3, nombre: "Base de datos y escalabilidad", v: "res", texto: "Listo con reservas", resumen: "Integridad fuerte y multi-plaza en la base; indicadores y listados que no escalan." },
+  { n: 4, nombre: "Seguridad y autorización", v: "res", texto: "Listo con reservas", resumen: "Sin fugas entre socios ni toma de cuenta; tokens que no vencen, casi sin límites de peticiones y panel sin 2FA." },
+  { n: 5, nombre: "API e integraciones", v: "no", texto: "No está listo", resumen: "API coherente y sin llamadas huérfanas; producción sin los paquetes de S3 ni Resend, y de las integraciones del contrato solo los mapas están completos." },
+  { n: 6, nombre: "Flujos programados", v: "no", texto: "No está listo", resumen: "Cada tramo está bien construido, pero el pedido no llega de punta a punta: ningún código de producción crea el cobro, el rechazo deja al usuario sin aviso ni reembolso y ninguna prueba recorre el flujo completo." },
+  { n: 7, nombre: "Landing y panel", v: "no", texto: "No está listo", resumen: "Las 12 secciones y 10 de 11 indicadores están en el código, pero ningún criterio de A.4.2 se acredita a cinco días del cierre de la semana 12: todo espera insumos y cuentas de EL CLIENTE." },
+  { n: 8, nombre: "App móvil", v: "no", texto: "No está listo", resumen: "Módulos A, B y C con sus pantallas y la CI en verde (1282 pruebas), pero el Módulo D no está en la app, iPhone sigue bloqueado y nunca se ha corrido una compilación de EAS para las tiendas." },
+  { n: 9, nombre: "Pruebas, CI y DX", v: "res", texto: "Listo con reservas", resumen: "CI en verde en el SHA auditado (1323 pruebas del servidor, 1282 de la app, 87 de navegador) y 448 de 498 escenarios con prueba; sin cobertura medida, sin las pruebas que promete la trazabilidad para A43-2 y A43-4, y sin cuenta de Expo." }
+];
+
+// [segmento, id, severidad, área, hallazgo, evidencia, recomendación]
+const HALLAZGOS = [
+  [0,"S0-01","media","Proceso","<b>El flujo de C-158 no se sigue.</b> El main del fork de Arthur está parado desde el 26 de octubre, el fork no tiene PRs y el trabajo llega a main en PRs de 453 y 573 commits.","repositorios-ramas-y-revision.md:82-89; arthur/main = 7fc1e75","Retomar C-158 o corregir la nota; revisar el #4 por lotes."],
+  [0,"S0-02","media","CI","<b>El PR #2 se fusionó sin CI ejecutada.</b> Sus corridas fallaron al arrancar, con 0 jobs, y no tiene reseñas en GitHub.","gh run 44861806137 (jobs: []); statusCheckRollup vacío","Checks requeridos en main."],
+  [0,"S0-03","media","Proceso","<b>main no tiene protección de rama.</b> La regla de solo entrar por PR depende de que todos la respeten.","gh api …/branches/main/protection → 404","Proteger main con PR y checks obligatorios."],
+  [0,"S0-06","media","Gobierno","<b>48 de 72 decisiones del acta las tomaron agentes</b> por delegación de Arthur, sin evidencia de revisión humana una por una.","acta-2026-11-20-modelo-y-pasarela.md:213; C-236, C-245","Que Arthur confirme las de seguridad, datos y cobro."],
+  [0,"S0-04","baja","Historial","<b>12 commits con autor Claude y trailer Claude-Session:</b> son copias de los del PR #1; al fusionar quedan duplicados.","git range-diff c8974b6^..8333f09 d7d150c^..a6056a4","Decidir si C-195/196 alcanzan al autor; quitar las copias."],
+  [0,"S0-05","baja","Proceso","<b>El PR #4 contiene todo el PR #3</b> y los dos apuntan a main.","merge-base --is-ancestor 0b6c413 9d24977","Revisar el #3 y luego solo la diferencia."],
+  [0,"S0-07","baja","Stack","<b>ADR-0003 cita Socialite y el paquete de Apple</b>; no están en composer.json. Apple está bloqueado por DD-069.","ADR-0003:55,102; inicio-de-sesion.tsx:3","Adenda de ADR-0003."],
+  [0,"S0-08","baja","Stack","<b>composer.json permite paquetes inestables</b> (minimum-stability dev) y el plugin de Pest, que no se usa.","servidor/composer.json","minimum-stability stable."],
+  [1,"S1-01","alta","A43-2","<b>El recorrido completo no se puede hacer con datos reales.</b> Falta el precio estimado; el webhook de Conekta responde 503; el efectivo se rechaza; nadie asigna repartidor; la lavandería no marca Entregado; la lavandería no obtiene su cuenta (el repartidor sí: S6-05).","resumen.tsx:142-146; PasarelaConekta.php:123-125; PedidoAsignacion.php:17-18; AltaDeCuenta.php:20","Llevar DD-012, 014, 016, 022 y 053 a EL CLIENTE con fecha."],
+  [1,"S1-02","alta","Calendario","<b>El envío a tiendas de la semana 14 no está listo.</b> Sin trámites del B.10, sin hosting, sin cuenta de Apple, sin textos legales. El plan de sprints proyecta julio de 2027.","DD-084; DD-070; publicacion/design.md:4-5; plan-de-sprints.md:18-21","Arrancar el B.10 y decidir el hosting."],
+  [1,"S1-03","alta","Contrato","<b>Sin evidencia de las comunicaciones obligatorias:</b> el aviso de retraso sigue en borrador y no hay reportes semanales, notificaciones de entrega ni Órdenes de Cambio.","cliente/comunicaciones/2026-10-09-aviso-de-retraso…md (borrador); carpetas vacías","Archivar lo enviado o enviarlo ya."],
+  [1,"S1-04","alta","Módulo D","<b>La decisión 69 lleva todo el Módulo D a la app, y nada existe ahí.</b> Todo vive en Filament; el ADR y la spec están por escribir.","acta…:263; movil/src/sesion/modulos.ts:7; api.php:57","Decidir si se sostiene con este calendario."],
+  [1,"S1-05","alta","iPhone","<b>Todo lo de iPhone está bloqueado:</b> Sign in with Apple, avisos, la medición de 60 s y la compilación.","DD-069, DD-017, DD-084; avisos/tasks.md:27","Una cuenta de Apple de prueba mientras llega el D-U-N-S."],
+  [1,"S1-06","alta","A43-7","<b>\"Usuarios activos\" no funciona.</b> El indicador lee una tabla que nadie escribe; F-I06 y F-I10 no existen.","UsuariosActivos.php:26-28; Widgets/Indicadores/","Cerrar DD-111, DD-083 y DD-020."],
+  [1,"S1-07","media","Avisos","<b>Hay 4 momentos de aviso configurados y el contrato pide 5.</b> Los socios no reciben avisos.","config/avisos.php:46-61; api.php:71,124","DD-011 y DD-054."],
+  [1,"S1-08","media","Módulo A","<b>Faltan elementos literales del Módulo A:</b> repetir pedido, filtro de disponibilidad, métodos de pago, precio del seco.","FiltrosDeLaBusqueda.tsx:3-4; perfil/index.tsx:19-20","Abrir la DD de repetir pedido."],
+  [1,"S1-09","media","Módulos B y C","<b>Historial y estadísticas sin monto, ingreso ni calificación.</b>","HistorialDeLaLavanderiaController.php:46,61","Decisiones del modelo del dinero."],
+  [1,"S1-10","media","Landing","<b>Los formularios de la landing no llegan a ningún lado.</b> El contenido es de prueba y faltan las zonas reales del territorio.","FormularioDeLaPortadaController.php:49-55","DD-119, DD-117, DD-093, DD-094."],
+  [1,"S1-11","media","Pasarela","<b>Sin OXXO Pay y con Conekta a medias.</b> No hay Orden de Cambio firmada; C-216 es un OK sin firma. Conekta no se sustituyó.","PasarelaConekta.php; PedirCheckoutRequest.php:58-59","DD-056 y DD-079."],
+  [1,"S1-12","media","Plan","<b>El plan de sprints y la trazabilidad no reflejan el código.</b>","plan-de-sprints.md; trazabilidad-criterio-test.md","Actualizarlos antes de la Orden de Cambio."],
+  [1,"S1-13","baja","SEO","<b>JSON-LD de tipo Service;</b> el contrato pide información de negocio local.","InformacionEstructurada.php:37","Usar LocalBusiness."],
+  [1,"S1-14","baja","Coherencia","<b>El botón \"Abrir el panel\" viene de una decisión revocada</b>, y la API todavía da token a una cuenta de administración.","BotonDelPanel.tsx:25; administracion/tasks.md:47-59","Resolverlo junto con S1-04."],
+  [2,"S2-01","media","Calidad","<b>PHPStan nunca corre.</b> No existe phpstan.neon y 0 de 358 archivos declaran strict_types.","ci.yml:91-94; composer.json","Larastan con nivel bajo y subirlo."],
+  [2,"S2-02","media","Cobro","<b>El checkout llama a Conekta (hasta 25 s) dentro de una transacción con bloqueo</b> y sin llave de idempotencia.","CheckoutDelCobro.php:31-48; PasarelaConekta.php:335-341","Crear la orden fuera de la transacción."],
+  [2,"S2-03","media","App","<b>Un 401 a mitad de sesión no cierra la sesión;</b> la persona ve \"Algo salió mal\".","movil/src/configuracion/api.ts:118-119; cercanas/textos.ts:83-85","Manejo central del 401."],
+  [2,"S2-04","media","App","<b>El pedido en curso sobrevive al cierre de sesión;</b> otra cuenta lo hereda.","pedidoEnCurso.ts:76,172","Vaciarlo en cerrar()."],
+  [2,"S2-05","media","ADR","<b>ADR-0003 cita un SDK de Conekta que no se usa</b>, y ADR-0002/0003 describen la vista reducida que C-247 revocó.","ADR-0003:53,74-76,88; ADR-0002:81","Adenda y ADR de la decisión 69."],
+  [2,"S2-06","baja","Autorización","<b>Una regla de visibilidad de lavanderías vive en un scope</b>, fuera de Autorizacion.","Models/Lavanderia.php:151-156","Moverla o registrarlo en ADR-0019."],
+  [2,"S2-07","baja","Acoplamiento","<b>El dominio depende de HTTP y de Filament</b>, y Filament depende de la API.","CambioDeEstadoNoPermitido.php:5-6; EditLavanderia.php:8","Invertir las dependencias."],
+  [2,"S2-08","baja","Duplicación","<b>Lógica repetida entre lavandería y repartidor;</b> dos \"Cerrar sesión\" distintos.","EstadisticasDeLaLavanderia.php:31-59; movil/app/inicio.tsx:93-115","Extraer lo común."],
+  [2,"S2-09","baja","Errores","<b>No hay ErrorBoundary, 28 pantallas no ofrecen reintentar</b> y withExceptions está vacío.","bootstrap/app.php:28-30","ErrorBoundary y render central."],
+  [2,"S2-10","baja","Interfaces","<b>FCM y la verificación de Google no tienen interfaz.</b>","CanalDeFcm.php; VerificadorDeGoogle.php","Interfaz más implementación."],
+  [2,"S2-11","baja","Consistencia","<b>Algunos controladores rompen el patrón;</b> crear pedido no es idempotente.","SesionController.php:49-104; CreacionDePedido.php:82","Mismo patrón; llave de idempotencia."],
+  [2,"S2-14","info","Positivos","<b>Transacciones y bloqueos correctos en las carreras;</b> un solo cliente HTTP en la app; strict y 0 any; marca y secretos en 0.","RespuestaDelRepartidor.php:43-50; tsconfig.json:4","—"],
+  [3,"S3-01","media","Indicadores","<b>10 widgets se refrescan cada 30 s, sin caché ni índice.</b> Filtran por fecha local y recorren las tablas; uno lee toda la historia.","EsDeIndicadores.php:56-59; MontoPromedio.php:33-44","Fecha local al escribir, índice y caché."],
+  [3,"S3-02","media","Paginación","<b>Historiales, reseñas y la ficha del usuario sin paginación;</b> crecen con el uso.","PedidosController.php:279-284","Paginación por cursor."],
+  [3,"S3-03","media","Monitoreo","<b>El mapa del monitoreo acumula los pedidos rechazados</b> para siempre y recarga todo cada 30 s.","Pedido.php:119-126; CambioDeEstado.php:64-73","Resolver el rechazado (DD-016)."],
+  [3,"S3-04","media","Consultas","<b>Las estadísticas recorren toda la historia;</b> las cercanas sin radio devuelven todas.","EstadisticasDeLaLavanderia.php:36-53; ConsultaDeCercanas.php:44-49","Acotar por fecha; radio por omisión."],
+  [3,"S3-05","media","Transacciones","<b>Fotos subidas a S3 dentro de transacciones</b> con filas bloqueadas.","EdicionDeLavanderia.php:56-84","Subir antes de abrir la transacción."],
+  [3,"S3-06","media","Datos","<b>Borrar la cuenta es solo un borrado suave;</b> el correo queda ocupado para siempre.","BorradoDeCuenta.php:14-35; migración 2026_11_20…:67","Retención según EL CLIENTE (DD-109)."],
+  [3,"S3-07","media","Colas","<b>El aviso masivo no se reparte en lotes;</b> un reintento lo duplica.","MandarAvisoMasivo.php:30-42","Lotes y marca de enviado."],
+  [3,"S3-08","baja","Mantenimiento","<b>Tablas que nadie limpia:</b> los tokens de sesión no vencen, y tampoco se podan los jobs fallidos ni las notificaciones.","config/sanctum.php:53; routes/console.php:14","Programar la poda."],
+  [3,"S3-09","baja","Conciliación","<b>La conciliación pagina Conekta de forma síncrona</b> y calcula dos veces.","PasarelaConekta.php:164-197","Llevarla a la cola."],
+  [3,"S3-10","baja","Datos","<b>actividad_usuarios no tiene escritor</b> y su llave no sirve para el rango.","UsuariosActivos.php:25-32","Escribirla en el middleware."],
+  [3,"S3-11","baja","N+1","<b>Un N+1 en /socio/lavanderias;</b> sin preventLazyLoading.","LavanderiaDelSocioController.php:163-166","preventLazyLoading fuera de producción."],
+  [3,"S3-12","baja","Configuración","<b>Si falta DB_CONNECTION cae en SQLite;</b> sin statement_timeout ni procedimiento de despliegue.","config/database.php:20,87-99","pgsql por omisión; documentar el despliegue."],
+  [3,"S3-13","baja","Archivos","<b>El servidor no comprime las fotos</b> y no limpia los archivos sin dueño.","config/fotos.php:31-44","Bajar el máximo; limpieza."],
+  [4,"S4-01","media","Autenticación","<b>Google le da token de API a la cuenta de administración</b> y, si no estaba ligada, anula su contraseña y la deja fuera del panel.","SesionConGoogleController.php:21-32 (sin usaLaApp); administracion/tasks.md:47-60","Rechazar en EntradaConGoogle las cuentas que no usan la app."],
+  [4,"S4-02","media","Sesión","<b>Los tokens de Sanctum no vencen ni se podan;</b> suspender una lavandería no los revoca.","config/sanctum.php:53; EstadoDeLaLavanderia.php (sin tokens())","Expiración, poda y revocar al suspender (DD-104)."],
+  [4,"S4-03","media","Límites","<b>Solo dos rutas tienen límite de peticiones.</b> El registro, Google, el registro de repartidor con foto, los formularios, las subidas y la API no. Sin trustProxies.","routes/api.php:36-52; bootstrap/app.php:18-27","throttle y trustProxies."],
+  [4,"S4-04","media","Panel","<b>El panel no tiene segundo factor</b> y ve todos los datos de todas las plazas.","AdminPanelProvider.php (sin multiFactor)","2FA en el panel."],
+  [4,"S4-05","media","Configuración","<b>No hay cabeceras de seguridad</b> (HSTS, CSP, frame-ancestors, nosniff); la cookie no fuerza Secure.","config/session.php:172; .env.example:44-48","Middleware de cabeceras; SESSION_SECURE_COOKIE."],
+  [4,"S4-06","baja","Pasarela","<b>La pasarela simulada y el checkout de desarrollo dependen solo de APP_ENV;</b> la plantilla trae local, debug y simulada.","Pasarelas.php:41-47; routes/web.php:81-86; .env.example:7,9,148","Plantilla de producción aparte."],
+  [4,"S4-07","baja","Avisos","<b>Registrar un dispositivo reasigna un token FCM ajeno</b> a quien lo envía.","TelefonosRegistrados.php:25-37","No reasignar sin cerrar la otra sesión."],
+  [4,"S4-08","baja","Privacidad","<b>El repartidor ve las direcciones completas de un pedido solo ofrecido</b>, aunque después lo rechace.","Autorizacion.php:353-372; PedidoDelRepartidorResource.php:160-161","Zona al ofrecer, dirección al aceptar."],
+  [4,"S4-09","baja","Pasarela","<b>El aviso aprobado no compara monto ni moneda;</b> la bitácora guarda los datos personales del cliente.","EfectoDelAviso.php:49-66; SinDatosDeTarjeta.php:17-25","Comparar el monto; limpiar los datos personales."],
+  [4,"S4-10","baja","Enumeración","<b>El registro revela si un correo ya tiene cuenta.</b>","CorreoSinCuenta.php:17","Aceptarlo o responder igual."],
+  [4,"S4-11","baja","Registro","<b>El log puede guardar la llave de Google y la dirección del usuario</b> (sin verificar sin vendor/).","DireccionesController.php:185; GeocodificadorDeGoogle.php:39-46","Limpiar la URI al registrar."],
+  [4,"S4-12","baja","App","<b>No se exige https en la URL del checkout;</b> el regreso usa un esquema propio sin validar el parámetro.","movil/src/pago/api.ts:102-108; rutas.ts:37-52","Validar https y el ULID."],
+  [4,"S4-13","baja","Panel","<b>Las acciones de estado del panel solo tienen visible(), no authorize().</b>","Lavanderias/Actions/AccionesDeEstado.php:35,53,71","Agregar authorize()."],
+  [4,"S4-14","info","Positivos","<b>Ninguna ruta con sesión sin autorizar:,</b> 404 al dato ajeno, bloqueo en cada petición, SQL con bindings, sin XSS, fórmulas escapadas, token en SecureStore.","Autorizacion.php:166-180; BarridoContraFugasTest.php:86","—"],
+  [3,"S3-15","info","Positivos","<b>Llaves compuestas con plaza, RESTRICT, triggers de inmutabilidad, 4 índices GiST</b> y únicos parciales.","migraciones 2026_11_21_400000, 2026_11_24_100000","—"],
+  [5,"S5-01","alta","Producción","<b>El adaptador de S3 no está instalado y producción lo usa por omisión.</b> Fotos y textos legales (aviso de privacidad y términos, que piden las tiendas) fallan en producción; las pruebas no lo ven por Storage::fake.","composer.json:7-14; composer.lock:3133,3217,2517; config/fotos.php:31; config/textos_legales.php:30-32","composer require league/flysystem-aws-s3-v3 y una prueba de arranque del disco real."],
+  [5,"S5-02","media","Correo","<b>ADR-0014 elige Resend con el transporte oficial, pero resend/resend-php no está instalado.</b> La confirmación del pedido y la recuperación no saldrían en producción.","composer.lock:2528; config/mail.php:64-65; .env.example:64; ADR-0014:38","Instalarlo, documentar la llave y probar un envío real."],
+  [5,"S5-03","media","Contrato de API","<b>No hay contrato de API compartido ni versión.</b> Sin OpenAPI ni /api/v1; la app copia las formas a mano en 18 archivos y 42 suites simulan el servidor.","routes/api.php:30-33; movil/src/configuracion/api.ts:78-123","Esquema de la API con prueba en cada lado y regla de compatibilidad en un ADR antes de tiendas."],
+  [5,"S5-04","baja","Errores","<b>El orden 404/422 no es uniforme:</b> rechazar y marcar estado validan antes de buscar el pedido; calificar y checkout, después.","PedidosDeLaLavanderiaController.php:110,131; CalificacionesController.php:43-44","Escribir la excepción en ADR-0019 o unificar."],
+  [5,"S5-05","baja","Correo","<b>El correo de recuperación se manda sin cola:</b> tarda más si la cuenta existe y no reintenta.","Notifications/EnlaceDeRecuperacion.php:15; RecuperacionDeContrasena.php:44","ShouldQueue."],
+  [5,"S5-06","baja","Superficie","<b>Tres GET de detalle sin consumidor en la app:</b> direcciones/{id}, lavanderia/pedidos/{id}, repartidor/pedidos/{id}.","routes/api.php:92-94,155,180-181","Quitar o anotar el escenario que las pide."],
+  [5,"S5-07","info","Medición","<b>GA4 y Meta Pixel van dentro de GTM, que espera su ID;</b> Search Console pendiente. La app no tiene analítica y el contrato no la pide.","config/medicion.php:24; NSV-2026-001-v8.pdf:15:A.2","Pedir ID de GTM y Search Console con B.10."],
+  [5,"S5-08","info","Positivos","<b>Sin llamadas huérfanas (45 de 49 rutas en uso),</b> validación en toda entrada, 404 uniforme, verificación completa del id_token de Google, FCM por cola, webhook idempotente, sin sustituciones del contrato.","bootstrap/app.php:23; VerificadorDeGoogle.php; RecepcionDeAvisos.php","—"],
+  [6,"S6-01","alta","Pedido y pago","<b>Ningún código de producción crea el cobro del pedido.</b> El pedido nace en por_pagar sin Pago; pagar responde 409 en todo pedido creado desde la app. Solo CobroSimulado crea cobros. Espera DD-012 (pago-E14). Es el primer corte, antes de Conekta.","CreacionDePedido.php:82-112; CheckoutDelCobro.php:63-64; CobroSimulado.php:60-71; CrearCheckoutTest.php:206","Llevar DD-012 a EL CLIENTE con fecha; mostrarlo en el plan como bloqueo del pago."],
+  [6,"S6-02","media","Pedido y pago","<b>El rechazo deja al usuario sin servicio, sin aviso y sin reembolso.</b> Ya pagó; rechazado no es visible, la app no marca paso actual, el aviso no es visible y no hay reembolso.","CambioDeEstado.php:66,163-166; seguimiento.ts:25; AvisarAlUsuario.php:15-16; DD-103","Resolver DD-103 antes de abrir el rechazo a socios reales."],
+  [6,"S6-03","baja","Pago","<b>Los cobros no vencen:</b> order.expired se traduce pero no se aplica; nada escribe vencido ni cancelado; los pedidos por_pagar no se cierran.","PasarelaConekta.php:146; EfectoDelAviso.php:32-34; useEsperaDelCobro.ts:62-63","Decidirlo en el ADR de DD-012 y aplicar el aviso vencido."],
+  [6,"S6-04","media","Pruebas","<b>Ninguna prueba recorre el pedido de punta a punta.</b> Cada tramo tiene las suyas; las del pago fabrican el cobro con la herramienta de desarrollo, por eso no ven S6-01. El único flujo de Maestro de la app mide un paso y prepara el pedido con el cobro simulado (S8-03).","PedidosDePrueba.php:142; CobroSimulado.php:15-21; .maestro/estados/preparar-pedido.ps1:5-8","Una prueba de integración por flujo, que falle explícita donde falta una decisión."],
+  [6,"S6-05","info","Corrección","<b>Corrección a S1-01 (e):</b> el repartidor sí obtiene su cuenta (registro público, alta en el panel). La que no tiene vía es la lavandería.","routes/api.php:43; RegistroDeRepartidor.php:51-52; AccionesDeEstado.php:36-53","Corregido en S1-01."],
+  [6,"S6-06","info","Positivos","<b>Cada tramo está bien construido:</b> una tabla de transiciones por actor, pedido bloqueado en cada cambio, eventos después del commit, webhook idempotente, token en almacén cifrado.","CambioDeEstado.php:64-92,215-242; ConfirmacionDePedido.php:42-80; RecepcionDeAvisos.php:62-89; almacen.ts:11-17","Conservar."],
+  [7,"S7-01","alta","Calendario","<b>Ningún criterio de A.4.2 se acredita y la ventana de la landing cierra el 29 de noviembre.</b> Contenido de prueba en todas las secciones, formularios sin destino, sin cuentas de medición, sin hosting ni candado. Es parte del hito del pago 2.","de-prueba.blade.php:7; landing/tasks.md:42,51; medicion-de-la-landing/tasks.md:12,17,24; DD-117 a DD-120, DD-070","Requerimiento escrito a EL CLIENTE con fecha y consecuencia sobre el pago 2."],
+  [7,"S7-02","media","Contenido","<b>Diez textos de la portada están fijos como null en el código</b> (pasos y pilares): EL CLIENTE no puede cargarlos sin un desarrollador, y A.7 deja la carga de contenido fuera del soporte.","config/landing.php:11,45-48,56-58,97-99; .env.example:157-188","Pasarlos a entorno o al panel; corregir la cita a A.7."],
+  [7,"S7-03","baja","Sección 12","<b>El aviso de derechos de autor se omite en silencio en producción</b> si falta su configuración; las demás secciones sí muestran su marcador.","pie-legal.blade.php:30-34; DD-120","Mismo trato que las demás, o que el despliegue falle sin LANDING_DERECHOS_*."],
+  [7,"S7-04","baja","Velocidad","<b>El Lighthouse de la CI no anticipa el PageSpeed real:</b> mide php artisan serve con contenido de prueba, sin las imágenes de EL CLIENTE.","lighthouserc.json:4-5,10,16; ci.yml:106-111","Medir de nuevo con imágenes reales antes de publicar."],
+  [7,"S7-05","info","Medición","<b>GA4 y Meta Pixel cargarían sin consentimiento;</b> si hace falta y cómo es DD-118.","publico/medicion.blade.php:21-45; DD-118","Resolverlo con el aviso de privacidad antes del ID de GTM de producción."],
+  [7,"S7-06","info","Positivos","<b>12 secciones en orden, marcadores honestos, Playwright en tres motores, Lighthouse en teléfono, GTM diferido,</b> mapa del sitio y robots, indicadores cada 30 s y exportación de 10.","portada/index.blade.php:17-29; playwright.config.js:34-37; config/indicadores.php:24; Indicadores.php:116-125","Conservar."],
+  [8,"S8-01","alta","Compilación","<b>El camino a las tiendas no se ha ejercitado nunca.</b> La CI no compila; solo hay evidencia de un APK local en emulador Android. Ninguna compilación de EAS ni de iPhone; el primer build de producción caería en la semana 14.","ci.yml:249-279; eas.json; compilar.ps1; estados-e17-cambio-en-60-segundos-2026-11-22.md:3; entorno.ts:7","Correr eas build preview en Android e iPhone esta semana; agregar prebuild a la CI."],
+  [8,"S8-02","media","Marca / tiendas","<b>Una compilación de EAS saldría con el ícono y el logotipo de la plantilla:</b> solo el script del APK local los cambia por los de vault/marca/, que no se cede con el código.","app.config.ts:163-165; logotipo.ts:1-3; compilar.ps1:7-8,29-30; Cláusula IX","Activos de marca como archivos de entorno de EAS; que production falle sin ellos."],
+  [8,"S8-03","info","Corrección","<b>Corrección a S6-04:</b> sí hay un flujo de Maestro, pero mide un paso y prepara el pedido con el cobro simulado. S6-04 sigue Media.",".maestro/estados/cambio-en-60-segundos.yaml:1-16; preparar-pedido.ps1:5-8","Corregido en S6-04."],
+  [8,"S8-04","info","Corrección de alcance","<b>La CI del PR #4 en el SHA auditado pasó todo:</b> en movil, 79 suites y 1282 pruebas, tsc, ESLint y Expo Doctor 20/20; también servidor y landing. La auditoría no las corrió, pero hay evidencia de que pasan.","gh run 45550228403 (headSha 9d24977, success)","El segmento 9 y el consolidado ajustan el estado de las funciones."],
+  [8,"S8-05","baja","Coherencia","<b>Los mocks dicen que el Módulo D es web;</b> C-247 lo pasó a la app. B y C solo tienen lienzos, no mocks navegables.","mocks/LEEME.md:95-96; vault/design-system/canvas/","Actualizar los mocks al decidir el Módulo D en la app."],
+  [8,"S8-06","info","Positivos","<b>Rutas protegidas por rol, mapa sin proveedor (Apple/Google), permisos mínimos, https en EAS,</b> bloqueo del identificador provisional, marca por entorno, token cifrado, iOS 18 y Android 11.","_layout.tsx:62-91; MapaDeLavanderias.tsx:2-5; mapa.ts:8-11; app.config.ts:109-134,184,217-241","Conservar."],
+  [9,"S9-01","media","Medición","<b>No hay cobertura medida y la cobertura por escenario es por nombre:</b> 448 de 498 escenarios nombrados en una prueba, pero algunas pruebas fijan lo pendiente (pago-E14 responde 409).","ci.yml:74-78,275-276; CrearCheckoutTest.php:206","Distinguir prueba que acredita de prueba que fija lo pendiente; reportar cobertura."],
+  [9,"S9-02","media","Trazabilidad","<b>Las pruebas que la trazabilidad promete para A43-2 y A43-4 no existen:</b> ni ciclo completo en el servidor, ni Maestro del recorrido, ni tests/Integracion contra el sandbox.","trazabilidad-criterio-test.md:45,47; integracion-continua.md:53; phpunit.xml:8-13; pago/tasks.md:42","Escribirlas ya, aunque fallen donde está el corte."],
+  [9,"S9-03","media","Compilación","<b>La cuenta de Expo sigue pendiente:</b> no se puede correr eas build (explica S8-01), y sería de Arthur, no de EL CLIENTE.","entorno-local.md:36; C-170; B.11","Abrirla esta semana y decidir con Nadir a nombre de quién."],
+  [9,"S9-04","baja","DX","<b>El README raíz dice que no hay código</b> y no lleva a servidor/ ni movil/; movil/ no tiene README y PostGIS no tiene compose.","README.md:14-20,31-33; entorno-local.md:18,25,35","README raíz, movil/README.md y compose.yaml."],
+  [9,"S9-05","baja","Trazabilidad","<b>autorizacion-E04 a E06 dicen SIN RESPUESTA (DD-053, abierta desde el 2026-10-02)</b> pero el código ya aplica su recomendación y la prueba con otros IDs.","autorizacion-por-rol/specs:51-76; tasks.md:31-33; deuda-de-decision.md:65","Nadir: cerrar o asentar DD-053 para la v1."],
+  [9,"S9-06","info","Positivos","<b>CI en verde en el SHA auditado:</b> 9 jobs en pass; servidor 9+1323 sobre PostGIS real, app 1282, Playwright 87 en tres motores, Lighthouse, reglas de marca y secretos, validadores del vault.","ci.yml; corrida 45550228403","Conservar; proteger main con estos checks (S0-03)."]
+];
+
+const SEV = ["critica","alta","media","baja","info"];
+const SEV_TXT = { critica: "Crítica", alta: "Alta", media: "Media", baja: "Baja", info: "Info" };
+const estado = { seg: "todos", sev: "todas", q: "" };
+
+function conteo(seg) {
+  const c = {}; SEV.forEach(s => c[s] = 0);
+  HALLAZGOS.filter(h => h[0] === seg).forEach(h => c[h[2]]++);
+  return c;
+}
+
+function pintarFranja() {
+  const f = document.getElementById("franja");
+  f.innerHTML = SEGMENTOS.map(s => {
+    const c = conteo(s.n);
+    const chips = SEV.filter(k => c[k]).map(k => `<span class="pill s-${k}">${c[k]} ${SEV_TXT[k]}</span>`).join("");
+    return `<a class="seg v-${s.v}" href="#seg-${s.n}"><span class="num">Segmento ${s.n}</span><h3>${s.nombre}</h3>
+      <span class="veredicto">${s.texto}</span><span class="nota" style="font-size:.84rem">${s.resumen}</span>
+      <span class="mini">${chips}</span></a>`;
+  }).join("");
+}
+
+function boton(grupo, valor, texto, activo) {
+  return `<button type="button" class="filtro" data-g="${grupo}" data-v="${valor}" aria-pressed="${activo}">${texto}</button>`;
+}
+
+function pintarFiltros() {
+  const fs = document.getElementById("f-seg");
+  fs.insertAdjacentHTML("beforeend", boton("seg","todos","Todos",true) + SEGMENTOS.map(s => boton("seg", String(s.n), String(s.n), false)).join(""));
+  const fv = document.getElementById("f-sev");
+  fv.insertAdjacentHTML("beforeend", boton("sev","todas","Todas",true) + SEV.map(k => boton("sev", k, SEV_TXT[k], false)).join(""));
+  document.querySelectorAll(".filtro").forEach(b => b.addEventListener("click", () => {
+    const g = b.dataset.g;
+    estado[g] = b.dataset.v;
+    document.querySelectorAll(`.filtro[data-g="${g}"]`).forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+    pintarRegistro();
+  }));
+  document.getElementById("buscar").addEventListener("input", e => { estado.q = e.target.value.trim().toLowerCase(); pintarRegistro(); });
+}
+
+function quitarEtiquetas(t) { return t.replace(/<[^>]+>/g, ""); }
+
+function pintarRegistro() {
+  const r = document.getElementById("registro");
+  let total = 0;
+  r.innerHTML = SEGMENTOS.filter(s => estado.seg === "todos" || String(s.n) === estado.seg).map(s => {
+    const filas = HALLAZGOS.filter(h => h[0] === s.n)
+      .filter(h => estado.sev === "todas" || h[2] === estado.sev)
+      .filter(h => !estado.q || quitarEtiquetas(h.slice(1).join(" ")).toLowerCase().includes(estado.q))
+      .sort((a, b) => SEV.indexOf(a[2]) - SEV.indexOf(b[2]));
+    total += filas.length;
+    const cuerpo = filas.length ? filas.map(h => `<tr><td class="id">${h[1]}</td><td><span class="pill s-${h[2]}">${SEV_TXT[h[2]]}</span></td>
+      <td>${h[3]}</td><td class="hal">${h[4]}</td><td class="ev">${h[5]}</td><td class="rec">${h[6]}</td></tr>`).join("")
+      : `<tr><td colspan="6" class="vacio">${s.v === "pend" ? "Este segmento todavía no tiene hallazgos publicados." : "Ningún hallazgo con estos filtros."}</td></tr>`;
+    return `<div class="bloque" id="seg-${s.n}"><div class="bloque-cab"><div class="linea"><span class="eyebrow">Segmento ${s.n}</span>
+      <h3>${s.nombre}</h3><span class="pill ${s.v === "no" ? "s-critica" : s.v === "res" ? "s-media" : "s-info"}">${s.texto}</span></div>
+      <p class="nota">${s.resumen}</p></div>
+      <div class="tabla"><table><thead><tr><th>ID</th><th>Severidad</th><th>Área</th><th>Hallazgo</th><th>Evidencia</th><th>Recomendación</th></tr></thead>
+      <tbody>${cuerpo}</tbody></table></div></div>`;
+  }).join("");
+  document.getElementById("cuenta").textContent = `${total} de ${HALLAZGOS.length} hallazgos`;
+}
+
+pintarFranja(); pintarFiltros(); pintarRegistro();
+</script>
