@@ -25,8 +25,9 @@ toca: evidencias/auditoria/, meta/indice.md
 [[auditoria-segmento-5-api-endpoints-e-integraciones-2026-11-25]] (segmento 5) y
 [[auditoria-segmento-6-flujos-programados-2026-11-25]] (segmento 6, que corrige S1-01 (e) en el informe del segmento 1) y
 [[auditoria-segmento-7-landing-y-panel-2026-11-25]] (segmento 7) y
-[[auditoria-segmento-8-app-movil-2026-11-25]] (segmento 8, que corrige S6-04). El tablero de los segmentos 0 a 8 está
+[[auditoria-segmento-8-app-movil-2026-11-25]] (segmento 8, que corrige S6-04) y
+[[auditoria-segmento-9-pruebas-ci-y-dx-2026-11-25]] (segmento 9). El tablero de los segmentos 0 a 9 está
 publicado como artefacto privado (https://claude.ai/artifact/J7cbBSYGFZSRTtHn8PxReg), con su fuente en
-`evidencias/auditoria/tablero/auditoria-pr-4.html`. Faltan el segmento 9 y el consolidado. El PR de la auditoría es nhadadn/Lavandi#5.
+`evidencias/auditoria/tablero/auditoria-pr-4.html`. Falta el consolidado. El PR de la auditoría es nhadadn/Lavandi#5.
 
 **Al terminar.** `situacion: terminada`, con el enlace al pull request. En las sesiones de Nadir, el push lo hace el cierre (CLAUDE.md §0-bis).

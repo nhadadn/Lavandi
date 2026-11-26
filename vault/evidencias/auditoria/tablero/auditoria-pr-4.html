@@ -145,7 +145,7 @@ footer { color: var(--ink-3); font-size: 0.85rem; display: grid; gap: 6px; borde
       <span>Contra <b class="mono">origin/main 7956604</b></span>
       <span>Corte <b>24 nov 2026 · semana 12 de 16</b></span>
     </div>
-    <p class="nota">Cada hallazgo lleva su evidencia en el SHA auditado. No se corrieron las suites de pruebas ni pruebas de carga: ninguna función cuenta como probada y nada aquí dice cuántos usuarios aguanta el sistema. El detalle completo de cada segmento vive en el vault, en <span class="mono">vault/evidencias/auditoria/</span>. Faltan el segmento 9 (pruebas y CI) y el consolidado.</p>
+    <p class="nota">Cada hallazgo lleva su evidencia en el SHA auditado. No se corrieron las suites de pruebas ni pruebas de carga: ninguna función cuenta como probada y nada aquí dice cuántos usuarios aguanta el sistema. El detalle completo de cada segmento vive en el vault, en <span class="mono">vault/evidencias/auditoria/</span>. Falta el consolidado.</p>
   </header>
 
   <section aria-labelledby="t-veredictos" class="bloque">
@@ -270,7 +270,8 @@ const SEGMENTOS = [
   { n: 5, nombre: "API e integraciones", v: "no", texto: "No está listo", resumen: "API coherente y sin llamadas huérfanas; producción sin los paquetes de S3 ni Resend, y de las integraciones del contrato solo los mapas están completos." },
   { n: 6, nombre: "Flujos programados", v: "no", texto: "No está listo", resumen: "Cada tramo está bien construido, pero el pedido no llega de punta a punta: ningún código de producción crea el cobro, el rechazo deja al usuario sin aviso ni reembolso y ninguna prueba recorre el flujo completo." },
   { n: 7, nombre: "Landing y panel", v: "no", texto: "No está listo", resumen: "Las 12 secciones y 10 de 11 indicadores están en el código, pero ningún criterio de A.4.2 se acredita a cinco días del cierre de la semana 12: todo espera insumos y cuentas de EL CLIENTE." },
-  { n: 8, nombre: "App móvil", v: "no", texto: "No está listo", resumen: "Módulos A, B y C con sus pantallas y la CI en verde (1282 pruebas), pero el Módulo D no está en la app, iPhone sigue bloqueado y nunca se ha corrido una compilación de EAS para las tiendas." }
+  { n: 8, nombre: "App móvil", v: "no", texto: "No está listo", resumen: "Módulos A, B y C con sus pantallas y la CI en verde (1282 pruebas), pero el Módulo D no está en la app, iPhone sigue bloqueado y nunca se ha corrido una compilación de EAS para las tiendas." },
+  { n: 9, nombre: "Pruebas, CI y DX", v: "res", texto: "Listo con reservas", resumen: "CI en verde en el SHA auditado (1323 pruebas del servidor, 1282 de la app, 87 de navegador) y 448 de 498 escenarios con prueba; sin cobertura medida, sin las pruebas que promete la trazabilidad para A43-2 y A43-4, y sin cuenta de Expo." }
 ];
 
 // [segmento, id, severidad, área, hallazgo, evidencia, recomendación]
@@ -362,7 +363,13 @@ const HALLAZGOS = [
   [8,"S8-03","info","Corrección","<b>Corrección a S6-04:</b> sí hay un flujo de Maestro, pero mide un paso y prepara el pedido con el cobro simulado. S6-04 sigue Media.",".maestro/estados/cambio-en-60-segundos.yaml:1-16; preparar-pedido.ps1:5-8","Corregido en S6-04."],
   [8,"S8-04","info","Corrección de alcance","<b>La CI del PR #4 en el SHA auditado pasó todo:</b> en movil, 79 suites y 1282 pruebas, tsc, ESLint y Expo Doctor 20/20; también servidor y landing. La auditoría no las corrió, pero hay evidencia de que pasan.","gh run 45550228403 (headSha 9d24977, success)","El segmento 9 y el consolidado ajustan el estado de las funciones."],
   [8,"S8-05","baja","Coherencia","<b>Los mocks dicen que el Módulo D es web;</b> C-247 lo pasó a la app. B y C solo tienen lienzos, no mocks navegables.","mocks/LEEME.md:95-96; vault/design-system/canvas/","Actualizar los mocks al decidir el Módulo D en la app."],
-  [8,"S8-06","info","Positivos","<b>Rutas protegidas por rol, mapa sin proveedor (Apple/Google), permisos mínimos, https en EAS,</b> bloqueo del identificador provisional, marca por entorno, token cifrado, iOS 18 y Android 11.","_layout.tsx:62-91; MapaDeLavanderias.tsx:2-5; mapa.ts:8-11; app.config.ts:109-134,184,217-241","Conservar."]
+  [8,"S8-06","info","Positivos","<b>Rutas protegidas por rol, mapa sin proveedor (Apple/Google), permisos mínimos, https en EAS,</b> bloqueo del identificador provisional, marca por entorno, token cifrado, iOS 18 y Android 11.","_layout.tsx:62-91; MapaDeLavanderias.tsx:2-5; mapa.ts:8-11; app.config.ts:109-134,184,217-241","Conservar."],
+  [9,"S9-01","media","Medición","<b>No hay cobertura medida y la cobertura por escenario es por nombre:</b> 448 de 498 escenarios nombrados en una prueba, pero algunas pruebas fijan lo pendiente (pago-E14 responde 409).","ci.yml:74-78,275-276; CrearCheckoutTest.php:206","Distinguir prueba que acredita de prueba que fija lo pendiente; reportar cobertura."],
+  [9,"S9-02","media","Trazabilidad","<b>Las pruebas que la trazabilidad promete para A43-2 y A43-4 no existen:</b> ni ciclo completo en el servidor, ni Maestro del recorrido, ni tests/Integracion contra el sandbox.","trazabilidad-criterio-test.md:45,47; integracion-continua.md:53; phpunit.xml:8-13; pago/tasks.md:42","Escribirlas ya, aunque fallen donde está el corte."],
+  [9,"S9-03","media","Compilación","<b>La cuenta de Expo sigue pendiente:</b> no se puede correr eas build (explica S8-01), y sería de Arthur, no de EL CLIENTE.","entorno-local.md:36; C-170; B.11","Abrirla esta semana y decidir con Nadir a nombre de quién."],
+  [9,"S9-04","baja","DX","<b>El README raíz dice que no hay código</b> y no lleva a servidor/ ni movil/; movil/ no tiene README y PostGIS no tiene compose.","README.md:14-20,31-33; entorno-local.md:18,25,35","README raíz, movil/README.md y compose.yaml."],
+  [9,"S9-05","baja","Trazabilidad","<b>autorizacion-E04 a E06 dicen SIN RESPUESTA (DD-053, abierta desde el 2026-10-02)</b> pero el código ya aplica su recomendación y la prueba con otros IDs.","autorizacion-por-rol/specs:51-76; tasks.md:31-33; deuda-de-decision.md:65","Nadir: cerrar o asentar DD-053 para la v1."],
+  [9,"S9-06","info","Positivos","<b>CI en verde en el SHA auditado:</b> 9 jobs en pass; servidor 9+1323 sobre PostGIS real, app 1282, Playwright 87 en tres motores, Lighthouse, reglas de marca y secretos, validadores del vault.","ci.yml; corrida 45550228403","Conservar; proteger main con estos checks (S0-03)."]
 ];
 
 const SEV = ["critica","alta","media","baja","info"];
