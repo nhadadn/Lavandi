@@ -1,0 +1,24 @@
+{
+    "ci": {
+        "collect": {
+            "url": ["http://127.0.0.1:8124/"],
+            "startServerCommand": "php artisan serve --no-reload --host=127.0.0.1 --port=8124",
+            "startServerReadyPattern": "Server running",
+            "startServerReadyTimeout": 60000,
+            "numberOfRuns": 3,
+            "settings": {
+                "formFactor": "mobile",
+                "chromeFlags": "--headless=new --no-sandbox"
+            }
+        },
+        "assert": {
+            "assertions": {
+                "categories:performance": ["error", { "minScore": 0.7, "aggregationMethod": "median-run" }]
+            }
+        },
+        "upload": {
+            "target": "filesystem",
+            "outputDir": "storage/framework/testing/lighthouse"
+        }
+    }
+}

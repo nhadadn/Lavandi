@@ -1,0 +1,20 @@
+{
+    "peticion": "GET /api/administracion/repartidores/{repartidor}",
+    "estado": 200,
+    "cuerpo": {
+        "repartidor": {
+            "id_publico": "01m8dccpm29ns46je4mgm57jab",
+            "nombre": "Repartidor de prueba 92578",
+            "telefono": "6180000000",
+            "correo": "pagac.myron@example.net",
+            "foto": null,
+            "tipo_vehiculo": "Motocicleta",
+            "estado": "pendiente",
+            "plaza": null,
+            "transiciones": [
+                "dar_de_alta",
+                "dar_de_baja"
+            ]
+        }
+    }
+}

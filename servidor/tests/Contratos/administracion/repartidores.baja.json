@@ -1,0 +1,19 @@
+{
+    "peticion": "POST /api/administracion/repartidores/{repartidor}/baja",
+    "estado": 200,
+    "cuerpo": {
+        "repartidor": {
+            "id_publico": "01m8dccqje2vp5ygtvgdhrpn2m",
+            "nombre": "Repartidor de prueba 972794",
+            "telefono": "6180000000",
+            "correo": "roma.thiel@example.com",
+            "foto": null,
+            "tipo_vehiculo": "Motocicleta",
+            "estado": "baja",
+            "plaza": {
+                "nombre": "Plaza Uno"
+            },
+            "transiciones": []
+        }
+    }
+}

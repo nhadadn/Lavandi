@@ -1,0 +1,7 @@
+{
+    "peticion": "PUT /api/administracion/comisiones/lavanderias/{lavanderia}",
+    "estado": 404,
+    "cuerpo": {
+        "message": "No existe la lavandería."
+    }
+}

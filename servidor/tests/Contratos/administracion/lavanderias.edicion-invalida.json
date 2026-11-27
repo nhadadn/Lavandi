@@ -1,0 +1,15 @@
+{
+    "peticion": "PATCH /api/administracion/lavanderias/{lavanderia}",
+    "estado": 422,
+    "cuerpo": {
+        "message": "Falta el nombre de la lavandería. (and 1 more error)",
+        "errors": {
+            "nombre": [
+                "Falta el nombre de la lavandería."
+            ],
+            "servicios.0.precio": [
+                "El precio va en pesos, sin signo y con hasta dos decimales."
+            ]
+        }
+    }
+}

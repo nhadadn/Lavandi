@@ -1,0 +1,72 @@
+{
+    "peticion": "GET /api/administracion/monitoreo",
+    "estado": 200,
+    "cuerpo": {
+        "pedidos": [
+            {
+                "id_publico": "01m8dcnd1hw3a3w4gvmt42b2zy",
+                "folio": "MV4APQQ6",
+                "estado": {
+                    "codigo": "confirmado",
+                    "nombre": "Confirmado"
+                },
+                "plaza": "Plaza de prueba 1",
+                "ventana": {
+                    "inicio": "2026-12-03T10:00:00-06:00",
+                    "fin": "2026-12-03T11:00:00-06:00",
+                    "fecha": "2026-12-03",
+                    "hora_inicio": "10:00",
+                    "hora_fin": "11:00"
+                }
+            },
+            {
+                "id_publico": "01m8dcnd94mfffz5q751e3khjq",
+                "folio": "R7ACTWSR",
+                "estado": {
+                    "codigo": "en_proceso",
+                    "nombre": "En proceso"
+                },
+                "plaza": "Plaza de prueba 2",
+                "ventana": {
+                    "inicio": "2026-12-03T11:00:00-06:00",
+                    "fin": "2026-12-03T12:00:00-06:00",
+                    "fecha": "2026-12-03",
+                    "hora_inicio": "11:00",
+                    "hora_fin": "12:00"
+                }
+            }
+        ],
+        "marcadores": [
+            {
+                "pedido": "01m8dcnd1hw3a3w4gvmt42b2zy",
+                "folio": "MV4APQQ6",
+                "estado": "Confirmado",
+                "plaza": "Plaza de prueba 1",
+                "tipo": "recoleccion",
+                "etiqueta": "Recolección y entrega",
+                "latitud": 10.2,
+                "longitud": -119.8
+            },
+            {
+                "pedido": "01m8dcnd94mfffz5q751e3khjq",
+                "folio": "R7ACTWSR",
+                "estado": "En proceso",
+                "plaza": "Plaza de prueba 2",
+                "tipo": "recoleccion",
+                "etiqueta": "Recolección",
+                "latitud": 10.3,
+                "longitud": -117.7
+            },
+            {
+                "pedido": "01m8dcnd94mfffz5q751e3khjq",
+                "folio": "R7ACTWSR",
+                "estado": "En proceso",
+                "plaza": "Plaza de prueba 2",
+                "tipo": "entrega",
+                "etiqueta": "Entrega",
+                "latitud": 10.8,
+                "longitud": -117.2
+            }
+        ]
+    }
+}

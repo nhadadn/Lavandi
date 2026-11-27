@@ -1,0 +1,29 @@
+{
+  "type": "FeatureCollection",
+  "plaza": {
+    "nombre": "Plaza de prueba 2",
+    "zona_horaria": "America/Tijuana",
+    "activa": true
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Zona de prueba 2 Centro",
+        "activa": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-116.0, 10.0],
+            [-115.0, 10.0],
+            [-115.0, 11.0],
+            [-116.0, 11.0],
+            [-116.0, 10.0]
+          ]
+        ]
+      }
+    }
+  ]
+}

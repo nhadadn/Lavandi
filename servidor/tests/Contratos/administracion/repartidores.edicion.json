@@ -1,0 +1,25 @@
+{
+    "peticion": "PATCH /api/administracion/repartidores/{repartidor}",
+    "estado": 200,
+    "cuerpo": {
+        "repartidor": {
+            "id_publico": "01m8dccpvjmer36exahxwhjmrs",
+            "nombre": "Repartidor de prueba 2 editado",
+            "telefono": "6180000000",
+            "correo": "repartidor2@ejemplo.com",
+            "foto": {
+                "url": "https://archivos.prueba.invalid/archivo?firma=prueba",
+                "vence_en": "2026-11-27T03:12:16Z"
+            },
+            "tipo_vehiculo": "Motocicleta",
+            "estado": "activo",
+            "plaza": {
+                "nombre": "Plaza Uno"
+            },
+            "transiciones": [
+                "suspender",
+                "dar_de_baja"
+            ]
+        }
+    }
+}

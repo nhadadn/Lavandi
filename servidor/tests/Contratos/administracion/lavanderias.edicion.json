@@ -1,0 +1,69 @@
+{
+    "peticion": "PATCH /api/administracion/lavanderias/{lavanderia}",
+    "estado": 200,
+    "cuerpo": {
+        "lavanderia": {
+            "id_publico": "01m8det2djk5207860sst7jn71",
+            "nombre": "Lavandería de prueba Editada",
+            "descripcion": "Descripción de prueba editada.",
+            "direccion": {
+                "calle": "Calle de prueba",
+                "numero": "123",
+                "colonia": "Colonia de prueba",
+                "codigo_postal": "99000",
+                "municipio": {
+                    "codigo": "99001",
+                    "nombre": "Municipio de prueba",
+                    "estado": "Estado de prueba"
+                }
+            },
+            "foto": {
+                "url": "https://archivos.prueba.invalid/archivo?firma=prueba",
+                "vence_en": "2026-11-27T03:54:31Z"
+            },
+            "fotos": [
+                {
+                    "url": "https://archivos.prueba.invalid/archivo?firma=prueba",
+                    "vence_en": "2026-11-27T03:54:31Z"
+                },
+                {
+                    "url": "https://archivos.prueba.invalid/archivo?firma=prueba",
+                    "vence_en": "2026-11-27T03:54:31Z"
+                }
+            ],
+            "maximo_de_fotos": 5,
+            "servicios": [
+                {
+                    "tipo": "estandar",
+                    "nombre": "Lavado estándar",
+                    "precio": "18.50",
+                    "unidad": {
+                        "codigo": "kg",
+                        "nombre": "kilo"
+                    }
+                }
+            ],
+            "ventanas": [
+                {
+                    "dia_semana": 1,
+                    "hora_inicio": "10:00",
+                    "hora_fin": "11:00"
+                },
+                {
+                    "dia_semana": 4,
+                    "hora_inicio": "10:00",
+                    "hora_fin": "11:00"
+                }
+            ],
+            "estado": "activa",
+            "plaza": {
+                "nombre": "Plaza de prueba 1"
+            },
+            "transiciones": [
+                "suspender",
+                "dar_de_baja"
+            ],
+            "fotos_leidas": "eyJpdiI6IlNFd3dzRDRwS3I0ZzVhOFVOcFJLSXc9PSIsInZhbHVlIjoic0l4em9WWk9CLzZUSTM5Um9yYmxvT2RpcGZxN0tvNkk4K3ZSdjlPWGdYVkw1K3BUR2gxR1g5SkdkcTE3bzh2M09uTzA0N3dZWDFTY0UycldnOFdxUGRMU1ZFaDQ5SSsxUU5HcmNrVkZnQTQ1VkNJU0RGdUs1TlpsaHppcWgvOCtnY09ITm5kbStpK2FWUXNTcHlRblhzLytOdmdpL1dLOWVmMmttWm5RcjZ3TmNLaFIvYzF5OWM5dVJoYXNNUndXMVhjUGo5TjJ4RTNxcTRFT0NyVXRLZz09IiwibWFjIjoiODE4MTVmYThhODk2NGFkMGUzMTg5YjExOTk0ZTQzOTE4MDAyZDQ3YzZmOWUwN2UwZGU5ODMyOTdlMjczZmY5MyIsInRhZyI6IiJ9"
+        }
+    }
+}

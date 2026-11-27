@@ -1,0 +1,71 @@
+{
+    "peticion": "POST /api/administracion/conciliaciones",
+    "estado": 200,
+    "cuerpo": {
+        "rango": {
+            "desde": "2027-03-01",
+            "hasta": "2027-03-31",
+            "descripcion": "Del 01/03/2027 al 31/03/2027"
+        },
+        "resumen": [
+            {
+                "resultado": "conciliado",
+                "resultado_texto": "Conciliado",
+                "cuantos": 1
+            },
+            {
+                "resultado": "movimiento_sin_pedido",
+                "resultado_texto": "Movimiento sin pedido",
+                "cuantos": 1
+            },
+            {
+                "resultado": "pedido_sin_movimiento",
+                "resultado_texto": "Pedido pagado sin movimiento",
+                "cuantos": 1
+            },
+            {
+                "resultado": "monto_distinto",
+                "resultado_texto": "Monto que no coincide",
+                "cuantos": 0
+            }
+        ],
+        "filas": [
+            {
+                "resultado": "conciliado",
+                "resultado_texto": "Conciliado",
+                "orden": "orden-simulada-01m8dcngpmf474dqnjbtaacr2b",
+                "folio": "ZQNGVNCZ",
+                "plaza": "Plaza de prueba 1",
+                "fecha": "05/03/2027 10:00",
+                "monto_plataforma": "100.00",
+                "monto_plataforma_texto": "$100.00",
+                "monto_pasarela": "100.00",
+                "monto_pasarela_texto": "$100.00"
+            },
+            {
+                "resultado": "movimiento_sin_pedido",
+                "resultado_texto": "Movimiento sin pedido",
+                "orden": "orden-de-otro-sistema",
+                "folio": null,
+                "plaza": null,
+                "fecha": "10/03/2027 10:00",
+                "monto_plataforma": null,
+                "monto_plataforma_texto": null,
+                "monto_pasarela": "80.00",
+                "monto_pasarela_texto": "$80.00"
+            },
+            {
+                "resultado": "pedido_sin_movimiento",
+                "resultado_texto": "Pedido pagado sin movimiento",
+                "orden": "orden-simulada-01m8dcngvx5y6htevw5yq9y1bx",
+                "folio": "CX7Z0XER",
+                "plaza": "Plaza de prueba 1",
+                "fecha": "12/03/2027 10:00",
+                "monto_plataforma": "120.00",
+                "monto_plataforma_texto": "$120.00",
+                "monto_pasarela": null,
+                "monto_pasarela_texto": null
+            }
+        ]
+    }
+}

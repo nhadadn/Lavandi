@@ -1,0 +1,8 @@
+Archivo de prueba con el formato del Catálogo Nacional de Códigos Postales de Correos de México. Los asentamientos son inventados; los municipios son reales.
+d_codigo|d_asenta|d_tipo_asenta|D_mnpio|d_estado|d_ciudad|d_CP|c_estado|c_oficina|c_tipo_asenta|c_mnpio|id_asenta_cpcons|d_zona|c_cve_ciudad|c_CP
+25000|Colonia de prueba Saltillo|Colonia|Saltillo|Coahuila de Zaragoza|Saltillo|25001|05|25001|09|030|0001|Urbano|08|
+27000|Colonia de prueba Torreón|Colonia|Torreón|Coahuila de Zaragoza|Torreón|27001|05|27001|09|035|0001|Urbano|02|
+27010|Colonia de prueba Oriente|Colonia|Torreón|Coahuila de Zaragoza|Torreón|27011|05|27011|09|035|0002|Urbano|02|
+27440|Ejido de prueba|Ejido|Matamoros|Coahuila de Zaragoza||27441|05|27441|15|017|0001|Rural||
+27440|Ejido de prueba|Ejido|Torreón|Coahuila de Zaragoza||27441|05|27441|15|035|0003|Rural||
+27450|Ejido de prueba Viesca|Ejido|Viesca|Coahuila de Zaragoza||27451|05|27451|15|036|0001|Rural||

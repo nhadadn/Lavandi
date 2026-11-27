@@ -1,0 +1,36 @@
+{
+    "peticion": "POST /api/administracion/usuarios/{usuario}/bloqueo",
+    "estado": 200,
+    "cuerpo": {
+        "usuario": {
+            "id_publico": "01m8dcnkkzbpt3p2534yt2y4wq",
+            "correo": "ana@ejemplo.com",
+            "nombre": "Ana Pruebas",
+            "telefono": "6181234567",
+            "estado": "bloqueado",
+            "historial": [
+                {
+                    "folio": "TEXDPQY6",
+                    "fecha": "2026-12-03",
+                    "lavanderia": "Lavandería de prueba 492136",
+                    "estado": "Confirmado",
+                    "monto": null
+                },
+                {
+                    "folio": "9P7HQRWS",
+                    "fecha": "2026-12-02",
+                    "lavanderia": "Lavandería de prueba 734618",
+                    "estado": "En proceso",
+                    "monto": null
+                },
+                {
+                    "folio": "G8BVBGVY",
+                    "fecha": "2026-12-01",
+                    "lavanderia": "Lavandería de prueba 734618",
+                    "estado": "Entregado",
+                    "monto": "1180.50"
+                }
+            ]
+        }
+    }
+}

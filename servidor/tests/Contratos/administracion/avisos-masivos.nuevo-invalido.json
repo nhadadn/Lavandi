@@ -1,0 +1,15 @@
+{
+    "peticion": "POST /api/administracion/avisos-masivos",
+    "estado": 422,
+    "cuerpo": {
+        "message": "Escribe el título. (and 1 more error)",
+        "errors": {
+            "titulo": [
+                "Escribe el título."
+            ],
+            "mensaje": [
+                "El texto no puede pasar de 1000 caracteres."
+            ]
+        }
+    }
+}

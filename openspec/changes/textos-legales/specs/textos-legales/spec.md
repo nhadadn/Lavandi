@@ -57,3 +57,26 @@ Cita: A → `NSV-2026-001-v8.pdf:31:ANEXO B, Sección B.7`
 - **CUANDO** la persona toca el enlace al aviso de privacidad
 - **ENTONCES** la app abre esa dirección y muestra el documento vigente
 - **Y** el enlace a los términos hace lo mismo con la suya
+
+### Requirement: La página para pedir el borrado de la cuenta
+
+El sitio DEBE (MUST) publicar, en una dirección fija y pública, cómo pedir el borrado de la cuenta, sin decir qué datos
+se conservan.
+
+Cita: A → `NSV-2026-001-v8.pdf:21:ANEXO A, Sección A.4.3`; E → Google Play,
+support.google.com/googleplay/android-developer/answer/13327111, consultada el 2026-11-24, SIN VERIFICAR; D → adenda
+del 2026-11-24 de ADR-0005
+
+#### Scenario: textos-legales-E06 — Cómo pedir el borrado de la cuenta
+
+- **DADO** el correo de contacto y el WhatsApp de soporte configurados
+- **CUANDO** alguien sin sesión abre la dirección de la página
+- **ENTONCES** ve cómo borrar su cuenta desde la app y cómo pedirlo por ese correo o ese WhatsApp
+- **Y** la página no dice qué datos se borran ni cuáles se conservan (DD-109)
+
+#### Scenario: textos-legales-E07 — En producción, sin contacto configurado, no se inventa
+
+- **DADO** la configuración de producción sin el correo ni el WhatsApp
+- **CUANDO** alguien abre la página
+- **ENTONCES** sigue diciendo cómo borrar la cuenta desde la app
+- **Y** no muestra ningún contacto de ejemplo ni de prueba

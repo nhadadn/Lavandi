@@ -1,0 +1,7 @@
+{
+    "peticion": "POST /api/administracion/conciliaciones",
+    "estado": 503,
+    "cuerpo": {
+        "message": "No se pudo leer la pasarela"
+    }
+}

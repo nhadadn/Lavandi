@@ -67,9 +67,9 @@ acepta con "Las 12 secciones descritas en A.2 presentes y correctamente renderiz
   (ADR-0011, ADR-0013); recursos de Filament para testimonios y prensa (ADR-0011); lectura de las zonas activas con
   PostGIS (ADR-0004).
 - `movil/`: nada.
-- Base de datos: testimonios y logos de prensa, con su interruptor de activo y su orden, necesitan dónde guardarse, y
-  el modelo de datos todavía no tiene esas tablas (`vault/arquitectura/modelo-de-datos.md`, "Lo que no tiene tabla
-  todavía"); ver `design.md`, "Tablas y migración". Las plazas y las zonas se leen de `plazas-y-zonas`.
+- Base de datos: testimonios y logos de prensa, con su interruptor de activo y su orden, se guardan en `testimonios`
+  (tarea 4.0) y `logos_prensa` (tarea 4.0b), que ya entraron a `vault/arquitectura/modelo-de-datos.md`, sección
+  "Landing"; ver `design.md`, "Tablas y migración". Las plazas y las zonas se leen de `plazas-y-zonas`.
 - Dependencias: Playwright para las pruebas en Chromium, WebKit y Firefox
   (`vault/formas-de-trabajo/ciclo-openspec-tdd.md`); una plantilla comprada solo si su licencia completa permite
   entregarla (ADR-0011). Ningún servicio de mapas de pago (ADR-0009).

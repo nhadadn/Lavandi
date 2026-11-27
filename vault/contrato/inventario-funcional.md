@@ -108,15 +108,19 @@ expresamente descrito".
 Lo usa EL CLIENTE. **Dónde vive —en la app o en web— es DD-040**, y por eso la columna "corre en" no
 está resuelta.
 
+> **Nota del 2026-11-24.** DD-040 la respondió C-140 y, en su parte web, la reemplazó C-247 (decisión 69 de
+> `acta-2026-11-20-modelo-y-pasarela.md`): el Módulo D y el A.5 corren en el teléfono, con el servidor; el panel web
+> queda como respaldo interno ([[ADR-0022-administracion-en-la-app]]). La columna "Corre en" lo dice desde esa fecha.
+
 | ID | Pantalla o función | Lo que dice el contrato | Lo que no dice | Capacidad | Corre en | Tam. |
 |---|---|---|---|---|---|---|
-| F-D01 | Gestión de lavanderías | "Alta, baja, suspensión y edición de socios." | Flujo de aprobación del registro → BR-26 | — | DD-040 + servidor | M |
-| F-D02 | Gestión de repartidores | "Alta, baja, suspensión y edición de socios repartidores." | — | — | DD-040 + servidor | M |
-| F-D03 | Gestión de usuarios | "Consulta de usuarios activos, historial y bloqueo." | Qué es un usuario "activo"; lo usa también F-I03 → BR-33 | — | DD-040 + servidor | M |
-| F-D04 | Monitoreo de pedidos | "Vista en tiempo real de todos los pedidos activos con mapa." | Qué se pinta → BR-30: puntos del pedido, sin rastreo del repartidor | Mapa; tiempo real | DD-040 + servidor | L |
-| F-D05 | Configuración de comisiones | "Porcentaje de comisión por socio o global." | Base de la comisión → BR-31; gobierno del precio → BR-46 | — | DD-040 + servidor | M |
-| F-D06 | Reportes financieros | "Ingresos por periodo, comisiones y conciliación con Conekta." | Modelo del dinero → BR-31, DD-013 | Lectura de movimientos de la pasarela | DD-040 + servidor | L |
-| F-D07 | Notificaciones push masivas | "Envío segmentado o global para promociones o mantenimiento." | Por qué se segmenta → BR-32 | Avisos masivos | DD-040 + servidor | M |
+| F-D01 | Gestión de lavanderías | "Alta, baja, suspensión y edición de socios." | Flujo de aprobación del registro → BR-26 | — | teléfono + servidor | M |
+| F-D02 | Gestión de repartidores | "Alta, baja, suspensión y edición de socios repartidores." | — | — | teléfono + servidor | M |
+| F-D03 | Gestión de usuarios | "Consulta de usuarios activos, historial y bloqueo." | Qué es un usuario "activo"; lo usa también F-I03 → BR-33 | — | teléfono + servidor | M |
+| F-D04 | Monitoreo de pedidos | "Vista en tiempo real de todos los pedidos activos con mapa." | Qué se pinta → BR-30: puntos del pedido, sin rastreo del repartidor | Mapa; tiempo real | teléfono + servidor | L |
+| F-D05 | Configuración de comisiones | "Porcentaje de comisión por socio o global." | Base de la comisión → BR-31; gobierno del precio → BR-46 | — | teléfono + servidor | M |
+| F-D06 | Reportes financieros | "Ingresos por periodo, comisiones y conciliación con Conekta." | Modelo del dinero → BR-31, DD-013 | Lectura de movimientos de la pasarela | teléfono + servidor | L |
+| F-D07 | Notificaciones push masivas | "Envío segmentado o global para promociones o mantenimiento." | Por qué se segmenta → BR-32 | Avisos masivos | teléfono + servidor | M |
 
 ### Landing — 12 secciones · `:15:A.2`
 
@@ -139,7 +143,8 @@ Corre en web. La ve el público.
 
 ### Indicadores — 11 métricas · `:22:A.5`
 
-"Panel de indicadores integrado en la sección de administración". Corre donde viva el Módulo D (DD-040).
+"Panel de indicadores integrado en la sección de administración". Corre donde viva el Módulo D (DD-040): desde el
+2026-11-24, en el teléfono, con el servidor (C-247; [[ADR-0022-administracion-en-la-app]]).
 
 | ID | Categoría | Métrica | Visualización | Lo que no dice | Tam. |
 |---|---|---|---|---|---|

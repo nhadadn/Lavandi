@@ -1,0 +1,48 @@
+{
+    "peticion": "PUT /api/administracion/comisiones/global",
+    "estado": 200,
+    "cuerpo": {
+        "global": {
+            "porcentaje": "12.50",
+            "vigente_desde": "2026-12-01T12:00:00Z"
+        },
+        "lavanderias": [
+            {
+                "id_publico": "01m8dcn0nqm1jezy22vvm6ahyg",
+                "nombre": "Lavandería de prueba A",
+                "plaza": {
+                    "nombre": "Plaza de prueba Uno"
+                },
+                "propio": null,
+                "aplica": {
+                    "porcentaje": "12.50",
+                    "origen": "global"
+                }
+            },
+            {
+                "id_publico": "01m8dcn0pazm5yfswzq2w67pab",
+                "nombre": "Lavandería de prueba B",
+                "plaza": {
+                    "nombre": "Plaza de prueba Dos"
+                },
+                "propio": null,
+                "aplica": {
+                    "porcentaje": "12.50",
+                    "origen": "global"
+                }
+            },
+            {
+                "id_publico": "01m8dcn0pm25ym5qz0j5ze1k4p",
+                "nombre": "Lavandería de prueba C",
+                "plaza": {
+                    "nombre": "Plaza de prueba Uno"
+                },
+                "propio": null,
+                "aplica": {
+                    "porcentaje": "12.50",
+                    "origen": "global"
+                }
+            }
+        ]
+    }
+}

@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=390, initial-scale=1">
+<title>Administración · Inicio de sesión con Google</title>
+<meta name="description" content="Con Google, la administración recibe el mensaje bajo el botón y no se guarda sesión. NSV-2026-001-v8.pdf:16:ANEXO A, Sección A.3 (Módulo A #2); :10:Cláusula X; administracion-app-E08">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;text-align:inherit;cursor:pointer}
+input,textarea{font:inherit;color:inherit;border:0;background:transparent;width:100%;min-width:0;outline:none;resize:none}
+::placeholder{color:#515A64;opacity:1}
+
+:root{
+ --fondo:#F7F4EF;--superficie:#FFFFFF;--hundida:#EDE9E2;--texto:#171C21;--suave:#515A64;--deshab:#6B7681;
+ --borde:#DCE0E5;--borde-fuerte:#6B7681;--accion:#297899;--accion-texto:#FFFFFF;
+ --exito:#1E6F45;--atencion:#8A5A00;--error:#A32222;--info:#1F5C8C;
+ --p-confirmado:#1F5C8C;--p-recolectado:#5A4B8A;--p-en-proceso:#8A5A00;--p-listo:#1E6F45;--p-entregado:#515A64;
+ --agua:#2E86AB;--agua-claro:#A8D5E2;--limon:#E8C547;
+}
+html,body{width:390px;height:844px;overflow:hidden;background:var(--fondo)}
+.tel{width:390px;height:844px;display:flex;flex-direction:column;background:var(--fondo);position:relative;overflow:hidden;font-family:'Source Sans 3',system-ui,sans-serif;color:var(--texto);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.enc{flex:none;display:flex;align-items:center;gap:4px;padding:4px 8px;background:var(--superficie)}
+.reg,.lado{width:48px;height:48px;flex:none;display:flex;align-items:center;justify-content:center;border-radius:999px}
+.enc-t{flex:1;min-width:0;font:700 18px/1.2 Nunito,sans-serif;letter-spacing:-.18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cont{flex:1;min-height:0;overflow:hidden;padding:24px 16px;display:flex;flex-direction:column;gap:16px}
+.cont-enc{padding-top:12px}
+.acc{flex:none;padding:12px 16px 16px;display:flex;flex-direction:column;gap:8px;background:var(--fondo);border-top:1px solid var(--borde)}
+.titulo{font:700 24px/1.2 Nunito,sans-serif;letter-spacing:-.24px}
+.centro{text-align:center}
+.tsec{font:700 20px/1.2 Nunito,sans-serif;letter-spacing:-.2px}
+.par{color:var(--suave);font-size:16px;line-height:1.5}
+.menor{font-size:14px;line-height:1.5}
+.suave{color:var(--suave)}
+.semi{font-weight:600}
+.num{font-variant-numeric:tabular-nums}
+.enl{min-height:48px;display:flex;align-items:center;gap:12px;color:var(--accion);font-weight:600;font-size:16px}
+.enl-t{text-decoration:underline;text-underline-offset:2px}
+.enl-fin{align-self:flex-end}
+.enl-centro{align-self:center}
+.enl-menor{font-size:14px}
+.preg{color:var(--texto);font-weight:400;text-decoration:none;margin-right:4px}
+.entradas{display:flex;flex-direction:column}
+.grupo{display:flex;flex-direction:column;gap:4px}
+.fila-enl{display:flex;flex-wrap:wrap;column-gap:20px}
+.empuja{margin-left:auto}
+.btn{min-height:52px;display:flex;align-items:center;justify-content:center;gap:8px;padding:0 16px;border-radius:8px;border:1px solid var(--accion);background:var(--accion);color:var(--accion-texto);font-weight:700;font-size:16px;text-align:center;line-height:1.25}
+.btn-sec{min-height:48px;background:var(--superficie);border-color:var(--borde-fuerte);color:var(--texto);font-weight:600}
+.btn-des{background:var(--hundida);border-color:var(--borde);color:var(--deshab)}
+.botones{display:flex;flex-direction:column;gap:8px}
+.botones-fila{flex-direction:row}
+.botones-fila > *{flex:1}
+.tarj{border:1px solid var(--borde);border-radius:12px;background:var(--superficie);padding:16px;display:flex;flex-direction:column;gap:12px}
+.tarj-lista{gap:4px}
+.tarj-compacta{padding:12px 16px;gap:2px}
+.fila-toca{flex-direction:row;align-items:center;gap:12px;padding:12px 8px 12px 16px}
+.fila-toca-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.chev{width:24px;height:24px;flex:none;display:flex;align-items:center;justify-content:center}
+.cab{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.cab-arriba{align-items:flex-start}
+.nom{font:700 16px/1.35 Nunito,sans-serif;min-width:0;flex-shrink:1}
+.tcard{font:700 20px/1.2 Nunito,sans-serif;letter-spacing:-.2px;min-width:0;flex-shrink:1}
+.ins{display:inline-flex;align-items:center;gap:8px;padding:4px 12px;border:1px solid currentColor;border-radius:999px;background:var(--superficie);font-weight:600;font-size:14px;line-height:1.3;flex:none;white-space:nowrap;align-self:flex-start}
+.ins-cuad{border-radius:4px}
+.ins-centro{align-self:center}
+.punto{width:8px;height:8px;border-radius:999px;background:currentColor;flex:none}
+.marca{display:inline-flex;align-items:center;padding:4px 8px;border:1px solid var(--atencion);border-radius:4px;color:var(--atencion);background:var(--superficie);font-weight:600;font-size:14px;line-height:1.3;white-space:nowrap;flex:none}
+.renglon{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.renglon-et{flex:1;min-width:0;color:var(--suave);font-size:16px;line-height:1.35}
+.cifras{border:1px solid var(--borde);border-radius:12px;background:var(--superficie);padding:4px 16px}
+.cifra{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;min-height:48px}
+.cifra-sig{border-top:1px solid var(--borde)}
+.cifra-et{flex:1;min-width:0}
+.cifra-v{font:700 20px/1.2 Nunito,sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap}
+.cifra-vt{font-size:16px;text-align:right}
+.dato{display:flex;flex-direction:column}
+.dato-et{font-size:14px;color:var(--suave)}
+.dato-sig{border-top:1px solid var(--borde);padding-top:12px}
+.campo{display:flex;flex-direction:column;gap:4px;min-width:0}
+.eti{font-size:14px;font-weight:600}
+.entrada{min-height:48px;padding:8px 12px;border:1px solid var(--borde-fuerte);border-radius:8px;background:var(--superficie);font-size:16px;display:flex;align-items:center;gap:8px;width:100%}
+.entrada-multi{align-items:flex-start;min-height:88px}
+.entrada-err{border-color:var(--error)}
+.entrada-foco{border-width:3px;border-color:var(--accion);padding:6px 10px}
+.val{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.val-marc{color:var(--suave)}
+.contador{font-size:14px;color:var(--suave);line-height:1.5}
+.error{color:var(--error);font-size:14px;line-height:1.5}
+.dos{display:flex;gap:12px}
+.dos > *{flex:1}
+.pest{display:flex;border:1px solid var(--borde-fuerte);border-radius:8px;overflow:hidden;background:var(--superficie)}
+.pest > button{flex:1;min-height:48px;display:flex;align-items:center;justify-content:center;padding:0 12px;font-size:16px;white-space:nowrap;text-align:center}
+.pest > button + button{border-left:1px solid var(--borde)}
+.pest > .pest-sel{background:var(--accion);color:var(--accion-texto);font-weight:700}
+.desliza{margin:0 -16px;overflow:hidden;flex:none;position:relative}
+.desliza .pest{display:inline-flex;margin:0 16px}
+.desliza .pest > button{flex:none}
+.desvanece{position:absolute;top:0;bottom:0;width:44px;pointer-events:none}
+.desvanece-der{right:0;background:linear-gradient(to right,rgba(247,244,239,0),#F7F4EF 85%)}
+.desvanece-izq{left:0;background:linear-gradient(to left,rgba(247,244,239,0),#F7F4EF 85%)}
+.sep{display:flex;align-items:center;gap:12px}
+.sep-l{flex:1;height:1px;background:var(--borde)}
+.sep-t{font-weight:400;font-size:14px;color:var(--suave)}
+.linea{height:1px;background:var(--borde);flex:none}
+.tabla{display:flex;flex-direction:column}
+.tr{display:flex;gap:8px;align-items:center;min-height:40px;padding:8px 0}
+.tr-sig{border-top:1px solid var(--borde)}
+.th{font-size:14px;font-weight:600;color:var(--suave);min-height:32px;padding:4px 0}
+.c1{flex:1;min-width:0}
+.cn{flex:none;text-align:right;font-variant-numeric:tabular-nums}
+.inter{display:flex;align-items:center;gap:12px;min-height:48px;width:100%}
+.inter-et{flex:1}
+.sw{width:44px;height:26px;border-radius:999px;background:var(--accion);position:relative;flex:none;display:block}
+.sw-off{background:#C0C6CE;border:1px solid var(--borde-fuerte)}
+.perilla{position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:999px;background:#fff;display:block}
+.perilla-off{right:auto;left:2px;top:2px}
+.hoja-cab{display:flex;align-items:center;gap:12px}
+.hoja-t{flex:1;font-size:18px;font-weight:600}
+.cerrar{min-height:48px;min-width:48px;padding:0 8px;display:flex;align-items:center;justify-content:center;color:var(--accion);font-size:16px}
+.opcion{min-height:48px;display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--borde);width:100%}
+.circ{width:24px;height:24px;border-radius:999px;border:1px solid var(--borde-fuerte);background:#fff;display:flex;align-items:center;justify-content:center;flex:none}
+.circ-sel{border-color:var(--accion)}
+.circ-dentro{width:12px;height:12px;border-radius:999px;background:var(--accion);display:block}
+.velo{position:absolute;inset:0;background:rgba(14,18,22,.48)}
+.dialogo{position:absolute;left:24px;right:24px;top:50%;transform:translateY(-50%);background:#fff;border-radius:28px;padding:24px 24px 8px;box-shadow:0 8px 24px rgba(14,18,22,.24);font-family:Roboto,system-ui,sans-serif}
+.dialogo-t{font:400 24px/1.33 Roboto,system-ui,sans-serif;color:#171C21}
+.dialogo-p{margin-top:16px;font:400 14px/1.45 Roboto,system-ui,sans-serif;color:#3B424A}
+.db{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+.db > *{min-height:48px;padding:0 12px;display:flex;align-items:center;font:500 14px Roboto,system-ui,sans-serif;color:var(--accion)}
+.nota-ej{font-size:14px;color:var(--suave)}
+.fila-ins{display:flex;align-items:center;column-gap:12px;row-gap:4px;flex-wrap:wrap}
+.cargando{display:flex;align-items:center;gap:12px}
+.foto-circ{width:64px;height:64px;border-radius:999px;background:var(--hundida);border:1px solid var(--borde);display:flex;align-items:center;justify-content:center;flex:none;overflow:hidden}
+.mapa{border:1px solid var(--borde);border-radius:12px;overflow:hidden;background:#E4EAE6;position:relative;flex:none}
+.leyenda{display:flex;align-items:center;gap:8px}
+.cuadro{width:12px;height:12px;border-radius:2px;flex:none}
+.columna{display:flex;flex-direction:column}
+.columna-4{display:flex;flex-direction:column;gap:4px}
+.columna-8{display:flex;flex-direction:column;gap:8px}
+</style>
+</head>
+<body>
+<main class="tel" data-raiz="1">
+<header class="enc"><span class="lado"></span><h1 class="enc-t">Iniciar sesión</h1><span class="lado"></span></header><section class="cont cont-enc"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1341 1326" width="64" height="64" role="img" aria-label="Lavandi" style="align-self:center;flex:none" role="img" aria-label="Lavandi">
+  
+  
+
+  
+
+  <g id="lavandi-simbolo">
+
+    
+    <rect x="92" y="42" width="1202" height="1134" rx="95" fill="#F7F4EF"/>
+
+    
+    <path fill="#A8D5E2" d="
+      M 576 91
+      C 600 118, 617 140, 616 168
+      C 615 200, 594 232, 577 253
+      L 914 255
+      C 975 262, 1024 310, 1030 370
+      L 1027 1126
+      C 1100 1122, 1160 1090, 1199 987
+      L 1199 280
+      C 1199 180, 1130 91, 1032 91
+      Z"/>
+
+    
+    <path fill="#2E86AB" d="
+      M 273 91
+      L 331 91
+      L 331 832
+      C 331 887, 376 932, 431 932
+      L 628 932
+      L 769 1013
+      L 628 1123
+      L 373 1124
+      C 263 1124, 173 1034, 173 924
+      L 173 191
+      C 173 136, 218 91, 273 91
+      Z"/>
+
+    
+    <circle cx="459" cy="175" r="77" fill="#2E86AB"/>
+    <circle cx="459" cy="175" r="66" fill="#A8D5E2"/>
+    <circle cx="459" cy="175" r="45" fill="#FFFFFF"/>
+
+    
+    <circle cx="670" cy="608" r="175" fill="none" stroke="#2E86AB" stroke-width="22"/>
+    <circle cx="670" cy="608" r="150" fill="none" stroke="#F7F4EF" stroke-width="28"/>
+    <circle cx="670" cy="608" r="135" fill="#2E86AB"/>
+    <clipPath id="lavandi-tambor"><circle cx="670" cy="608" r="135"/></clipPath>
+    <g clip-path="url(#lavandi-tambor)">
+      <path fill="#A8D5E2" d="M 592.0 599.5 Q 603 597,616.5 597.0 Q 630 597,638.5 599.0 Q 647 601,655.0 605.0 Q 663 609,670.5 617.0 Q 678 625,685.0 628.5 Q 692 632,697.0 632.0 Q 702 632,710.5 630.0 Q 719 628,754.0 616.5 Q 789 605,792.0 612.0 Q 795 619,794.5 629.0 Q 794 639,792.0 645.0 Q 790 651,784.0 661.0 Q 778 671,781.5 663.5 Q 785 656,787.5 647.0 Q 790 638,790.0 632.5 Q 790 627,788.5 625.5 Q 787 624,785.0 624.5 Q 783 625,778.5 628.5 Q 774 632,751.0 653.0 Q 728 674,722.5 677.5 Q 717 681,704.5 686.0 Q 692 691,677.5 693.5 Q 663 696,654.0 696.0 Q 645 696,635.5 693.0 Q 626 690,618.5 683.0 Q 611 676,606.0 669.5 Q 601 663,597.0 660.5 Q 593 658,589.5 657.0 Q 586 656,579.5 656.0 Q 573 656,569.5 657.0 Q 566 658,565.5 659.5 Q 565 661,568.0 667.0 Q 571 673,581.0 686.0 Q 591 699,580.0 688.0 Q 569 677,562.5 668.0 Q 556 659,553.0 651.0 Q 550 643,550.0 636.5 Q 550 630,551.5 625.0 Q 553 620,555.5 616.5 Q 558 613,569.5 607.5 Q 581 602,592.0 599.5 Z"/>
+      <path fill="#FFFFFF" d="M 626.5 512.0 Q 633 510,637.0 510.0 Q 641 510,643.0 511.0 Q 645 512,646.0 514.0 Q 647 516,647.0 519.0 Q 647 522,646.0 524.0 Q 645 526,630.5 534.5 Q 616 543,606.5 553.0 Q 597 563,591.5 574.0 Q 586 585,584.5 586.5 Q 583 588,580.5 589.0 Q 578 590,575.0 589.5 Q 572 589,570.0 587.0 Q 568 585,567.5 581.0 Q 567 577,570.0 568.0 Q 573 559,578.5 550.0 Q 584 541,588.0 536.5 Q 592 532,600.0 526.0 Q 608 520,614.0 517.0 Q 620 514,626.5 512.0 Z"/>
+    </g>
+
+    
+    <path fill="#E8C547" d="
+      M 897 1126
+      C 860 1060, 816 1030, 816 981
+      A 81 81 0 1 1 978 981
+      C 978 1030, 934 1060, 897 1126
+      Z"/>
+    <circle cx="896" cy="983" r="30" fill="#2E86AB"/>
+
+  </g>
+</svg><div class="columna-8"><h2 class="titulo centro">Hola de nuevo</h2><p class="par centro ">Entra a Lavandi.</p></div><div class="campo"><label class="eti" for="c3">Correo electrónico</label><div class="entrada"><input class="val" id="c3" type="text" value="admin@prueba.test"></div></div><div class="campo"><label class="eti" for="c4">Contraseña</label><div class="entrada"><input class="val" id="c4" type="text" value="••••••••••••"></div></div><a class="enl enl-fin" href="#"><span class="enl-t">¿Olvidaste tu contraseña?</span></a><a class="btn" href="03-inicio-del-modulo.html">Iniciar sesión</a><div class="sep"><span class="sep-l"></span><span class="sep-t">o</span><span class="sep-l"></span></div><div class="columna-4"><a class="btn btn-sec" href="02-inicio-de-sesion-google.html"><svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>Continuar con Google</a><span class="error" role="alert">La administración entra con su correo y su contraseña.</span></div><a class="enl enl-centro enl-menor" href="#"><span class="preg">¿No tienes cuenta?</span><span class="enl-t">Regístrate</span></a><p class="nota-ej">Ejemplo para ilustrar · datos de prueba</p></section>
+</main>
+<script>
+(function(){
+function deslizar(){
+ document.querySelectorAll('.desliza[data-elegida]').forEach(function(d){
+  var p=d.querySelector('.pest'),t=p.children[+d.getAttribute('data-elegida')];
+  var ancho=d.getBoundingClientRect().width,fila=p.getBoundingClientRect().width+32;
+  var tb=t.getBoundingClientRect(),db=d.getBoundingClientRect();
+  var izq=tb.left-db.left,centro=izq+tb.width/2-ancho/2;
+  var mx=Math.max(0,fila-ancho),x=Math.max(0,Math.min(mx,centro));
+  p.style.transform='translateX(-'+Math.round(x)+'px)';
+  if(x>0){var a=document.createElement('span');a.className='desvanece desvanece-izq';a.setAttribute('aria-hidden','true');d.appendChild(a);}
+  if(x<mx){var b=document.createElement('span');b.className='desvanece desvanece-der';b.setAttribute('aria-hidden','true');d.appendChild(b);}
+  d.removeAttribute('data-elegida');
+ });
+ document.body.setAttribute('data-deslizado','1');
+}
+if(document.fonts&&document.fonts.ready){document.fonts.ready.then(deslizar);}else{window.addEventListener('load',deslizar);}
+})();
+</script>
+</body>
+</html>

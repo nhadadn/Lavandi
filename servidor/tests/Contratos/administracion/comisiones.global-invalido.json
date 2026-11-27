@@ -1,0 +1,12 @@
+{
+    "peticion": "PUT /api/administracion/comisiones/global",
+    "estado": 422,
+    "cuerpo": {
+        "message": "El porcentaje va de 0 a 100.",
+        "errors": {
+            "porcentaje": [
+                "El porcentaje va de 0 a 100."
+            ]
+        }
+    }
+}

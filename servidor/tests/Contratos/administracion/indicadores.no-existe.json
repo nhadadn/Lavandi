@@ -1,0 +1,7 @@
+{
+    "peticion": "GET /api/administracion/indicadores/{categoria}",
+    "estado": 404,
+    "cuerpo": {
+        "message": "No existe la categoría."
+    }
+}

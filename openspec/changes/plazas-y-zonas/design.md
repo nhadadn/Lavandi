@@ -51,7 +51,7 @@ Este cambio crea tres tablas, tal como las fija `vault/arquitectura/modelo-de-da
 | Tabla | Columnas | Llaves, únicos y `CHECK` |
 |---|---|---|
 | `plazas` | `id_plazas`, `nombre`, `zona_horaria`, `activa` | Llave `id_plazas`. No lleva `id_plazas` como foránea: está en la lista de tablas sin plaza. `zona_horaria` no nula; que sea una zona IANA válida lo valida el código (plazas-E02), porque un `CHECK` no puede consultar la base de husos |
-| `zonas` | `id_zonas`, `id_plazas`, `nombre`, `poligono` (`geography(MultiPolygon, 4326)`), `activa` | Llave `id_zonas`. Llave foránea `id_plazas` a `plazas`, no nula, con índice y `ON DELETE RESTRICT`. Índice GiST en `poligono`. La fuente del polígono es DD-094 |
+| `zonas` | `id_zonas`, `id_plazas`, `nombre`, `poligono` (`geography(MultiPolygon, 4326)`), `activa` | Llave `id_zonas`. Llave foránea `id_plazas` a `plazas`, no nula, con índice y `ON DELETE RESTRICT`. Índice GiST en `poligono`. El polígono sale de los límites municipales del INEGI (Open Questions); qué cubre cada zona sigue en DD-094 |
 | `parametros_plaza` | `id_parametros_plaza`, `id_plazas`, `clave`, `valor` (`jsonb`), `vigente_desde`, `vigente_hasta` | Llave `id_parametros_plaza`. Llave foránea `id_plazas` a `plazas`, no nula, con `ON DELETE RESTRICT`. Único `(id_plazas, clave, vigente_desde)`, que también sirve de índice de la llave foránea. `vigente_desde` y `vigente_hasta` en `timestamptz`. Cada `clave` se valida en el código |
 
 - **`parametros_plaza` nace vacía.** Este cambio no lee ni escribe ninguna clave. Las claves que el modelo prevé (el
@@ -72,9 +72,19 @@ Este cambio crea tres tablas, tal como las fija `vault/arquitectura/modelo-de-da
 - [La zona horaria de Matamoros, Coahuila] → en la base de husos, `America/Matamoros` es Matamoros, **Tamaulipas**,
   con horario fronterizo. Para la Comarca Lagunera el candidato es `America/Monterrey` (grado E, `SIN VERIFICAR`). Se
   verifica antes de escribir el archivo del territorio.
-- [Polígonos municipales pesados] → si se usan los límites oficiales completos, las consultas se apoyan en el índice
-  espacial y el archivo puede simplificarse al cargarlo. Se mide con los datos reales.
-- [Zonas encimadas] → si dos zonas de plazas distintas se enciman, un punto resuelve a dos plazas. Ver Open Questions.
+- [Polígonos municipales pesados] → las zonas salen de los límites municipales del INEGI (Open Questions). Las
+  consultas se apoyan en el índice espacial, y lo que va al teléfono y al panel ya sale simplificado al leerlo
+  (`ZonasDeLaCobertura`, `PedidosPorZona`). El archivo se simplifica al prepararlo, antes de que lo lea el comando, y
+  como un conjunto: el borde que comparten dos municipios vecinos (los de Durango entre sí, Gómez Palacio con Torreón,
+  Torreón con Matamoros) queda idéntico, vértice por vértice, en las dos zonas. Simplificar cada municipio por separado,
+  aun con `ST_SimplifyPreserveTopology`, puede mover ese borde distinto de cada lado y dejar encimados, que plazas-E12
+  rechaza, y huecos, que dejan sin plaza un domicilio válido sin que nada lo avise. Simplificar también mueve el borde exterior
+  del territorio hasta la tolerancia, por eso la tolerancia se mide con los datos reales y el archivo preparado se
+  compara con los límites originales: ninguna zona se mete en un municipio fuera del TERRITORIO INICIAL
+  (`NSV-2026-001-v8.pdf:4:Cláusula I`).
+- [Zonas encimadas] → la carga rechaza dos zonas que comparten área, de cualquier plaza (plazas-E12, C-234). El chequeo
+  es en el plano y la resolución en la esfera: con bordes que comparten vértices coinciden; con un borde largo de
+  vértices distintos puede quedar un encimado de metros (anotado en `AperturaDePlaza`).
 - [El criterio de O-26 queda a medias] → plazas-E08 prueba la carga sin migraciones, pero el criterio completo pide el
   recorrido entero en la plaza nueva. Se completa con un escenario en `estados-del-pedido` o en `publicacion`.
 
@@ -83,20 +93,43 @@ Este cambio crea tres tablas, tal como las fija `vault/arquitectura/modelo-de-da
 - **DD-093: plazas del territorio inicial.** ¿Una plaza o dos? C-123 habla de arrancar "en ambas" (Durango y
   La Laguna), pero falta decir qué municipios van en cada una: Gómez Palacio y Lerdo son de Durango y de la Comarca
   Lagunera (`:4:Cláusula I`). Bloquea plazas-E10 y plazas-E11.
-- **DD-094: zonas del territorio inicial (BR-02).** ¿Cada zona es el límite oficial completo del municipio o un
-  área menor dentro de él? ¿De qué fuente sale el polígono y quién lo aprueba? Bloquea plazas-E10 y plazas-E11, y el
-  mapa de cobertura de la landing (F-L07).
-- **Zonas encimadas.** ¿La carga rechaza una zona que se encima con la de otra plaza? Lo confirma Arthur; sin
-  escenario no se programa.
+- **DD-094: zonas del territorio inicial (BR-02).** Sigue abierta en su otra mitad, que es de EL CLIENTE, vía Nadir:
+  ¿cada zona es el municipio completo o un área menor dentro de él, y quién la aprueba, en un caso o en el otro?
+  Recomendación del concilio: si una zona es un área menor, se traza a mano sobre la base del INEGI y la aprueba quien
+  EL CLIENTE indique, vía Nadir. Una recomendación no es la decisión. La fuente del polígono ya está resuelta (ver "La
+  fuente de los límites oficiales", abajo). Bloquea plazas-E10 y plazas-E11, junto con DD-093, y el mapa de cobertura
+  de la landing (F-L07).
+- **Zonas encimadas.** Resuelta: la carga las rechaza (plazas-E12; DD-134, C-234).
 - **Tipos espaciales en Eloquent.** Sin paquete, las consultas usan las funciones de PostGIS directamente y no hace
   falta ADR. Si se quiere un paquete de tipos espaciales, necesita ADR.
-- **La fuente de los límites oficiales** (por ejemplo, el marco geoestadístico del INEGI) y su licencia: grado E,
-  `SIN VERIFICAR`.
+- **La fuente de los límites oficiales.** Resuelta en su parte técnica: los polígonos de las zonas salen de los
+  límites municipales del Marco Geoestadístico del INEGI, simplificados al preparar el archivo. Encaja con un
+  territorio que el contrato define por municipios, "La totalidad de los municipios que integran el Estado de Durango"
+  y "Únicamente los municipios de Torreón y Matamoros, Coahuila de Zaragoza" (`NSV-2026-001-v8.pdf:4:Cláusula I`), y
+  con el mapa de cobertura, que muestra "las zonas de servicio del TERRITORIO INICIAL"
+  (`NSV-2026-001-v8.pdf:15:ANEXO A, Sección A.2`).
+  - **El archivo.** El GeoJSON versionado que lee el comando (decisión 3) se prepara a partir de esos límites: en
+    longitud y latitud, SRID 4326 (decisión 2), reproyectado si la fuente viene en otra proyección, y simplificado como
+    un conjunto, con los bordes que comparten los municipios vecinos idénticos y la tolerancia que se mida con los
+    datos reales (Risks, "Polígonos municipales pesados"). `AperturaDePlaza` guarda cada polígono como viene, sin
+    simplificarlo, y rechaza los encimados: el archivo preparado pasa plazas-E12 y ninguna de sus zonas se mete en un
+    municipio fuera del TERRITORIO INICIAL.
+  - **La licencia.** Grado E, `SIN VERIFICAR`: los "Términos de Libre Uso de la Información del INEGI"
+    (https://www.inegi.org.mx/inegi/terminos.html, consultados el 2026-11-24) dicen que se puede "explotar
+    comercialmente la información", y piden darle el crédito al INEGI ("Fuente: INEGI, nombre del producto de donde se
+    extrae la información") y "notificar al usuario final de cualquier análisis o transformación que haga a la
+    información", como la simplificación. Se verifica, con su fecha de consulta, antes de cargar el archivo. Siguen
+    abiertos quién la verifica para el uso comercial (la licencia de SEPOMEX la verifica Nadir, DD-138) y dónde va el
+    crédito si se confirma: el mapa de cobertura de la landing (F-L07) y el mapa de los indicadores del panel.
+  - **Quién la decidió.** Es la parte que DD-094 asigna a "Arthur (la fuente de datos)"
+    (`vault/meta/deuda-de-decision.md:105`); la decidió el concilio de agentes del 2026-11-24, por delegación de Arthur
+    (C-236, ampliada por C-245), y la asienta la decisión 62 del acta del 2026-11-20
+    (`vault/meta/actas/acta-2026-11-20-modelo-y-pasarela.md`; `vault/evidencias/concilio/concilio-2026-11-24.md`,
+    paquete P07). No desbloquea la tarea 4.1: siguen DD-093 y la otra mitad de DD-094.
 - **Con qué reconoce la carga una plaza que ya existe.** plazas-E08 pide que volver a cargar el mismo archivo no
   duplique. Para eso la carga necesita una llave natural, por ejemplo `nombre` único en `plazas` y
-  `(id_plazas, nombre)` único en `zonas`, que el modelo de datos no trae. Lo decide Arthur en el modelo antes de la
-  tarea 1.1.
-- **`zonas.activa`.** El modelo la trae, pero la spec resuelve un punto solo por plaza activa (plazas-E04 a E06). Si
-  una zona que no está activa deja de dar servicio dentro de una plaza activa, falta su escenario; sin escenario, la
-  resolución no la mira.
+  `(id_plazas, nombre)` único en `zonas`. **Resuelta:** el modelo de datos aprobado ya los trae (ADR-0016, C-193;
+  `vault/arquitectura/modelo-de-datos.md`, filas `plazas` y `zonas`).
+- **`zonas.activa`.** Resuelta: una zona que no está activa no da servicio, y al recargar se desactiva la que ya no
+  viene (plazas-E13 y E14; DD-134, C-234).
 - **Las marcas `created_at` y `updated_at`.** Resuelta: van en toda tabla del negocio, en `timestamptz` (modelo-E17; ADR-0016, regla 7).

@@ -76,3 +76,12 @@ Bajo: es un script aislado.
 - **Obligaciones:** O-02 (tokens) y O-03 (manual).
 - **Notas:** `design-system.md` y `tokens.json`.
 - **ADRs relacionados:** ADR-0002, ADR-0003 y ADR-0011.
+
+## Adenda del 2026-11-21: las fuentes de la marca en la app
+
+Las familias de `tokens.json`, Nunito para titulares y Source Sans 3 para cuerpo (`vault/marca/decision-visual.md`,
+vigente), se cargan en la app con `expo-font`, que es parte del SDK de Expo (ADR-0002), y los archivos de los paquetes
+`@expo-google-fonts/nunito` y `@expo-google-fonts/source-sans-3`, con licencia SIL Open Font License (grado E,
+`SIN VERIFICAR` en esta sesión). La app no muestra su primera pantalla hasta que cargan, y si fallan sigue con la letra
+del sistema. La monoespaciada del token se sustituye en la app por la del sistema. Es DD-131, punto 1; la tomó Claude
+por delegación de Arthur Naranjo (C-236).

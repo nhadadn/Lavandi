@@ -1,0 +1,41 @@
+{
+    "peticion": "GET /api/administracion/indicadores/{categoria}",
+    "estado": 200,
+    "cuerpo": {
+        "categoria": "geografico",
+        "rango": {
+            "desde": "2026-11-30",
+            "hasta": "2026-12-06",
+            "granularidad": "dia",
+            "descripcion": "Del 30/11/2026 al 06/12/2026, por día"
+        },
+        "refresco": "30s",
+        "indicadores": {
+            "mapa_de_calor": {
+                "agrupacion": "colonia",
+                "colonias": [
+                    {
+                        "colonia": "Colonia A de prueba",
+                        "municipio": "Municipio de prueba",
+                        "plaza": "Plaza de prueba 1",
+                        "pedidos": 5,
+                        "intensidad": 1,
+                        "color": "#104281",
+                        "latitud": 10.2,
+                        "longitud": -119.8
+                    },
+                    {
+                        "colonia": "Colonia B de prueba",
+                        "municipio": "Municipio de prueba",
+                        "plaza": "Plaza de prueba 1",
+                        "pedidos": 2,
+                        "intensidad": 0.4,
+                        "color": "#3987e5",
+                        "latitud": 11.8,
+                        "longitud": -119.19999999999999
+                    }
+                ]
+            }
+        }
+    }
+}

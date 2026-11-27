@@ -4,7 +4,7 @@ en su worktree, y terminan con su trabajo de la integración continua en verde.
 
 ## 1. Servidor
 
-- [ ] 1.1 base-E01, base-E02, base-E03, base-E08 y base-E10: crear `servidor/` con Laravel 13, Sanctum y Filament 5, sin la tabla `users`, el modelo `User` ni la fábrica que
+- [x] 1.1 base-E01, base-E02, base-E03, base-E08 y base-E10: crear `servidor/` con Laravel 13, Sanctum y Filament 5, sin la tabla `users`, el modelo `User` ni la fábrica que
   trae Laravel (su lugar es `usuarios`, de `registro-e-inicio-de-sesion`),
   conectado al PostGIS local; la primera migración habilita PostGIS; el panel pide iniciar sesión y no deja entrar a
   nadie; `.env.example` sin secretos; nombre y dirección desde configuración — test:
@@ -13,10 +13,12 @@ en su worktree, y terminan con su trabajo de la integración continua en verde.
 
 ## 2. App
 
-- [ ] 2.1 base-E04, base-E05, base-E06, base-E07 y base-E09: crear `movil/` con Expo SDK 58 en TypeScript, con
+- [x] 2.1 base-E04, base-E05, base-E06, base-E07 y base-E09: crear `movil/` con Expo SDK 58 en TypeScript, con
   development build, Jest, `jest-expo` y React Native Testing Library; mínimos iOS 18 y Android 11; dirección de la API,
   identificador de la app y nombre desde configuración — test: `movil/__tests__/base/arranque.test.tsx` y
   `movil/__tests__/base/configuracion.test.ts` — tamaño S
+- [x] 2.2 base-E11: la app abre en Expo Go; el módulo de Google se carga solo fuera de Expo Go y su botón no aparece
+  ahí (C-240) — test: `movil/__tests__/base/expo-go.test.tsx` — tamaño S
 
 ## Horas
 

@@ -1,0 +1,80 @@
+{
+    "peticion": "GET /api/administracion/indicadores/{categoria}",
+    "estado": 200,
+    "cuerpo": {
+        "categoria": "usuarios",
+        "rango": {
+            "desde": "2026-11-30",
+            "hasta": "2026-12-06",
+            "granularidad": "dia",
+            "descripcion": "Del 30/11/2026 al 06/12/2026, por día"
+        },
+        "refresco": "30s",
+        "indicadores": {
+            "usuarios_activos": {
+                "periodos": [
+                    {
+                        "inicio": "2026-11-30",
+                        "periodo": "lun. 30/11/2026",
+                        "personas": 0
+                    },
+                    {
+                        "inicio": "2026-12-01",
+                        "periodo": "mar. 01/12/2026",
+                        "personas": 0
+                    },
+                    {
+                        "inicio": "2026-12-02",
+                        "periodo": "mié. 02/12/2026",
+                        "personas": 0
+                    },
+                    {
+                        "inicio": "2026-12-03",
+                        "periodo": "jue. 03/12/2026",
+                        "personas": 0
+                    },
+                    {
+                        "inicio": "2026-12-04",
+                        "periodo": "vie. 04/12/2026",
+                        "personas": 0
+                    },
+                    {
+                        "inicio": "2026-12-05",
+                        "periodo": "sáb. 05/12/2026",
+                        "personas": 0
+                    },
+                    {
+                        "inicio": "2026-12-06",
+                        "periodo": "dom. 06/12/2026",
+                        "personas": 0
+                    }
+                ]
+            },
+            "vuelven_a_pedir": {
+                "meses": [
+                    {
+                        "inicio": "2026-11-01",
+                        "mes": "noviembre 2026",
+                        "con_primer_pedido": 0,
+                        "porcentaje": null
+                    },
+                    {
+                        "inicio": "2026-12-01",
+                        "mes": "diciembre 2026",
+                        "con_primer_pedido": 0,
+                        "porcentaje": null
+                    }
+                ]
+            },
+            "monto_promedio": {
+                "promedio": null,
+                "promedio_texto": null,
+                "promedio_anterior": null,
+                "promedio_anterior_texto": null,
+                "diferencia": null,
+                "tendencia": null,
+                "tendencia_texto": null
+            }
+        }
+    }
+}

@@ -1,7 +1,7 @@
 ---
 estado: borrador
 grado: mixto
-fuente: NSV-2026-001-v8.pdf:29-30:ANEXO B, Sección B.5 (A); restricciones-no-negociables.md RN-23 (B); brecha-ejecutivo-tecnico.md BR-12, BR-15, BR-18 (B); riesgos.md R-006 (B)
+fuente: NSV-2026-001-v8.pdf:29-30:ANEXO B, Sección B.5 (A); restricciones-no-negociables.md RN-23 (B); brecha-ejecutivo-tecnico.md BR-12, BR-15, BR-18 (B); riesgos.md R-006 (B); adenda del 2026-11-24 de ADR-0009 (D)
 fecha: 2026-09-11
 dueño: Nadir Hadad Navarrete
 ---
@@ -46,6 +46,10 @@ Al guardarse. Las direcciones favoritas (A.3 numeral 8) ya existen por contrato,
 recurrente consume **cero** geocodificaciones. Un pedido repetido —que el contrato también exige,
 numeral 13— tampoco consume ninguna.
 
+*Precisión:* la adenda del 2026-11-24 de `ADR-0009` (DD-139) usa sin consultar el punto que da Google
+durante 30 días y, pasado el plazo, lo vuelve a pedir por su place ID al usar la dirección. El punto
+que marca la persona en el mapa no vence.
+
 **4. La colonia se captura en el formulario, no se deduce del mapa.**
 El mapa de calor de A.5 agrupa por colonia. Deducirla de unas coordenadas es una geocodificación
 inversa **por cada pedido**, para siempre. Pedirla como campo de la dirección cuesta un campo y una
@@ -66,6 +70,9 @@ costaría una sesión de mapa en la pantalla que más se abre de toda la app.
 | Cálculo de rutas | 0 | 0 |
 | Sesión de mapa en seguimiento | 0 | 0 |
 | **Total** | **2** | **1** |
+
+El 0 del usuario recurrente vale mientras el punto de Google de su dirección tenga 30 días o menos;
+pasado el plazo, usarla cuesta una consulta por el place ID (adenda del 2026-11-24 de `ADR-0009`).
 
 Sin estas cinco decisiones, el mismo pedido dispararía una sesión de mapa en la landing, otra al
 buscar, otra al seguir, una geocodificación por pedido, una inversa para la colonia y una llamada de

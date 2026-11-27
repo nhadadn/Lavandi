@@ -18,16 +18,19 @@
 
 ## Decisions
 
-Tres lecturas que fijan los escenarios; Arthur las aprueba con la spec:
+Tres lecturas que fijan los escenarios, ratificadas por el concilio del 2026-11-24, por delegación de Arthur (C-245;
+`acta-2026-11-20-modelo-y-pasarela.md`, decisión 51):
 
 1. **"Completado" es Entregado,** el último de los cinco estados del pedido (Módulo A #12). La lavandería no marca
    Entregado (su último botón es "En proceso de entrega", Módulo B #3), pero el pedido termina ahí. La fecha del
    historial es la del paso a Entregado.
-2. **"Pedidos del día y de la semana" cuenta pedidos completados**, igual que el historial del numeral 4 y que las
-   "entregas del día y de la semana" del repartidor. Alternativa: contar los pedidos recibidos en el día. Ver Open
-   Questions.
+2. **"Pedidos del día y de la semana" cuenta los entregados**, igual que el historial del numeral 4 y que las
+   "entregas del día y de la semana" del repartidor. La lectura alterna, contar los pedidos recibidos en el día, queda
+   escrita en Open Questions.
 3. **"Del día" y "de la semana"** se cuentan en la zona horaria de la plaza (`vault/arquitectura/modelo-multi-plaza.md`).
-   La semana va de lunes a domingo.
+   La semana va de lunes a domingo. Es la misma regla de la lectura 5 del repartidor
+   (`openspec/changes/repartidor/design.md`, Decisions), para que las dos estadísticas, la de la lavandería y la del
+   repartidor, cuenten igual.
 
 ## Tablas y migración
 
@@ -46,6 +49,72 @@ ADR-0016):
 E03 y E07, que ya están bloqueados. `pedidos` trae además su columna `comision_porcentaje`; si vale para el monto neto
 de un pedido ya cobrado lo dice DD-020 ("desde cuándo aplica un cambio de porcentaje").
 
+## Contrato de la API
+
+Lo implementó el implementador del servidor con las tareas 1.1 y 1.2. Es el mismo que está en el comentario de
+`servidor/app/Http/Controllers/Api/HistorialDeLaLavanderiaController.php`. La app del Módulo B (tareas 2.1 y 2.2) se
+hace contra él.
+
+**Sesión y autorización.** Como las de `/api/lavanderia/pedidos` (`pedidos-de-la-lavanderia`, "Contrato de la API"):
+`Authorization: Bearer <token>`, `auth:sanctum` y `autorizar:lavanderia`. La tenencia la decide
+`App\Autorizacion\Autorizacion::pedidosDeLaLavanderia()`: los pedidos de las lavanderías que administra la cuenta, de su
+misma plaza y con el pago acreditado (C-188).
+
+| Respuesta | Cuándo |
+|---|---|
+| `401 { "message": "Unauthenticated." }` | Sin sesión |
+| `403 { "message": "Esta cuenta no tiene acceso." }` | La cuenta no tiene el rol de lavandería, como una de usuario |
+
+**El historial**, `GET /api/lavanderia/historial` (historial-lavanderia-E01 y E02):
+
+```json
+{
+  "pedidos": [
+    {
+      "id_publico": "01jd8x6m3v2c9q4w5e7r8t0y1z",
+      "folio": "7KQ2M9XA",
+      "entregado_en": "2026-12-04T01:30:00Z",
+      "fecha": "2026-12-03"
+    }
+  ]
+}
+```
+
+| Campo | Qué es |
+|---|---|
+| `id_publico` | El ULID del pedido, el mismo de `GET /api/lavanderia/pedidos/{id_publico}` |
+| `folio` | Siempre lleno: la lavandería solo ve pedidos pagados (ADR-0020) |
+| `entregado_en` | El instante del paso a Entregado, en UTC, del historial del pedido en `pedido_eventos` (decisión 1) |
+| `fecha` | Ese instante en la fecha de la plaza (decisión 3): una entrega a las 19:30 del 3 de diciembre en la plaza es el 3, aunque en UTC ya sea el 4 |
+
+- Entran solo los pedidos en Entregado. No entran el que sigue en curso (de `confirmado` a `en_entrega`), el rechazado
+  ni el que espera su pago.
+- Solo los de las lavanderías de la cuenta, de su plaza. Uno de otra lavandería o de otra plaza no aparece, y pedirlo por
+  su `id_publico` a `GET /api/lavanderia/pedidos/{id_publico}` responde `404 { "message": "No existe el pedido." }`, igual
+  que uno que no existe (ADR-0019, decisión 3). El detalle de un pedido del historial es esa misma ruta: no hay otra.
+- De la entrega más reciente a la más antigua; con la misma, del pedido más nuevo al más viejo. Sin paginación. Sin
+  entregados, `"pedidos": []`.
+- **Todavía sin monto ni calificación:** esperan DD-013, DD-020, DD-012 y DD-052 (E03 y E04). Cuando se respondan,
+  entran como campos nuevos del mismo objeto, sin cambiar los que ya están.
+
+**Las estadísticas**, `GET /api/lavanderia/estadisticas` (historial-lavanderia-E05 y E06):
+
+```json
+{ "pedidos_del_dia": 2, "pedidos_de_la_semana": 5 }
+```
+
+| Campo | Qué es |
+|---|---|
+| `pedidos_del_dia` | Los pedidos del historial cuyo paso a Entregado cae en el día de hoy de su plaza |
+| `pedidos_de_la_semana` | Los que caen en la semana de hoy de su plaza, de lunes a domingo; incluye los de hoy |
+
+- Cuentan los mismos pedidos del historial: solo los entregados, solo los de la cuenta y de su plaza.
+- "Hoy" y "esta semana" se leen en la zona horaria de la plaza de cada pedido (decisión 3), con el reloj del servidor:
+  el lunes a las 00:30 de la plaza empieza otra semana, aunque en UTC todavía sea domingo por la noche.
+- Sin entregados, los dos en `0`.
+- **Todavía sin ingreso total ni calificación promedio:** esperan DD-013, DD-020, DD-012 y DD-052 (E07 y E08). Cuando
+  se respondan, entran como campos nuevos del mismo objeto.
+
 ## Risks / Trade-offs
 
 - [Se usa el historial antes de cerrar DD-013 y DD-052] → la lavandería ve folio y fecha, pero no monto ni
@@ -53,8 +122,16 @@ de un pedido ya cobrado lo dice DD-020 ("desde cuándo aplica un cambio de porce
 
 ## Open Questions
 
-- **Qué cuenta como "pedido del día":** el completado ese día (lectura de este cambio) o el recibido ese día. Si
-  Arthur cree que es una pregunta de negocio, va a EL CLIENTE como fila de la deuda.
+- **Qué cuenta como "pedido del día": resuelta.** El concilio del 2026-11-24, por delegación de Arthur (C-245;
+  `acta-2026-11-20-modelo-y-pasarela.md`, decisión 51), ratificó la lectura 2: cuenta los entregados. La lectura
+  alterna, contar los pedidos recibidos en el día, también cabe en el texto "Pedidos del día" del Módulo B #5
+  (`NSV-2026-001-v8.pdf:17:ANEXO A, Sección A.3`). Se quedó la de entregados porque va junto a "ingreso total", que la
+  spec plantea sobre pedidos entregados
+  (`openspec/changes/historial-de-la-lavanderia/specs/historial-lavanderia/spec.md:58`, E07; su definición sigue en
+  DD-013, DD-020 y DD-012), sigue al B #4 "Pedidos completados", y el C #5 dice "Entregas del día y de la semana"
+  (`NSV-2026-001-v8.pdf:18:ANEXO A, Sección A.3`). Ninguna DD de EL CLIENTE la reclama; si la pide, cambia la consulta,
+  no la tabla. Respaldo de la implementación: las cinco pruebas de historial-lavanderia-E05,
+  `servidor/tests/Feature/HistorialLavanderia/EstadisticasTest.php:57-150`.
 - **DD-013, DD-020, DD-012 y DD-052.**
 - **Pantallas sin componente.** El historial y las estadísticas no tienen componente en
   `vault/design-system/componentes.md`.

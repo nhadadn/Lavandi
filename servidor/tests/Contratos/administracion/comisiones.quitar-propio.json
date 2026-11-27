@@ -1,0 +1,48 @@
+{
+    "peticion": "DELETE /api/administracion/comisiones/lavanderias/{lavanderia}",
+    "estado": 200,
+    "cuerpo": {
+        "global": {
+            "porcentaje": "10.00",
+            "vigente_desde": "2026-12-01T12:00:00Z"
+        },
+        "lavanderias": [
+            {
+                "id_publico": "01m8dcn0wkvfbe0farb3sdash5",
+                "nombre": "Lavandería de prueba A",
+                "plaza": {
+                    "nombre": "Plaza de prueba Uno"
+                },
+                "propio": null,
+                "aplica": {
+                    "porcentaje": "10.00",
+                    "origen": "global"
+                }
+            },
+            {
+                "id_publico": "01m8dcn0x7g2ed8bsdbfcw7y2x",
+                "nombre": "Lavandería de prueba B",
+                "plaza": {
+                    "nombre": "Plaza de prueba Dos"
+                },
+                "propio": null,
+                "aplica": {
+                    "porcentaje": "10.00",
+                    "origen": "global"
+                }
+            },
+            {
+                "id_publico": "01m8dcn0xgfarnd5jx78qjvsye",
+                "nombre": "Lavandería de prueba C",
+                "plaza": {
+                    "nombre": "Plaza de prueba Uno"
+                },
+                "propio": null,
+                "aplica": {
+                    "porcentaje": "10.00",
+                    "origen": "global"
+                }
+            }
+        ]
+    }
+}

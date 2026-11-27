@@ -1,0 +1,7 @@
+{
+    "peticion": "POST /api/administracion/lavanderias/{lavanderia}/suspension",
+    "estado": 409,
+    "cuerpo": {
+        "message": "Una lavandería en estado suspendida no se puede suspender."
+    }
+}

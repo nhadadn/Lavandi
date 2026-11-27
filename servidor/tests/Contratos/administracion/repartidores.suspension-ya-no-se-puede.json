@@ -1,0 +1,7 @@
+{
+    "peticion": "POST /api/administracion/repartidores/{repartidor}/suspension",
+    "estado": 409,
+    "cuerpo": {
+        "message": "Un repartidor en estado suspendido no se puede suspender."
+    }
+}

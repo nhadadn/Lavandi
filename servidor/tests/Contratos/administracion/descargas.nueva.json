@@ -1,0 +1,19 @@
+{
+    "peticion": "POST /api/administracion/descargas",
+    "estado": 202,
+    "cuerpo": {
+        "descarga": {
+            "id_publico": "01m8dcn25rjxv58vg6bvqk2gdc",
+            "reporte": "pedidos-totales",
+            "titulo": "Pedidos totales",
+            "desde": "2026-11-30",
+            "hasta": "2026-12-06",
+            "pedida_en": "2026-12-02T15:00:00Z",
+            "estado": "lista",
+            "archivos": {
+                "csv": "pedidos-totales-2026-11-30-al-2026-12-06.csv",
+                "xlsx": "pedidos-totales-2026-11-30-al-2026-12-06.xlsx"
+            }
+        }
+    }
+}

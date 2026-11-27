@@ -1,0 +1,54 @@
+{
+    "peticion": "GET /api/administracion/ingresos",
+    "estado": 200,
+    "cuerpo": {
+        "rango": {
+            "desde": "2027-03-01",
+            "hasta": "2027-04-04",
+            "granularidad": "semana",
+            "descripcion": "Del 01/03/2027 al 04/04/2027, por semana"
+        },
+        "total": {
+            "pagos": 2,
+            "ingresos": "350.00",
+            "ingresos_texto": "$350.00"
+        },
+        "periodos": [
+            {
+                "inicio": "2027-03-01",
+                "periodo": "Semana del 01/03/2027",
+                "pagos": 1,
+                "ingresos": "150.00",
+                "ingresos_texto": "$150.00"
+            },
+            {
+                "inicio": "2027-03-08",
+                "periodo": "Semana del 08/03/2027",
+                "pagos": 0,
+                "ingresos": "0.00",
+                "ingresos_texto": "$0.00"
+            },
+            {
+                "inicio": "2027-03-15",
+                "periodo": "Semana del 15/03/2027",
+                "pagos": 0,
+                "ingresos": "0.00",
+                "ingresos_texto": "$0.00"
+            },
+            {
+                "inicio": "2027-03-22",
+                "periodo": "Semana del 22/03/2027",
+                "pagos": 1,
+                "ingresos": "200.00",
+                "ingresos_texto": "$200.00"
+            },
+            {
+                "inicio": "2027-03-29",
+                "periodo": "Semana del 29/03/2027",
+                "pagos": 0,
+                "ingresos": "0.00",
+                "ingresos_texto": "$0.00"
+            }
+        ]
+    }
+}

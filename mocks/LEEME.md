@@ -36,6 +36,7 @@ guarda en el navegador de quien mira. "Reiniciar los datos del mock", al pie del
 | `usuario/` | Una página por pantalla del módulo A (20 pantallas para las 17 funciones) |
 | `LEEME.md` | Este archivo |
 | `Lavandi - Propuesta 0X/` | Imágenes y prompts de propuestas visuales de Arthur. No son parte de estos mocks navegables ni las genera su código |
+| `Lavandi - Propuesta 06 - Administracion/` | Propuesta 6 · Administración en la app: el Módulo D y los indicadores del A.5 en el teléfono (C-247), versión final del concilio (C-248). 55 pantallas en HTML navegable y PNG, con `index.html` y `NOTAS.md` (citas, injertos, fallas corregidas y lo que queda abierto). Es también la sección «PROPUESTA 6» del lienzo de Claude Design «Lavandi» |
 
 ## Reglas
 

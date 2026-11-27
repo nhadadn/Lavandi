@@ -1,0 +1,26 @@
+{
+    "peticion": "GET /api/administracion/usuarios",
+    "estado": 200,
+    "cuerpo": {
+        "usuarios": [
+            {
+                "id_publico": "01m8dcnh7ej6zrshz3ygxj45j5",
+                "correo": "ana@ejemplo.com",
+                "nombre": "Ana Pruebas",
+                "estado": "activo"
+            },
+            {
+                "id_publico": "01m8dcnh7pr4wgkxhc0p52tpjs",
+                "correo": "beto@ejemplo.com",
+                "nombre": "Beto Sandoval",
+                "estado": "bloqueado"
+            }
+        ],
+        "pagina": {
+            "actual": 1,
+            "ultima": 1,
+            "por_pagina": 25,
+            "total": 2
+        }
+    }
+}

@@ -1,0 +1,7 @@
+{
+    "peticion": "GET /api/administracion/repartidores",
+    "estado": 200,
+    "cuerpo": {
+        "repartidores": []
+    }
+}

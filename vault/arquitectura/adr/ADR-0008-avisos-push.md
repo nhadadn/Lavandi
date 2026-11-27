@@ -1,7 +1,7 @@
 ---
 estado: vigente
 grado: D
-fuente: acta-2026-11-13-cierre-de-la-fase-6.md C-152; restricciones-no-negociables.md RN-06 y RN-30 (A); brecha-ejecutivo-tecnico.md BR-49 (B); deuda-de-decision.md DD-011 y DD-054 (B); verificaciones-fase-6.md, filas 7 y sección del 2026-11-12 (E); ADR-0002 y ADR-0003 (D)
+fuente: acta-2026-11-13-cierre-de-la-fase-6.md C-152; restricciones-no-negociables.md RN-06 y RN-30 (A); brecha-ejecutivo-tecnico.md BR-49 (B); deuda-de-decision.md DD-011 y DD-054 (B); verificaciones-fase-6.md, filas 7 y sección del 2026-11-12 (E); ADR-0002 y ADR-0003 (D); adenda del 2026-11-22: decisión 36, por delegación de C-236 (C), y openspec/changes/avisos/design.md (B)
 fecha: 2026-11-13
 dueño: Arthur Naranjo
 adr: ADR-0008
@@ -74,3 +74,51 @@ Bajo. El envío está encapsulado en un canal de notificaciones de Laravel, y la
 - **Restricciones:** RN-06 y RN-30.
 - **Pendientes:** DD-011 y DD-054.
 - **ADRs relacionados:** ADR-0002, ADR-0003, ADR-0007 y ADR-0012.
+
+## Adenda del 2026-11-21: el servidor llama a FCM sin `laravel-notification-channels/fcm`
+
+**Qué cambia.** `servidor/` manda los avisos con la API HTTP v1 de FCM:
+- el canal propio `App\Avisos\Fcm\CanalDeFcm`, con el cliente HTTP de Laravel;
+- la cuenta de servicio, firmada con `firebase/php-jwt`, que ya estaba instalado (adenda de ADR-0005);
+- sin dependencias nuevas.
+
+La app no cambia: sigue con `@react-native-firebase/messaging`.
+
+**Por qué.** `laravel-notification-channels/fcm` depende de `kreait/firebase-php`, y ninguna de sus versiones se
+puede instalar aquí (`composer require --dry-run`, 2026-11-21):
+- la 8.0 choca con `firebase/php-jwt` ^7.2, que usa el inicio con Google;
+- de la 8.1 a la 8.3 piden guzzle 7, y el proyecto tiene la 8.5.2;
+- de la 8.4 en adelante piden la extensión `sodium`, que está apagada en el PHP local.
+
+**Qué queda igual.**
+- Los avisos van en cola, con un trabajo por teléfono y reintentos.
+- Un fallo de FCM nunca detiene el cambio de estado (avisos-E02 y E16).
+- La credencial es la ruta a la cuenta de servicio en `FCM_CREDENCIALES`, fuera del repositorio (ADR-0012).
+
+**Criterio de reversión.** Si se enciende `sodium` en el hosting y una versión del paquete convive con las
+dependencias, se puede volver a él: el canal es la única pieza que cambia.
+
+La aprobó Arthur Naranjo el 2026-11-21 (C-239), con la recomendación de Claude.
+
+## Adenda del 2026-11-22: Firebase en la app solo cuando el entorno trae su archivo
+
+**Contexto.**
+- La app recibe los avisos con `@react-native-firebase/app` y `messaging` (avisos 4.1).
+- Las cuentas de Firebase de prueba todavía no existen (DD-072). Sin su archivo, el complemento de Gradle de Google
+  rompe la compilación.
+- La app se prueba hoy con el APK local y con Expo Go en iPhone (C-240), que no trae el módulo nativo.
+
+**Decisión.**
+- **4, precisión.** Firebase se enlaza en la app solo cuando el entorno trae el archivo de Android
+  (`GOOGLE_SERVICES_JSON`, ADR-0012):
+  - **Sin el archivo:** el proyecto nativo sale como antes, sin los dos módulos, y la app no pide el permiso de avisos.
+  - **Con el archivo:** entran el `googleServicesFile`, el complemento de Gradle de Google y `POST_NOTIFICATIONS`.
+  - **En Expo Go:** el módulo se carga de forma diferida, como el inicio de sesión de Google, y no se pide.
+- **Los complementos de configuración de las dos librerías no se listan.** El de `app` duplica en Android lo que Expo
+  ya hace con `googleServicesFile`, y su parte de iPhone rompería esa compilación. El de `messaging` solo pone el ícono
+  del aviso, que espera la marca.
+- **iPhone** no enlaza Firebase todavía: la versión 27 pide paquetes de Swift y frameworks dinámicos. Entra con la
+  tarea 5.2 de `avisos` (DD-069).
+
+**La tomó** Claude, por delegación de Arthur (C-236), en la decisión 36 de `acta-2026-11-20-modelo-y-pasarela.md`. El
+detalle está en `openspec/changes/avisos/design.md`.

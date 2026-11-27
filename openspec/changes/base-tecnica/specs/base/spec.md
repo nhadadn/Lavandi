@@ -123,3 +123,20 @@ ver `design.md`, Open Questions
 - **Y** los enlaces absolutos que arma el servidor usan la dirección de la configuración
 - **Y** la verificación de marca de la integración continua no encuentra la marca ni el dominio en `movil/` ni en
   `servidor/`
+
+### Requirement: La app abre en Expo Go para probarla en un iPhone sin cuenta de Apple
+
+Mientras no exista la cuenta de Apple del cliente (DD-069), la app DEBE (MUST) poder abrirse en Expo Go para probarla en
+un iPhone. Lo que Expo Go no trae, como el módulo nativo de la entrada con Google, NO DEBE (MUST NOT) cerrar la app: esa
+parte se oculta en Expo Go y sigue completa en el development build y en las tiendas.
+
+Cita: C → C-240 (Arthur: probarla en un iPhone) · D → ADR-0002 (Expo) y ADR-0005 (Google en la app) · A →
+`NSV-2026-001-v8.pdf:16:ANEXO A, Sección A.3` (app para iPhone y Android)
+
+#### Scenario: base-E11 — En Expo Go la app abre y no ofrece Google
+
+- **DADO** la app corriendo en Expo Go
+- **CUANDO** se abren el inicio de sesión y el registro
+- **ENTONCES** las pantallas se muestran sin cerrar la app
+- **Y** no aparece el botón de Google, y el correo y la contraseña siguen funcionando
+- **Y** el módulo nativo de Google solo se carga cuando la app corre fuera de Expo Go

@@ -1,0 +1,36 @@
+{
+    "peticion": "GET /api/administracion/usuarios/{usuario}",
+    "estado": 200,
+    "cuerpo": {
+        "usuario": {
+            "id_publico": "01m8dcnjc9bvzzz301srbqxz86",
+            "correo": "ana@ejemplo.com",
+            "nombre": "Ana Pruebas",
+            "telefono": "6181234567",
+            "estado": "activo",
+            "historial": [
+                {
+                    "folio": "55RRKRFP",
+                    "fecha": "2026-12-03",
+                    "lavanderia": "Lavandería de prueba 985844",
+                    "estado": "Confirmado",
+                    "monto": null
+                },
+                {
+                    "folio": "W8XF10TQ",
+                    "fecha": "2026-12-02",
+                    "lavanderia": "Lavandería de prueba 455023",
+                    "estado": "En proceso",
+                    "monto": null
+                },
+                {
+                    "folio": "XMGR1HN9",
+                    "fecha": "2026-12-01",
+                    "lavanderia": "Lavandería de prueba 455023",
+                    "estado": "Entregado",
+                    "monto": "1180.50"
+                }
+            ]
+        }
+    }
+}

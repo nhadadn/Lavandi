@@ -1,0 +1,44 @@
+{
+    "peticion": "GET /api/administracion/repartidores",
+    "estado": 200,
+    "cuerpo": {
+        "repartidores": [
+            {
+                "id_publico": "01m8dccpchx9zmea23n8cnv06c",
+                "nombre": "Repartidor de prueba 421804",
+                "estado": "baja",
+                "plaza": {
+                    "nombre": "Plaza Uno"
+                }
+            },
+            {
+                "id_publico": "01m8dccpc4pdnjyr6nzed6q8v3",
+                "nombre": "Repartidor de prueba 10097",
+                "estado": "suspendido",
+                "plaza": {
+                    "nombre": "Plaza Dos"
+                }
+            },
+            {
+                "id_publico": "01m8dccpbsp7c4bysdw8ab81fv",
+                "nombre": "Repartidor de prueba 317746",
+                "estado": "activo",
+                "plaza": {
+                    "nombre": "Plaza Uno"
+                }
+            },
+            {
+                "id_publico": "01m8dccpbdqx55qye8ttd2w9x2",
+                "nombre": "Repartidor de prueba 123457",
+                "estado": "pendiente",
+                "plaza": null
+            },
+            {
+                "id_publico": "01m8dccpapnvagrxd5ey4f90mh",
+                "nombre": "Repartidor de prueba 766158",
+                "estado": "baja",
+                "plaza": null
+            }
+        ]
+    }
+}

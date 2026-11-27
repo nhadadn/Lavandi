@@ -199,6 +199,17 @@ secciones presentes: por eso la sección no se oculta.
 - **CUANDO** intenta crear, editar o activar un testimonio o un logo de prensa
 - **ENTONCES** el panel lo rechaza y nada cambia en la portada
 
+#### Scenario: landing-E26 — Borrar un testimonio desde el panel
+
+- **DADO** un testimonio activo que se muestra en la portada
+- **CUANDO** la administración lo borra desde el panel, en la lista o en su edición
+- **ENTONCES** el testimonio deja de existir y la portada ya no lo muestra
+- **Y** su lugar lo toma el siguiente testimonio activo o, si faltan, un marcador de posición (landing-E16)
+- **Y** una persona sin permiso de administración no lo puede borrar
+
+Lo editable desde el panel que pide el A.2 incluye quitar un testimonio que ya no debe salir; el borrado existe en el
+panel desde la tarea 4.1 (`servidor/app/Filament/Resources/Testimonios/`).
+
 ### Requirement: Preguntas frecuentes
 
 La sección "Preguntas frecuentes" DEBE (MUST) mostrar de 6 a 8 preguntas en un acordeón expandible: cada respuesta

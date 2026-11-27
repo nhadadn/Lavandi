@@ -1,0 +1,24 @@
+{
+    "peticion": "GET /api/administracion/lavanderias",
+    "estado": 200,
+    "cuerpo": {
+        "lavanderias": [
+            {
+                "id_publico": "01m8dceeg7ywhbkfb2z0hrf1ce",
+                "nombre": "Lavandería de prueba A Activa",
+                "estado": "activa",
+                "plaza": {
+                    "nombre": "Plaza de prueba Norte"
+                }
+            },
+            {
+                "id_publico": "01m8dceegnsw6mxqrd58a1mgpr",
+                "nombre": "Lavandería de prueba B Suspendida",
+                "estado": "suspendida",
+                "plaza": {
+                    "nombre": "Plaza de prueba Sur"
+                }
+            }
+        ]
+    }
+}

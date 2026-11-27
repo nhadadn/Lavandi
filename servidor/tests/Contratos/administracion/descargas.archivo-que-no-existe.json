@@ -1,0 +1,7 @@
+{
+    "peticion": "GET /api/administracion/descargas/{descarga}/{formato}",
+    "estado": 404,
+    "cuerpo": {
+        "message": "No existe ese archivo."
+    }
+}

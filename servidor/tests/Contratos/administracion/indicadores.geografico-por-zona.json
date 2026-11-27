@@ -1,0 +1,93 @@
+{
+    "peticion": "GET /api/administracion/indicadores/{categoria}",
+    "estado": 200,
+    "cuerpo": {
+        "categoria": "geografico",
+        "rango": {
+            "desde": "2026-11-30",
+            "hasta": "2026-12-06",
+            "granularidad": "dia",
+            "descripcion": "Del 30/11/2026 al 06/12/2026, por día"
+        },
+        "refresco": "30s",
+        "indicadores": {
+            "mapa_de_calor": {
+                "agrupacion": "zona",
+                "zonas": [
+                    {
+                        "zona": "Centro",
+                        "plaza": "Plaza de prueba 1",
+                        "pedidos": 5,
+                        "intensidad": 1,
+                        "color": "#104281",
+                        "geometria": {
+                            "type": "MultiPolygon",
+                            "coordinates": [
+                                [
+                                    [
+                                        [
+                                            -120,
+                                            10
+                                        ],
+                                        [
+                                            -119,
+                                            10
+                                        ],
+                                        [
+                                            -119,
+                                            11
+                                        ],
+                                        [
+                                            -120,
+                                            11
+                                        ],
+                                        [
+                                            -120,
+                                            10
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        }
+                    },
+                    {
+                        "zona": "Norte",
+                        "plaza": "Plaza de prueba 1",
+                        "pedidos": 2,
+                        "intensidad": 0.4,
+                        "color": "#3987e5",
+                        "geometria": {
+                            "type": "MultiPolygon",
+                            "coordinates": [
+                                [
+                                    [
+                                        [
+                                            -120,
+                                            11
+                                        ],
+                                        [
+                                            -119,
+                                            11
+                                        ],
+                                        [
+                                            -119,
+                                            12
+                                        ],
+                                        [
+                                            -120,
+                                            12
+                                        ],
+                                        [
+                                            -120,
+                                            11
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

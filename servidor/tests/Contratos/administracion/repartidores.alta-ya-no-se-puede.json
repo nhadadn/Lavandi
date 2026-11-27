@@ -1,0 +1,7 @@
+{
+    "peticion": "POST /api/administracion/repartidores/{repartidor}/alta",
+    "estado": 409,
+    "cuerpo": {
+        "message": "Un repartidor en estado activo no se puede dar de alta."
+    }
+}

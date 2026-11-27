@@ -11,7 +11,7 @@ Cita: A → `NSV-2026-001-v8.pdf:15:ANEXO A, Sección A.2` y `NSV-2026-001-v8.pd
 #### Scenario: medicion-E01 — El contenedor en cada página
 
 - **DADO** un identificador de contenedor configurado
-- **CUANDO** alguien abre la portada, el aviso de privacidad o los términos
+- **CUANDO** alguien abre la portada, el aviso de privacidad, los términos o la página del borrado de la cuenta
 - **ENTONCES** cada página carga ese contenedor una sola vez
 - **Y** ningún identificador de medición está escrito en el código
 
@@ -76,7 +76,7 @@ Cita: A → `NSV-2026-001-v8.pdf:15:ANEXO A, Sección A.2`
 
 #### Scenario: medicion-E07 — Título y descripción propios
 
-- **CUANDO** un buscador lee la portada, el aviso de privacidad y los términos
+- **CUANDO** un buscador lee la portada, el aviso de privacidad, los términos y la página del borrado de la cuenta
 - **ENTONCES** cada página tiene un título y una descripción que no están vacíos
 - **Y** ninguna repite el título ni la descripción de otra
 
@@ -93,9 +93,10 @@ Cita: A → `NSV-2026-001-v8.pdf:15:ANEXO A, Sección A.2`; D → ADR-0011
 #### Scenario: medicion-E08 — El mapa del sitio y el archivo de robots
 
 - **CUANDO** se pide el mapa del sitio
-- **ENTONCES** responde un XML con la portada, el aviso de privacidad y los términos
+- **ENTONCES** responde un XML con la portada, el aviso de privacidad, los términos y la página del borrado de la
+  cuenta
 - **Y** cada dirección es absoluta y usa el dominio de la configuración
-- **Y** el archivo de robots declara la dirección del mapa del sitio
+- **Y**, con la configuración de producción, el archivo de robots declara la dirección del mapa del sitio
 
 #### Scenario: medicion-E09 — Search Console lee el mapa del sitio
 
@@ -105,6 +106,20 @@ Cita: A → `NSV-2026-001-v8.pdf:15:ANEXO A, Sección A.2`; D → ADR-0011
 - **Y** la captura, con fecha, queda en `vault/evidencias/medicion/`
 
 SIN RESPUESTA — bloquea: medicion-E09 (DD-023, DD-118)
+
+### Requirement: Solo producción se deja indexar
+
+La landing DEBE (MUST) pedir a los buscadores que no indexen ningún entorno que no sea producción.
+
+Cita: A → `NSV-2026-001-v8.pdf:14:ANEXO A, Sección A.2`; D → adenda del 2026-11-24 de ADR-0012
+
+#### Scenario: medicion-E15 — Fuera de producción, el archivo de robots cierra el sitio
+
+- **DADO** el servidor con una configuración que no es la de producción
+- **CUANDO** un buscador pide el archivo de robots
+- **ENTONCES** responde `User-agent: *` y `Disallow: /`
+- **Y** con la configuración de producción responde el archivo de medicion-E08, que no cierra el sitio y declara el
+  mapa del sitio
 
 ### Requirement: Información estructurada del negocio y su zona
 

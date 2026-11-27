@@ -1,0 +1,15 @@
+{
+    "peticion": "PATCH /api/administracion/repartidores/{repartidor}",
+    "estado": 422,
+    "cuerpo": {
+        "message": "Escribe tu nombre. (and 1 more error)",
+        "errors": {
+            "nombre": [
+                "Escribe tu nombre."
+            ],
+            "telefono": [
+                "El teléfono no es válido."
+            ]
+        }
+    }
+}

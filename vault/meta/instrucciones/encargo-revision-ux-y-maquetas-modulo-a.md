@@ -37,7 +37,7 @@ rellenar (`{RUTA_ARTEFACTO}`, `{RUTA_MOCKS_P4}`, `{NIVEL_DETALLE}`, `{FOCO_PRIOR
 | Pieza | Dónde queda |
 |---|---|
 | Informe de la revisión (dos pasadas) | En la sesión del 2026-11-20. No se archivó en el vault |
-| Maquetas convergidas, "Propuesta 5" | Lienzo "Lavandi" en claude.ai, artboards `P5-*.dc.html`, debajo de la Propuesta 4 |
+| Maquetas convergidas, "Propuesta 5" | Lienzo "Lavandi" en claude.ai, artboards `P5-*.dc.html`, debajo de la Propuesta 4. El 2026-11-21 se corrigieron en su lugar contra el contrato, las specs y el H1 (C-232, C-233; decisión 16 de `acta-2026-11-20-modelo-y-pasarela`) |
 | Decisiones de Nadir | [[acta-2026-11-20-decisiones-de-maquetas]] |
 | Pasarelas candidatas (grado E) | `vault/arquitectura/pasarelas-candidatas.md` |
 

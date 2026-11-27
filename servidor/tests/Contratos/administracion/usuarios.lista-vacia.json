@@ -1,0 +1,13 @@
+{
+    "peticion": "GET /api/administracion/usuarios",
+    "estado": 200,
+    "cuerpo": {
+        "usuarios": [],
+        "pagina": {
+            "actual": 1,
+            "ultima": 1,
+            "por_pagina": 25,
+            "total": 0
+        }
+    }
+}

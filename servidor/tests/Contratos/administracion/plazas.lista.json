@@ -1,0 +1,14 @@
+{
+    "peticion": "GET /api/administracion/plazas",
+    "estado": 200,
+    "cuerpo": {
+        "plazas": [
+            {
+                "nombre": "Plaza Dos"
+            },
+            {
+                "nombre": "Plaza Uno"
+            }
+        ]
+    }
+}

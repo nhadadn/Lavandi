@@ -1,0 +1,22 @@
+{
+    "peticion": "POST /api/administracion/repartidores/{repartidor}/alta",
+    "estado": 200,
+    "cuerpo": {
+        "repartidor": {
+            "id_publico": "01m8dccq2netskw39bvmy4ws5a",
+            "nombre": "Repartidor de prueba 35303",
+            "telefono": "6180000000",
+            "correo": "yprosacco@example.com",
+            "foto": null,
+            "tipo_vehiculo": "Motocicleta",
+            "estado": "activo",
+            "plaza": {
+                "nombre": "Plaza Uno"
+            },
+            "transiciones": [
+                "suspender",
+                "dar_de_baja"
+            ]
+        }
+    }
+}

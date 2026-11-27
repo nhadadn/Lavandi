@@ -96,7 +96,7 @@ Cita: A → `NSV-2026-001-v8.pdf:16:ANEXO A, Sección A.3` (Módulo A #2) y `NSV
 El servidor DEBE (MUST) reconocer la sesión por su token de Sanctum hasta que la persona la cierre. La app DEBE (MUST)
 guardar la sesión de forma segura y conservarla al volver a abrirse, sin pedir otra vez el correo ni la contraseña.
 
-Cita: A → `NSV-2026-001-v8.pdf:20:ANEXO A, Sección A.3` (Control de acceso); D → ADR-0005
+Cita: A → `NSV-2026-001-v8.pdf:20:ANEXO A, Sección A.3` (Control de acceso); D → ADR-0005 y ADR-0018 (dónde se guarda)
 
 #### Scenario: registro-E10 — El token abre la consulta de la propia cuenta
 
@@ -111,6 +111,16 @@ Cita: A → `NSV-2026-001-v8.pdf:20:ANEXO A, Sección A.3` (Control de acceso); 
 - **CUANDO** vuelve a abrirla
 - **ENTONCES** entra con su sesión, sin que se le pida el correo ni la contraseña
 - **Y** si el servidor ya no reconoce el token, la app lo borra y la lleva a la entrada
+
+#### Scenario: registro-E32 — Al reinstalar la app, la sesión no sobrevive
+
+- **DADO** que la persona inició sesión y vio la bienvenida, y después desinstaló la app
+- **CUANDO** la vuelve a instalar y la abre
+- **ENTONCES** no hay sesión y la app empieza en la bienvenida, en iPhone igual que en Android
+- **Y** la sesión anterior no se usa, aunque el almacén cifrado del teléfono la haya conservado
+
+Cita: C → C-229 (Arthur) · A → `NSV-2026-001-v8.pdf:16:ANEXO A, Sección A.3` (Módulo A #1, la primera apertura de
+bienvenida-E01)
 
 #### Scenario: registro-E12 — Cerrar la sesión revoca el token
 
@@ -156,11 +166,12 @@ Criterio: SEG-3 (en parte: el rol de usuario)
 La app DEBE (MUST) ofrecer iniciar sesión con Google, con `react-native-nitro-google-signin`. El servidor DEBE (MUST)
 validar el `idToken` contra Google y contra el cliente OAuth configurado antes de emitir la sesión.
 
-Cita: A → `NSV-2026-001-v8.pdf:16:ANEXO A, Sección A.3` (Módulo A #2, "con opción de Google Sign-In"); D → ADR-0005
+Cita: A → `NSV-2026-001-v8.pdf:16:ANEXO A, Sección A.3` (Módulo A #2, "con opción de Google Sign-In"); D → ADR-0005 · C → C-224 (registro-E18) y C-228 (el correo verificado)
 
 #### Scenario: registro-E16 — Entra con Google
 
-- **DADO** un `idToken` de Google válido, emitido para el cliente configurado, con un correo que no tiene cuenta
+- **DADO** un `idToken` de Google válido, emitido para el cliente configurado, con un correo que Google da por
+  verificado y que no tiene cuenta
 - **CUANDO** la app lo envía al servidor
 - **ENTONCES** se crea la cuenta con el rol de usuario y la respuesta trae un token de sesión
 - **Y** cuando esa misma cuenta de Google vuelve a entrar, recibe una sesión de la misma cuenta, sin crear otra
@@ -169,17 +180,20 @@ Criterio: A43-6 (en parte: F-A02)
 
 #### Scenario: registro-E17 — Un idToken no válido se rechaza
 
-- **DADO** un `idToken` vencido, con firma no válida o emitido para otro cliente
+- **DADO** un `idToken` vencido, con firma no válida, emitido para otro cliente o con un correo que Google no da por
+  verificado (C-228)
 - **CUANDO** la app lo envía al servidor
 - **ENTONCES** el servidor lo rechaza y no emite sesión
 
 #### Scenario: registro-E18 — Google con un correo que ya tiene cuenta con contraseña
 
 - **DADO** una cuenta creada con correo y contraseña
-- **CUANDO** la persona entra con una cuenta de Google que tiene ese mismo correo
-- **ENTONCES** no está definido si se une a la cuenta existente o si se rechaza
-
-SIN RESPUESTA — bloquea: registro-E18 (DD-091)
+- **CUANDO** la persona entra con una cuenta de Google que tiene ese mismo correo y Google lo da por verificado
+- **ENTONCES** la cuenta de Google se liga a la cuenta existente y la respuesta trae un token de sesión de esa cuenta
+- **Y** no se crea otra cuenta
+- **Y** las sesiones que la cuenta tenía abiertas se cierran y su contraseña queda anulada: quien la había registrado
+  ya no entra con ella, y el dueño del correo puede crear otra con la recuperación (DD-132, decisión 23)
+- **Y** si Google no da el correo por verificado, el servidor rechaza la entrada y no liga nada
 
 #### Scenario: registro-E19 — El botón de Google en la app
 
@@ -217,7 +231,7 @@ La persona DEBE (MUST) poder pedir un enlace para crear una contraseña nueva. E
 correo a la cuenta, con un vencimiento configurable; con el enlace vigente, la contraseña nueva reemplaza a la
 anterior. En local, el correo se captura sin enviarse.
 
-Cita: A → `NSV-2026-001-v8.pdf:30:ANEXO B, Sección B.5` ("al recuperar una contraseña"); D → ADR-0005
+Cita: A → `NSV-2026-001-v8.pdf:30:ANEXO B, Sección B.5` ("al recuperar una contraseña"); D → ADR-0005 y ADR-0018
 
 #### Scenario: registro-E22 — Pide el enlace
 
@@ -233,6 +247,7 @@ Cita: A → `NSV-2026-001-v8.pdf:30:ANEXO B, Sección B.5` ("al recuperar una co
 - **DADO** que no hay ninguna cuenta con el correo Y
 - **CUANDO** alguien pide recuperar la contraseña con Y
 - **ENTONCES** el servidor no manda ningún correo
+- **Y** la respuesta es la misma que cuando la cuenta existe
 
 #### Scenario: registro-E24 — Crea su contraseña nueva
 
@@ -241,6 +256,7 @@ Cita: A → `NSV-2026-001-v8.pdf:30:ANEXO B, Sección B.5` ("al recuperar una co
 - **ENTONCES** la contraseña nueva queda guardada con hash
 - **Y** la anterior deja de servir para iniciar sesión
 - **Y** el enlace ya no sirve otra vez
+- **Y** las sesiones abiertas de la cuenta se cierran
 
 Criterio: SEG-2
 
@@ -266,6 +282,28 @@ Criterio: SEG-2
 
 SIN RESPUESTA — bloquea: registro-E27 (DD-071; además DD-070, el entorno de prueba, y DD-023, el dominio)
 
+### Requirement: Límite de intentos
+
+El servidor DEBE (MUST) limitar los intentos de inicio de sesión y las peticiones de recuperación de la contraseña,
+por correo y por dirección, con el límite en configuración.
+
+Cita: A → `NSV-2026-001-v8.pdf:10:Cláusula X` (medidas de seguridad técnicas razonables) · D → ADR-0018 · C → C-223
+
+#### Scenario: registro-E30 — Demasiados intentos de inicio de sesión
+
+- **DADO** el límite configurado de 5 intentos por minuto
+- **CUANDO** llega un intento más que el límite, con el mismo correo y desde la misma dirección, dentro del mismo
+  minuto
+- **ENTONCES** el servidor responde que hay demasiados intentos y no revisa la contraseña
+- **Y** pasado el minuto vuelve a aceptar intentos
+
+#### Scenario: registro-E31 — Demasiadas peticiones de recuperación
+
+- **DADO** el límite configurado de 5 peticiones por minuto
+- **CUANDO** llega una petición más que el límite, con el mismo correo y desde la misma dirección, dentro del mismo
+  minuto
+- **ENTONCES** el servidor responde que hay demasiados intentos y no manda otro correo
+
 ### Requirement: Enlaces a los documentos legales en el registro
 
 La pantalla de registro DEBE (MUST) mostrar los enlaces al aviso de privacidad y a los términos y condiciones que
@@ -289,3 +327,27 @@ Cita: A → `NSV-2026-001-v8.pdf:31:ANEXO B, Sección B.7` y `NSV-2026-001-v8.pd
   constancia
 
 SIN RESPUESTA — bloquea: registro-E29 (DD-080)
+
+Mientras tanto, el servidor no guarda ninguna constancia: `usuarios` no tiene columna para ella, porque los
+consentimientos son de EL CLIENTE (`NSV-2026-001-v8.pdf:10:Cláusula X`). La prueba que lo fija lleva registro-E29 en
+su nombre (`servidor/tests/Feature/Registro/MigracionTest.php`).
+
+### Requirement: Cada rol de la app consulta su cuenta y cierra su sesión
+
+La API DEBE (MUST) dejar que una cuenta con un rol de la app —usuario, socio lavandería o socio repartidor— consulte su
+cuenta, con su rol, y cierre su sesión. Con el rol la app sabe a qué módulo entra la cuenta. La administración entra por
+el panel y NO DEBE (MUST NOT) usar estas rutas de la app; la app le ofrece abrir el panel (administracion-E25).
+
+Cita: A → `NSV-2026-001-v8.pdf:16:ANEXO A, Sección A.3` (una sola app con los módulos del usuario, la lavandería y el
+repartidor) · D → ADR-0019 (la autorización en un solo componente) y decisión 31 del acta del 2026-11-20 (C-236) ·
+C → C-140, con su complemento, la decisión 56 del acta del 2026-11-20 (C-245)
+
+#### Scenario: registro-E33 — Una cuenta de lavandería consulta su cuenta y cierra su sesión
+
+- **DADO** una cuenta de socio lavandería con la sesión iniciada
+- **CUANDO** la app consulta su cuenta
+- **ENTONCES** recibe su correo y su rol, `lavanderia`
+- **Y** cuando la app cierra la sesión, el token deja de servir
+- **Y** una cuenta de administración recibe 403 en las dos rutas, sin datos
+- **Y** una cuenta de administración que inicia sesión en la app con su correo y su contraseña recibe 403, sin token
+- **Y**, con esa respuesta, la app no guarda nada y le ofrece abrir el panel (administracion-E25)

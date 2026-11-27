@@ -1,0 +1,8 @@
+{
+    "peticion": "GET /api/administracion/monitoreo",
+    "estado": 200,
+    "cuerpo": {
+        "pedidos": [],
+        "marcadores": []
+    }
+}

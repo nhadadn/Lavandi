@@ -1,0 +1,22 @@
+{
+    "peticion": "POST /api/administracion/repartidores/{repartidor}/suspension",
+    "estado": 200,
+    "cuerpo": {
+        "repartidor": {
+            "id_publico": "01m8dccqaay1d9cvgr19mgncv6",
+            "nombre": "Repartidor de prueba 339307",
+            "telefono": "6180000000",
+            "correo": "laury.daugherty@example.com",
+            "foto": null,
+            "tipo_vehiculo": "Motocicleta",
+            "estado": "suspendido",
+            "plaza": {
+                "nombre": "Plaza Uno"
+            },
+            "transiciones": [
+                "levantar_suspension",
+                "dar_de_baja"
+            ]
+        }
+    }
+}

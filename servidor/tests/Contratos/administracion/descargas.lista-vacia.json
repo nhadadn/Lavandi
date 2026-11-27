@@ -1,0 +1,8 @@
+{
+    "peticion": "GET /api/administracion/descargas",
+    "estado": 200,
+    "cuerpo": {
+        "descargas": [],
+        "dias_de_vida": 7
+    }
+}

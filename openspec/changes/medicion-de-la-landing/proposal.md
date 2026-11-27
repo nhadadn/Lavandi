@@ -14,8 +14,10 @@ Pixel registran eventos, el candado activo en la dirección acordada y 70 o más
 - Registro de cada visita, del toque en los botones de descarga y del envío completo de los formularios, sin datos
   personales en los eventos (A42-2).
 - Título y descripción propios en cada página pública.
-- Mapa del sitio con todas las páginas públicas, declarado en el archivo de robots, y verificación de Search Console por
-  DNS (ADR-0011).
+- Mapa del sitio con todas las páginas públicas, declarado en el archivo de robots de producción, y verificación de
+  Search Console por DNS (ADR-0011).
+- Solo producción se deja indexar: fuera de ella, el archivo de robots le cierra el sitio a todo buscador (medicion-E15;
+  adenda del 2026-11-24 de ADR-0012).
 - Información estructurada que dice de qué trata el negocio y en qué zona opera: las plazas activas del territorio
   inicial.
 - Imágenes y contenido optimizados para teléfono, con Lighthouse en la integración continua como alerta temprana y

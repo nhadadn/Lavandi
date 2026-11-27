@@ -1,0 +1,22 @@
+{
+    "peticion": "GET /api/administracion/avisos-masivos",
+    "estado": 200,
+    "cuerpo": {
+        "avisos": [
+            {
+                "titulo": "Mantenimiento de prueba",
+                "mensaje": "La app no estará disponible el domingo de 2 a 4 de la mañana. Gracias, eñe.",
+                "enviado_en": "2026-11-27T02:16:48Z",
+                "enviado_por_esta_cuenta": true,
+                "destinatarios": null
+            },
+            {
+                "titulo": "Aviso de prueba de otra cuenta",
+                "mensaje": "Texto de prueba de otra cuenta.",
+                "enviado_en": "2026-11-27T02:16:48Z",
+                "enviado_por_esta_cuenta": false,
+                "destinatarios": 3
+            }
+        ]
+    }
+}

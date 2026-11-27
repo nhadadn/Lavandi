@@ -1,0 +1,82 @@
+{
+    "peticion": "GET /api/administracion/indicadores/{categoria}",
+    "estado": 200,
+    "cuerpo": {
+        "categoria": "socios",
+        "rango": {
+            "desde": "2026-11-30",
+            "hasta": "2026-12-06",
+            "granularidad": "dia",
+            "descripcion": "Del 30/11/2026 al 06/12/2026, por día"
+        },
+        "refresco": "30s",
+        "indicadores": {
+            "activas_frente_a_registradas": {
+                "en_espera": [
+                    "DD-083"
+                ]
+            },
+            "calificacion_por_lavanderia": {
+                "semaforo_configurado": false,
+                "lavanderias": [
+                    {
+                        "id_publico": "01m8dcn7es775dn1ghs7j5ea11",
+                        "lugar": 1,
+                        "lavanderia": "Lavandería de cuatro ocho",
+                        "promedio": 4.8,
+                        "semaforo": null,
+                        "semaforo_texto": null
+                    },
+                    {
+                        "id_publico": "01m8dcn7fj70dh7a113st14j97",
+                        "lugar": 2,
+                        "lavanderia": "Lavandería de cuatro dos",
+                        "promedio": 4.2,
+                        "semaforo": null,
+                        "semaforo_texto": null
+                    },
+                    {
+                        "id_publico": "01m8dcn7f6z4per1x236gz16ma",
+                        "lugar": 3,
+                        "lavanderia": "Lavandería de tres nueve",
+                        "promedio": 3.9,
+                        "semaforo": null,
+                        "semaforo_texto": null
+                    },
+                    {
+                        "id_publico": "01m8dcn7d0888ydafbr1q7st3f",
+                        "lugar": null,
+                        "lavanderia": "Lavandería de prueba 61319",
+                        "promedio": null,
+                        "semaforo": null,
+                        "semaforo_texto": null
+                    },
+                    {
+                        "id_publico": "01m8dcn7fym2y0d0ctwe23vtcj",
+                        "lugar": null,
+                        "lavanderia": "Lavandería sin calificar",
+                        "promedio": null,
+                        "semaforo": null,
+                        "semaforo_texto": null
+                    }
+                ]
+            },
+            "entregas_por_repartidor": {
+                "repartidores": [
+                    {
+                        "id_publico": "01m8dcn7qs8x139dn74v3ghh4w",
+                        "repartidor": "Repartidor de prueba con dos",
+                        "plaza": "Plaza de prueba 1",
+                        "entregas": 2
+                    },
+                    {
+                        "id_publico": "01m8dcn7r5yzjw9s17mkgm8x5y",
+                        "repartidor": "Repartidor de prueba con una",
+                        "plaza": "Plaza de prueba 1",
+                        "entregas": 1
+                    }
+                ]
+            }
+        }
+    }
+}

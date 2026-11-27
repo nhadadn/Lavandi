@@ -1,7 +1,7 @@
 ---
 estado: vigente
 grado: D
-fuente: acta-2026-11-12-traspaso-del-proyecto.md C-145 y C-147; matriz-de-criterios-stack.md (pesos C-142); verificaciones-fase-6.md, sección del 2026-11-12 (E)
+fuente: acta-2026-11-12-traspaso-del-proyecto.md C-145 y C-147; matriz-de-criterios-stack.md (pesos C-142); verificaciones-fase-6.md, sección del 2026-11-12 (E); nota del 2026-11-24: acta-2026-11-20-modelo-y-pasarela.md, decisión 56, del concilio del 2026-11-24, por delegación de Arthur (C-245) (C); nota del 2026-11-24 que remite a ADR-0022: acta-2026-11-20-modelo-y-pasarela.md, C-247 y decisión 69 (C)
 fecha: 2026-11-12
 dueño: Arthur Naranjo
 adr: ADR-0003
@@ -17,7 +17,8 @@ supersede:
   - el cobro con Conekta y sus webhooks;
   - los avisos;
   - los indicadores.
-- **El contenedor `panel-admin`** es una aplicación web con el Módulo D completo (C-140).
+- **El contenedor `panel-admin`** es una aplicación web con el Módulo D completo (C-140). (Nota del 2026-11-24: desde
+  C-247, el Módulo D completo vive en la app y `panel-admin` queda como respaldo interno; [[ADR-0022-administracion-en-la-app]].)
   - El contrato le exige exportar a CSV o Excel y mostrar 11 indicadores en tiempo real (A: O-16, O-21, A.4.4).
 - **Restricciones del contrato:**
   - costo de 1,200 a 4,100 MXN al mes (A: RN-22);
@@ -71,7 +72,13 @@ Los cuatro candidatos caben en el costo del contrato.
 - La versión estable al 2026-11-10 es la 13.42.0 (E).
 - La app usa la API con tokens de Sanctum.
 - El panel web del Módulo D se hace con **Filament**.
-- La vista reducida de administración en la app (C-140) usa la misma API.
+- La vista reducida de administración en la app (C-140) usa la misma API. (Nota del 2026-11-24: la decisión 56 de
+  `acta-2026-11-20-modelo-y-pasarela.md`, C-245, lo acota: la vista no tiene sesión con la API y solo abre el panel
+  web dentro de la app, administracion-E25.)
+- **Nota del 2026-11-24, después de la anterior:** C-247 (decisión 69 del mismo acta) reemplaza la vista reducida y la
+  decisión 56. La administración inicia sesión en la app y ahí hace todo el Módulo D y el A.5, con la API de
+  `/api/administracion`; el panel de Filament se queda como respaldo interno, sin enlace, y no recibe funciones nuevas.
+  Cómo se construye lo decide [[ADR-0022-administracion-en-la-app]]. Laravel, Sanctum y Filament no cambian.
 
 **Dónde corre se decide después** (C-147, DD-070). Las opciones son Laravel Cloud o Forge con DigitalOcean. Las dos
 caben en el costo del contrato.

@@ -1,0 +1,12 @@
+{
+    "peticion": "POST /api/administracion/repartidores/{repartidor}/alta",
+    "estado": 422,
+    "cuerpo": {
+        "message": "Elige la plaza.",
+        "errors": {
+            "plaza": [
+                "Elige la plaza."
+            ]
+        }
+    }
+}

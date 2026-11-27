@@ -1,7 +1,7 @@
 ---
 estado: vigente
 grado: D
-fuente: acta-2026-11-13-cierre-de-la-fase-6.md C-152; restricciones-no-negociables.md RN-05 (A); brecha-ejecutivo-tecnico.md BR-23 (B); c2-contenedores.md (B); verificaciones-fase-6.md, sección del 2026-11-12 (E); ADR-0002 y ADR-0003 (D)
+fuente: acta-2026-11-13-cierre-de-la-fase-6.md C-152; restricciones-no-negociables.md RN-05 (A); brecha-ejecutivo-tecnico.md BR-23 (B); c2-contenedores.md (B); verificaciones-fase-6.md, sección del 2026-11-12 (E); ADR-0002 y ADR-0003 (D); adenda del 2026-11-22: acta-2026-11-20-modelo-y-pasarela.md, decisión 33, por delegación de C-236 (C); NSV-2026-001-v8.pdf:21:ANEXO A, Sección A.4.4 (A); adenda del 2026-11-24: acta-2026-11-20-modelo-y-pasarela.md, decisión 50, del concilio del 2026-11-24, por delegación de Arthur (C-236, C-245) (C); NSV-2026-001-v8.pdf:17-18:ANEXO A, Sección A.3 (A); obligaciones-ejecutivas.md O-14 y O-15 (A); movil/src/estados/useConsultaPeriodica.ts (B); movil/__tests__/pedidos-lavanderia/consulta-periodica.test.tsx y movil/__tests__/repartidor/pedidos-asignados.test.tsx (B)
 fecha: 2026-11-13
 dueño: Arthur Naranjo
 adr: ADR-0007
@@ -84,3 +84,54 @@ avisos no cambian.
 - **Obligaciones:** O-16 y O-17.
 - **Restricciones:** RN-05 y BR-23.
 - **ADRs relacionados:** ADR-0002, ADR-0003 y ADR-0008.
+
+## Adenda del 2026-11-22: cuánto es "en tiempo real" para los indicadores
+
+**Contexto.**
+
+- El A.4.4 pide que el panel muestre "en tiempo real los indicadores definidos en A.5"
+  (`NSV-2026-001-v8.pdf:21:ANEXO A, Sección A.4.4`). No dice con qué latencia (BR-33).
+- Este ADR fijó 30 s para la pantalla del pedido y para las tablas de pedidos activos del panel, no para los
+  indicadores. DD-116 le dejó a Arthur la cifra, con ADR.
+- El panel ya lee el intervalo de `indicadores.refresco` (`INDICADORES_REFRESCO`), que estaba vacío a la espera de esta
+  decisión.
+
+**Decisión.**
+
+- **Los widgets de indicadores se refrescan cada 30 s, la misma consulta periódica de este ADR.** El valor por omisión
+  de `indicadores.refresco` es `30s`; cada entorno lo puede cambiar sin tocar el código.
+- **Por qué 30 s.** Es la latencia que ya acepta el resto del panel. Los indicadores leen agregados de la base, no un
+  pedido, y un intervalo más corto multiplica las consultas sin que la administración note la diferencia. No se agrega
+  un websocket solo para esto: el criterio de reversión de este ADR sigue igual.
+
+**La tomó** Claude, por delegación de Arthur (C-236), en la decisión 33 de `acta-2026-11-20-modelo-y-pasarela.md`.
+Cierra DD-116 y la parte de latencia de BR-33. De BR-33 siguen abiertos los umbrales del semáforo del ranking.
+
+## Adenda del 2026-11-24: las listas de pedidos de los socios
+
+**Contexto.**
+
+- El Módulo B #2 pide para la lavandería una "Lista en tiempo real" y el Módulo C #2, para el repartidor, una "Lista en
+  tiempo real de pedidos asignados" (`NSV-2026-001-v8.pdf:17-18:ANEXO A, Sección A.3`). No dicen con qué latencia.
+- La sección Decisión de este ADR solo nombra la pantalla del pedido y las tablas del panel. Aplicarla a las listas de
+  los socios era una lectura (`openspec/changes/pedidos-de-la-lavanderia/design.md`, pregunta 2).
+- La app ya lo hace y lo prueba: `movil/__tests__/pedidos-lavanderia/consulta-periodica.test.tsx` para la lista de la
+  lavandería y `movil/__tests__/repartidor/pedidos-asignados.test.tsx` para la del repartidor.
+
+**Decisión.**
+
+- **La lista de pedidos del socio lavandería y la de pedidos asignados del socio repartidor consultan la API cada
+  30 s, solo mientras la pantalla está visible y la app al frente.** Es la misma consulta periódica de la pantalla del
+  pedido.
+- **La consulta inmediata por aviso FCM a los socios entra solo si se aprueba DD-054**, que es de Nadir. Mientras no
+  se apruebe, las dos listas se ponen al día con la consulta de 30 s.
+- La adenda asienta lo que la app ya hace: no hay mecanismo nuevo y el criterio de reversión de este ADR sigue igual.
+- **El costo de revertir y la carga de consultas suman las dos listas de los socios.** Usan el mismo gancho de consulta
+  periódica que la pantalla del pedido (`movil/src/estados/useConsultaPeriodica.ts`): la carga crece en una consulta
+  cada 30 s por lista abierta, y un cambio a Reverb tocaría ese gancho además del panel.
+
+**Trazabilidad.** Obligaciones: O-14 y O-15. Escenarios: pedidos-lavanderia-E05 y E06; repartidor-E10 y E11. Cierra
+la pregunta 2 de `openspec/changes/pedidos-de-la-lavanderia/design.md`.
+
+**La asentó** el concilio del 2026-11-24 por delegación de Arthur Naranjo (C-236, C-245), en la decisión 50 de
+`acta-2026-11-20-modelo-y-pasarela.md`.

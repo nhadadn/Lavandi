@@ -1,0 +1,7 @@
+{
+    "peticion": "GET /api/administracion/avisos-masivos",
+    "estado": 200,
+    "cuerpo": {
+        "avisos": []
+    }
+}

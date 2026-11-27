@@ -1,0 +1,72 @@
+# estados-E17 — En un teléfono Android, el cambio aparece en 60 segundos o menos
+# (openspec/changes/estados-del-pedido, tarea 4.3; criterio A43-3; NSV-2026-001-v8.pdf:21:ANEXO A, Sección A.4.3).
+#
+#   DADO la app del usuario abierta en el seguimiento de un pedido en Confirmado, en un teléfono Android
+#   CUANDO la lavandería marca "Recolectado"
+#   ENTONCES "Recolectado" aparece en la pantalla del usuario en 60 segundos o menos, sin que toque nada
+#
+# Lo que hace:
+# 1. inicia sesión como el usuario de prueba, desde cero (pasos/entrar-como-usuario.yaml);
+# 2. abre el seguimiento del pedido con el enlace de la app, <APP_ID>://pedido/seguimiento/<id_publico>, y comprueba
+#    que dice Confirmado, con Recolectado pendiente;
+# 3. la lavandería marca Recolectado por la API, con su token, y se anota la hora (pasos/marcar-recolectado.js);
+# 4. espera, sin tocar nada, a que el seguimiento muestre Recolectado como estado actual, con un tope de 60 s, y falla si
+#    no llega; luego calcula cuánto tardó y falla si pasó de 60 s (pasos/cronometrar.js).
+#
+# El pedido lo deja listo preparar-pedido.ps1: en Confirmado, pagado en la pasarela simulada y aceptado por la
+# lavandería. correr-cambio-en-60-segundos.ps1 prepara un pedido por corrida, corre este flujo y junta los tiempos.
+#
+# Variables, todas por -e: APP_ID (el paquete, APP_IDENTIFIER de movil/.env), API_URL (la API como la ve esta máquina),
+# PEDIDO (el id_publico), USUARIO_CORREO, USUARIO_CONTRASENA, LAVANDERIA_CORREO y LAVANDERIA_CONTRASENA. Ni la marca ni
+# el dominio se escriben aquí (CLAUDE.md §5).
+appId: ${APP_ID}
+# El nombre, en kebab-case y sin dos puntos: Maestro lo usa como carpeta de la salida, que va al vault, y Windows no
+# acepta los dos puntos en una carpeta.
+name: estados-E17-cambio-en-60-segundos
+tags:
+  - estados
+  - A43-3
+onFlowComplete:
+  - runScript: pasos/cerrar-sesion-de-la-lavanderia.js
+---
+- runFlow: pasos/entrar-como-usuario.yaml
+
+# El seguimiento del pedido, en Confirmado (estados-E01 y E02).
+- openLink: ${APP_ID}://pedido/seguimiento/${PEDIDO}
+- extendedWaitUntil:
+    visible:
+      id: paso-confirmado
+      text: 'Confirmado, estado actual.*'
+    timeout: 30000
+# La insignia del estado actual, arriba de los cinco pasos.
+- assertVisible:
+    text: Confirmado
+    above:
+      id: paso-confirmado
+- assertVisible:
+    id: paso-recolectado
+    text: 'Recolectado, pendiente'
+- takeScreenshot: 1-seguimiento-en-confirmado
+
+# La lavandería marca Recolectado; desde aquí nadie toca la pantalla.
+- startRecording: cambio-de-confirmado-a-recolectado
+- runScript: pasos/marcar-recolectado.js
+- extendedWaitUntil:
+    visible:
+      id: paso-recolectado
+      text: 'Recolectado, estado actual.*'
+    timeout: 60000
+- runScript: pasos/cronometrar.js
+- stopRecording
+- assertVisible:
+    text: Recolectado
+    above:
+      id: paso-confirmado
+- takeScreenshot: 2-seguimiento-en-recolectado
+
+# Deja la app en el inicio, para que el teléfono quede como lo encuentra quien lo use después.
+- tapOn:
+    id: regresar
+- extendedWaitUntil:
+    visible: Lavanderías cerca de ti
+    timeout: 15000

@@ -71,6 +71,16 @@ Criterio: A43-6
 
 Criterio: SEG-3
 
+#### Scenario: repartidor-E31 — La administración da de baja un registro que EL CLIENTE no autoriza
+- **DADO** un repartidor pendiente que nunca se dio de alta, sin plaza ni `aprobado_en`
+- **CUANDO** la administración lo da de baja
+- **ENTONCES** queda en baja, sin plaza, y ya no puede iniciar sesión
+- **Y** sus sesiones abiertas dejan de servir
+
+Criterio: A43-6, SEG-3
+
+La cita es la del requisito: la baja del Módulo D #2 (`NSV-2026-001-v8.pdf:19:ANEXO A, Sección A.3`), y la autorización, que es de EL CLIENTE y ocurre fuera de la plataforma (`NSV-2026-001-v8.pdf:18:ANEXO A, Sección A.3`, Módulo C #1), así que puede no darla. Lo decidió el concilio del 2026-11-24, por delegación de Arthur (C-245; `acta-2026-11-20-modelo-y-pasarela.md`, decisión 54). Lo que puede hacer después una cuenta dada de baja no se decide aquí (DD-104).
+
 ### Requirement: Pedidos asignados en tiempo real
 La app DEBE (MUST) mostrar al repartidor la lista de los pedidos que tiene asignados, solo los suyos y solo de su plaza, y mantenerla al día consultando la API cada 30 segundos mientras la pantalla está abierta.
 
@@ -189,7 +199,7 @@ Criterio: SEG-3
 
 Criterio: A43-3
 
-SIN RESPUESTA — bloquea: repartidor-E22 (DD-022 y DD-011: cómo se mapean Recolectado, En tránsito y Entregado a los cinco estados del usuario, y si el pedido lleva un viaje de repartidor o dos)
+SIN RESPUESTA — bloquea: repartidor-E22 (DD-022 y DD-140: cómo se mapean Recolectado, En tránsito y Entregado a los cinco estados del usuario, y si el pedido lleva un viaje de repartidor o dos)
 
 ### Requirement: Evidencia de entrega
 Al marcar Entregado, la app DEBE (MUST) dejar al repartidor tomar una foto como evidencia de entrega. La foto DEBE (MUST) guardarse en almacenamiento privado, ligada al pedido.
